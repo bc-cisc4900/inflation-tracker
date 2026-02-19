@@ -3,14 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Website</title>
+
+  <!-- for the font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <title>Grocery Inflation Tracker (CISC 4900)</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
       max-width: 960px;
       margin: 40px auto;
       padding: 0 16px;
       line-height: 1.5;
+      background: #fafafa;
     }
     header {
       display: flex;
@@ -27,6 +34,7 @@
       text-decoration: none;
       border-bottom: 2px solid transparent;
       padding-bottom: 2px;
+      color: #111;
     }
     nav a:hover { border-bottom-color: #333; }
     .card {
@@ -43,6 +51,9 @@
       border-radius: 10px;
       text-decoration: none;
       font-weight: 600;
+      color: #ffffff;
+      background: #01ad48;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     }
     .btn:hover { opacity: 0.85; }
     iframe {
@@ -51,28 +62,48 @@
       border: 0;
       border-radius: 12px;
       margin-top: 12px;
+      background: #f3f3f3;
     }
     footer {
       margin-top: 40px;
-      opacity: 0.7;
+      opacity: 0.8;
       font-size: 14px;
       padding-bottom: 30px;
     }
-    .small { opacity: 0.8; font-size: 14px; }
+    .small { opacity: 0.85; font-size: 14px; }
+    .muted { opacity: 0.75; }
+    .pill {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 10px;
+      border: 1px solid #ddd;
+      border-radius: 999px;
+      margin-right: 8px;
+      background: #fff;
+    }
+
+    .card { scroll-margin-top: 16px; }
   </style>
 </head>
 
 <body>
   <header>
     <div>
-      <h1>Your Name</h1>
-      <div class="small">Simple website + embedded Google Sheet</div>
+      <h1>Grocery Inflation Tracker</h1>
+      <div class="small">
+        CISC 4900 Student Project | Brooklyn College
+      </div>
+      <div class="small muted" style="margin-top:6px;">
+        <span class="pill">Weekly collection</span>
+        <span class="pill">Monthly averages</span>
+        <span class="pill">Anonymized stores/brands</span>
+      </div>
     </div>
 
     <nav>
       <a href="#home">Home</a>
-      <a href="#tracker">Inflation Tracker</a>
-      <a href="#about">About</a>
+      <a href="#tracker">Tracker</a>
+      <a href="#method">Method</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -80,51 +111,69 @@
   <div class="card" id="home">
     <h2>Welcome</h2>
     <p>
-      This website includes a link and an embedded view of my Google Sheets tracker.
+      This project measures grocery inflation using real </b>in-store prices for a consistent set of esential products.
+    <br>Our primary output is a <b>monthly average</b> for each item, updated from weekly observations.
     </p>
+
+
     <p>
       <a class="btn"
          href="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/edit?gid=881796074#gid=881796074"
          target="_blank" rel="noopener noreferrer">
-        Open Grocery Store Inflation Tracker
+        Open Tracker in Google Sheets
       </a>
+    </p>
+    <p class="small muted">
+      Tip: The embedded sheet below requires sharing set to <b>Anyone with the link: Viewer</b>.
     </p>
   </div>
 
   <div class="card" id="tracker">
-    <h2>Grocery Store Inflation Tracker</h2>
-    <p class="small">
-      If the embed below is blank, set the sheet sharing to <b>Anyone with the link: Viewer</b>.
-    </p>
+    <h2>Inflation Tracker (Spreadsheet)</h2>
 
     <!-- Embedded Google Sheet -->
     <iframe
       src="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/preview?gid=881796074"
       loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
       allowfullscreen>
     </iframe>
+
+    <p class="small muted" style="margin-top:10px;">
+      If the embed is blank on your network/browser, use the button above to open the sheet directly.
+    </p>
   </div>
 
-  <div class="card" id="about">
-    <h2>About</h2>
-    <p>
-      Write a short paragraph about yourself or what this tracker is for.
-    </p>
+  <div class="card" id="method">
+    <h2>Method (Process)</h2>
+    <ul>
+      <li><b>Collection frequency:</b> prices are recorded <b>once per week</b>.</li>
+      <li><b>Unit price focus:</b> we compare <b>unit price</b> to reduce packaging bias.</li>
+      <li><b>Product consistency:</b> items are recorded using consistent quality (e.g., “large white eggs”). Equivalent generic products may be used.</li>
+      <li><b>Loyalty pricing:</b> loyalty-card-only prices are <b>ignored</b> for official averages.</li>
+      <li><b>Promotions:</b> sales/promotions may be recorded as metadata for context.</li>
+      <li><b>Anonymization:</b> store and brand identifiers are hidden (e.g., “Store A”, “Brand X”).</li>
+      <li><b>Reporting:</b> the main output is a <b>monthly average</b> per item (built from weekly observations).</li>
+      <li><b>Continuation:</b> this project is designed to be continued by future cohorts to complete the remaining months.</li>
+    </ul>
   </div>
 
   <div class="card" id="contact">
     <h2>Contact</h2>
-  <ul>
-    <li><b>Gabriel Krishtul:</b> <a href="mailto:gabrielkrishtul1@gmail.com">gabrielkrishtul1@gmail.com</a></li>
-    <li><b>Andrew Castillo-Fajardo:</b> <a href="mailto:ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu">ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu</a></li>
-    <li><b>Yuan Ruan:</b> <a href="mailto:yuan.ruan65@bcmail.cuny.edu">yuan.ruan65@bcmail.cuny.edu</a></li>
-    <li><b>Nicholas Cai:</b> <a href="mailto:nicholascai123@gmail.com">nicholascai123@gmail.com</a></li>
+    <ul>
     <li><b>Mohamed Massoud:</b> <a href="mailto:mohamedadam.massoud07@bcmail.cuny.edu">mohamedadam.massoud07@bcmail.cuny.edu</a></li>
-  </ul>
+    <li><b>Nicholas Cai:</b> <a href="mailto:nicholascai123@gmail.com">nicholascai123@gmail.com</a></li>
+    <li><b>Yuan Ruan:</b> <a href="mailto:yuan.ruan65@bcmail.cuny.edu">yuan.ruan65@bcmail.cuny.edu</a></li>
+    <li><b>Andrew Castillo-Fajardo:</b> <a href="mailto:ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu">ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu</a></li>
+    <li><b>Gabriel Krishtul:</b> <a href="mailto:gabrielkrishtul1@gmail.com">gabrielkrishtul1@gmail.com</a></li>
+    </ul>
   </div>
 
   <footer>
-    © <span id="year"></span> Your Name
+    <div>© <span id="year"></span> Grocery Inflation Measurement (CISC 4900)</div>
+    <div class="small muted" style="margin-top:6px;">
+      This is a student project website for Brooklyn College coursework and does not represent an official Brooklyn College or CUNY website.
+    </div>
   </footer>
 
   <script>
