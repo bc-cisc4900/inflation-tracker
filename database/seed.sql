@@ -1,5 +1,17 @@
 -- seed.sql
 -- Starter seed data based on sample grocery pricing sheet
+--
+-- Purpose:
+-- Inserts starter data for stores, items, and sample grocery prices.
+--
+-- Why it exists:
+-- This file allows the team to test the schema with realistic project data.
+--
+-- Inputs:
+-- - Run after schema.sql has been executed successfully.
+--
+-- Outputs:
+-- - Populates the database with sample records for development and testing.
 
 INSERT INTO Stores (store_name) VALUES
 ('Aldi'),

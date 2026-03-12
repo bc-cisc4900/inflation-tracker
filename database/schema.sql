@@ -1,40 +1,49 @@
 -- schema.sql
--- Grocery Store Inflation Tracker database schema
--- This schema follows the ER design:
--- STORES (1) -> (many) PRICES
--- ITEMS  (1) -> (many) PRICES
+-- Purpose:
+-- This file creates the main database structure for the Grocery Store Inflation Tracker project.
+--
+-- Why it exists:
+-- The project needs a normalized relational schema to store grocery stores,
+-- tracked items, and weekly/monthly price records in a consistent format.
+--
+-- Inputs:
+-- - Executed inside the MariaDB client after selecting the grocery_inflation database.
+--
+-- Outputs:
+-- - Creates Stores, Items, and Prices tables used by the project.
 
-DROP TABLE IF EXISTS Prices;
-DROP TABLE IF EXISTS Items;
-DROP TABLE IF EXISTS Stores;
-
-CREATE TABLE Stores (
-    store_id INT AUTO_INCREMENT PRIMARY KEY,
+-- Stores table
+-- Stores each grocery source being tracked.
+CREATE TABLE IF NOT EXISTS Stores (
+    store_id INT PRIMARY KEY AUTO_INCREMENT,
     store_name VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE Items (
-    item_id INT AUTO_INCREMENT PRIMARY KEY,
+-- Items table
+-- Stores each grocery item, category, and item-matching rule.
+CREATE TABLE IF NOT EXISTS Items (
+    item_id INT PRIMARY KEY AUTO_INCREMENT,
     item_name VARCHAR(255) NOT NULL,
     category VARCHAR(100) NOT NULL,
     brand VARCHAR(100),
     unit_size VARCHAR(100),
-    substitution_rule VARCHAR(255)
+    substitution_rule TEXT
 );
 
-CREATE TABLE Prices (
-    price_id INT AUTO_INCREMENT PRIMARY KEY,
+-- Prices table
+-- Stores one price record per store/item/date combination.
+-- This supports weekly collection and future monthly averaging logic.
+CREATE TABLE IF NOT EXISTS Prices (
+    price_id INT PRIMARY KEY AUTO_INCREMENT,
     store_id INT NOT NULL,
     item_id INT NOT NULL,
     date_recorded DATE NOT NULL,
-    price_week1 DECIMAL(6,2),
-    price_week2 DECIMAL(6,2),
-    price_week3 DECIMAL(6,2),
-    price_week4 DECIMAL(6,2),
-    price_monthly DECIMAL(6,2),
-    notes VARCHAR(255),
-    CONSTRAINT fk_prices_store
-        FOREIGN KEY (store_id) REFERENCES Stores(store_id),
-    CONSTRAINT fk_prices_item
-        FOREIGN KEY (item_id) REFERENCES Items(item_id)
+    price_week1 DECIMAL(10,2),
+    price_week2 DECIMAL(10,2),
+    price_week3 DECIMAL(10,2),
+    price_week4 DECIMAL(10,2),
+    price_monthly DECIMAL(10,2),
+    notes TEXT,
+    FOREIGN KEY (store_id) REFERENCES Stores(store_id),
+    FOREIGN KEY (item_id) REFERENCES Items(item_id)
 );

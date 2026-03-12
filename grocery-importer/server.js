@@ -1,3 +1,19 @@
+/**
+ * server.js
+ * Purpose:
+ * Runs the backend server for grocery importing or API-related features.
+ *
+ * Why it exists:
+ * This file provides a server entry point so the frontend or importer tools
+ * can communicate with backend logic during development.
+ *
+ * Expected inputs:
+ * - HTTP requests, route parameters, or uploaded data depending on implementation
+ *
+ * Expected outputs:
+ * - Server responses such as JSON, status messages, or imported data results
+ */
+
 // server.js
 require('dotenv').config();
 const express = require('express');
