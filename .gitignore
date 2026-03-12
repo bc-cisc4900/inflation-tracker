@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+
+# Editor folders
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Secrets / environment files
+.env
+.env.*
+credentials.txt
+secrets.txt
+
+# Build folders
+dist/
+build/
+
+# Node modules
+node_modules/
+
+# Temporary files
+*.tmp
+*.swp
