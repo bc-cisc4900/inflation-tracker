@@ -1,0 +1,3 @@
+[submodule "external/hellogitworld"]
+	path = external/hellogitworld
+	url = https://github.com/githubtraining/hellogitworld.git

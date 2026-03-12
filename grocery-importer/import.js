@@ -1,6 +1,20 @@
-/*
-This is the sauce that will parse through the google sheet and import the data 
-into mariaDB
+/**
+ * import.js
+ * Purpose:
+ * Imports grocery pricing data into the project workflow.
+ *
+ * Why it exists:
+ * The project collects grocery prices in spreadsheets and CSV-like formats.
+ * This file exists to help move that data into a format the backend or database can use.
+ *
+ * Expected inputs:
+ * - Grocery data files such as CSV or spreadsheet-exported data
+ * - File paths or request data depending on implementation
+ *
+ * Expected outputs:
+ * - Parsed grocery item records
+ * - Imported or transformed data ready for storage or display
+ * - This is the sauce that will parse through the google sheet and import the data into mariaDB
 */
 
 require('dotenv').config();               //loads the env file so the script can access the db and sheet ID
