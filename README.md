@@ -1,3 +1,5 @@
+![Grocery Store Inflation Tracker Banner](website/assets/grocery-banner.png)
+
 Link to Group Meeting Notes: https://docs.google.com/document/d/12wIxHZITvYMX94EEUfoCmIPFZYnbcl7tQ3wrw0Mazxk/edit?tab=t.2u7vyan4i8yi
 
 # Grocery Store Inflation Tracker
