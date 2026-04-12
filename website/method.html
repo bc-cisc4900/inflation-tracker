@@ -1,15 +1,146 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="stylesheet" href="css/style.css">
-    <title>Method</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <title>Method</title>
+
+  <style>
+    :root {
+      --bg: #fafafa;
+      --text: #111;
+      --card-bg: #ffffff;
+      --card-border: #ddd;
+      --nav-text: #111;
+      --nav-hover: #333;
+      --pill-bg: #fff;
+      --pill-border: #ddd;
+      --muted: 0.75;
+    }
+
+    body.dark {
+      --bg: #121212;
+      --text: #f5f5f5;
+      --card-bg: #1e1e1e;
+      --card-border: #333;
+      --nav-text: #f5f5f5;
+      --nav-hover: #66ccff;
+      --pill-bg: #2a2a2a;
+      --pill-border: #444;
+      --muted: 0.85;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 16px;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    header {
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      display: inline-block;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 2px;
+      color: var(--nav-text);
+    }
+
+    nav a:hover {
+      border-bottom-color: var(--nav-hover);
+    }
+
+    .card {
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-top: 16px;
+      background: var(--card-bg);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .theme-toggle {
+      padding: 10px 14px;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      background: var(--card-bg);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    .theme-toggle:hover {
+      opacity: 0.9;
+    }
+
+    .small {
+      opacity: 0.85;
+      font-size: 14px;
+    }
+
+    .muted {
+      opacity: var(--muted);
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 10px;
+      border: 1px solid var(--pill-border);
+      border-radius: 999px;
+      margin-right: 8px;
+      background: var(--pill-bg);
+    }
+
+    footer {
+      margin-top: 40px;
+      opacity: 0.8;
+      font-size: 14px;
+      padding-bottom: 30px;
+    }
+
+    .footer-note {
+      margin-top: 6px;
+    }
+
+    a, p, h1, h2, h3, div, li, ul, main {
+      color: inherit;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div>
+  <header>
+    <div>
       <h1>Grocery Inflation Tracker</h1>
       <div class="small">
         CISC 4900 Student Project | Brooklyn College
@@ -22,42 +153,90 @@
     </div>
 
     <nav>
-      <a href="index.html">Home</a>
-      <a href="index.html">Tracker</a>
+      <a href="web.html#home">Home</a>
+      <a href="web.html#tracker">Tracker</a>
       <a href="#method">Method</a>
       <a href="credits.html">Credits</a>
+      <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
     </nav>
-</header>
-    <main>
-        <h1>Method</h1>
-        <div class="card" id="method">
-        <h3><u>Data Collection</u></h3>
-        <p>Prices are collected once per week from selected grocery stores. The goal is to record prices as they appear in-store so the data reflects what consumers actually see on the shelf. <br><br>
-For each item, we aim to keep product selection consistent by matching the same brand, size, and type across all stores whenever possible. If an exact match is not available, the closest equivalent product is selected and documented.<br><br>
-Loyalty-card-only prices are not included in the official data because they are not available to all customers. However, temporary sale prices may be recorded separately for context.
-        </p>  
-        <h3><u>Data Consistency</u></h3>
-        <p>To ensure fair comparisons between stores, all prices are recorded as unit prices when necessary (for example, price per ounce or per item). This allows items of slightly different sizes to still be compared accurately.<br><br>
-Any substitutions or inconsistencies are noted to maintain transparency in the dataset.
-        </p>     
-        <h3><u>Average Calculation</u></h3>
-        <p>Weekly prices are recorded for each item, and a monthly average is calculated using those values.<br><br>
-The monthly average is computed by adding all weekly prices for an item and dividing by the number of weeks recorded:<br><br>
-Average Price = (Week 1 + Week 2 + Week 3 + Week 4) ÷ Number of Weeks<br><br>
-If a price is missing for a given week, only the available weeks are used in the calculation.
-        </p>
-        <h3><u>Reporting</u></h3>
-        <p>The main output of this project is a monthly average price per item for each store. These averages are used to compare pricing trends across different grocery stores over time.
-        </p>
-        <h3><u>Project Continuation</u></h3>
-        <p>This project is designed to be continued by future groups. The standardized data collection process allows new data to be added consistently, making it possible to track long-term price trends.
-        </div>
-    </main>
-     <footer>
+  </header>
+
+  <main>
+    <h1 style="margin-bottom: 16px;">Method</h1>
+
+    <div class="card" id="method">
+      <h3><u>Data Collection</u></h3>
+      <p>
+        Prices are collected once per week from selected grocery stores. The goal is to record prices as they appear in-store so the data reflects what consumers actually see on the shelf.
+        <br><br>
+        For each item, we aim to keep product selection consistent by matching the same brand, size, and type across all stores whenever possible. If an exact match is not available, the closest equivalent product is selected and documented.
+        <br><br>
+        Loyalty-card-only prices are not included in the official data because they are not available to all customers. However, temporary sale prices may be recorded separately for context.
+      </p>
+
+      <h3><u>Data Consistency</u></h3>
+      <p>
+        To ensure fair comparisons between stores, all prices are recorded as unit prices when necessary, for example price per ounce or per item. This allows items of slightly different sizes to still be compared accurately.
+        <br><br>
+        Any substitutions or inconsistencies are noted to maintain transparency in the dataset.
+      </p>
+
+      <h3><u>Average Calculation</u></h3>
+      <p>
+        Weekly prices are recorded for each item, and a monthly average is calculated using those values.
+        <br><br>
+        The monthly average is computed by adding all weekly prices for an item and dividing by the number of weeks recorded:
+        <br><br>
+        Average Price = (Week 1 + Week 2 + Week 3 + Week 4) ÷ Number of Weeks
+        <br><br>
+        If a price is missing for a given week, only the available weeks are used in the calculation.
+      </p>
+
+      <h3><u>Reporting</u></h3>
+      <p>
+        The main output of this project is a monthly average price per item for each store. These averages are used to compare pricing trends across different grocery stores over time.
+      </p>
+
+      <h3><u>Project Continuation</u></h3>
+      <p>
+        This project is designed to be continued by future groups. The standardized data collection process allows new data to be added consistently, making it possible to track long-term price trends.
+      </p>
+    </div>
+  </main>
+
+  <footer>
     <div>© <span id="year"></span> Grocery Inflation Measurement (CISC 4900)</div>
     <div class="small muted footer-note">
       This is a student project website for Brooklyn College coursework and does not represent an official Brooklyn College or CUNY website.
     </div>
   </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      body.classList.add("dark");
+      themeToggle.textContent = "☀️ Light Mode";
+    } else {
+      themeToggle.textContent = "🌙 Dark Mode";
+    }
+
+    themeToggle.addEventListener("click", () => {
+      body.classList.toggle("dark");
+
+      if (body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+        themeToggle.textContent = "☀️ Light Mode";
+      } else {
+        localStorage.setItem("theme", "light");
+        themeToggle.textContent = "🌙 Dark Mode";
+      }
+    });
+  </script>
 </body>
 </html>
