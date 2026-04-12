@@ -4,21 +4,54 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- for the font-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <title>Grocery Inflation Tracker (CISC 4900)</title>
+
   <style>
+    :root {
+      --bg: #fafafa;
+      --text: #111;
+      --card-bg: #ffffff;
+      --card-border: #ddd;
+      --nav-text: #111;
+      --nav-hover: #333;
+      --pill-bg: #fff;
+      --pill-border: #ddd;
+      --iframe-bg: #f3f3f3;
+      --btn-bg: #01ad48;
+      --btn-text: #ffffff;
+      --muted: 0.75;
+    }
+
+    body.dark {
+      --bg: #121212;
+      --text: #f5f5f5;
+      --card-bg: #1e1e1e;
+      --card-border: #333;
+      --nav-text: #f5f5f5;
+      --nav-hover: #66ccff;
+      --pill-bg: #2a2a2a;
+      --pill-border: #444;
+      --iframe-bg: #222;
+      --btn-bg: #01ad48;
+      --btn-text: #ffffff;
+      --muted: 0.85;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       max-width: 960px;
       margin: 40px auto;
       padding: 0 16px;
       line-height: 1.5;
-      background: #fafafa;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
     }
+
     header {
       display: flex;
       gap: 16px;
@@ -27,23 +60,41 @@
       flex-wrap: wrap;
       margin-bottom: 18px;
     }
-    h1 { margin: 0; font-size: 28px; }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
     nav a {
       display: inline-block;
-      margin-left: 12px;
       text-decoration: none;
       border-bottom: 2px solid transparent;
       padding-bottom: 2px;
-      color: #111;
+      color: var(--nav-text);
     }
-    nav a:hover { border-bottom-color: #333; }
+
+    nav a:hover {
+      border-bottom-color: var(--nav-hover);
+    }
+
     .card {
-      border: 1px solid #ddd;
+      border: 1px solid var(--card-border);
       border-radius: 14px;
       padding: 18px;
       margin-top: 16px;
-      background: #fff;
+      background: var(--card-bg);
+      scroll-margin-top: 16px;
+      transition: background 0.3s, border-color 0.3s;
     }
+
     .btn {
       display: inline-block;
       padding: 10px 14px;
@@ -51,38 +102,68 @@
       border-radius: 10px;
       text-decoration: none;
       font-weight: 600;
-      color: #ffffff;
-      background: #01ad48;
+      color: var(--btn-text);
+      background: var(--btn-bg);
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     }
-    .btn:hover { opacity: 0.85; }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    .theme-toggle {
+      padding: 10px 14px;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      background: var(--card-bg);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    .theme-toggle:hover {
+      opacity: 0.9;
+    }
+
     iframe {
       width: 100%;
       height: 720px;
       border: 0;
       border-radius: 12px;
       margin-top: 12px;
-      background: #f3f3f3;
+      background: var(--iframe-bg);
     }
+
     footer {
       margin-top: 40px;
       opacity: 0.8;
       font-size: 14px;
       padding-bottom: 30px;
     }
-    .small { opacity: 0.85; font-size: 14px; }
-    .muted { opacity: 0.75; }
+
+    .small {
+      opacity: 0.85;
+      font-size: 14px;
+    }
+
+    .muted {
+      opacity: var(--muted);
+    }
+
     .pill {
       display: inline-block;
       font-size: 12px;
       padding: 4px 10px;
-      border: 1px solid #ddd;
+      border: 1px solid var(--pill-border);
       border-radius: 999px;
       margin-right: 8px;
-      background: #fff;
+      background: var(--pill-bg);
     }
 
-    .card { scroll-margin-top: 16px; }
+    a, p, h1, h2, h3, div, li, ul, main {
+      color: inherit;
+    }
   </style>
 </head>
 
@@ -103,18 +184,18 @@
     <nav>
       <a href="#home">Home</a>
       <a href="#tracker">Tracker</a>
-      <a href="method.html">Method</a>
-      <a href="#contact">Contact</a>
+      <a href="method.html#method">Method</a>
+      <a href="credits.html#credits">Credits</a>
+      <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
     </nav>
   </header>
 
   <div class="card" id="home">
     <h2>Welcome</h2>
     <p>
-      This project measures grocery inflation using real </b>in-store prices for a consistent set of esential products.
-    <br>Our primary output is a <b>monthly average</b> for each item, updated from weekly observations.
+      This project measures grocery inflation using real in-store prices for a consistent set of essential products.
+      <br>Our primary output is a <b>monthly average</b> for each item, updated from weekly observations.
     </p>
-
 
     <p>
       <a class="btn"
@@ -131,7 +212,6 @@
   <div class="card" id="tracker">
     <h2>Inflation Tracker (Spreadsheet)</h2>
 
-    <!-- Embedded Google Sheet -->
     <iframe
       src="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/preview?gid=881796074"
       loading="lazy"
@@ -144,31 +224,6 @@
     </p>
   </div>
 
-  <div class="card" id="method">
-    <h2>Method (Process)</h2>
-    <ul>
-      <li><b>Collection frequency:</b> prices are recorded <b>once per week</b>.</li>
-      <li><b>Unit price focus:</b> we compare <b>unit price</b> to reduce packaging bias.</li>
-      <li><b>Product consistency:</b> items are recorded using consistent quality (e.g., “large white eggs”). Equivalent generic products may be used.</li>
-      <li><b>Loyalty pricing:</b> loyalty-card-only prices are <b>ignored</b> for official averages.</li>
-      <li><b>Promotions:</b> sales/promotions may be recorded as metadata for context.</li>
-      <li><b>Anonymization:</b> store and brand identifiers are hidden (e.g., “Store A”, “Brand X”).</li>
-      <li><b>Reporting:</b> the main output is a <b>monthly average</b> per item (built from weekly observations).</li>
-      <li><b>Continuation:</b> this project is designed to be continued by future cohorts to complete the remaining months.</li>
-    </ul>
-  </div>
-
-  <div class="card" id="contact">
-    <h2>Contact</h2>
-    <ul>
-    <li><b>Mohamed Massoud:</b> <a href="mailto:mohamedadam.massoud07@bcmail.cuny.edu">mohamedadam.massoud07@bcmail.cuny.edu</a></li>
-    <li><b>Nicholas Cai:</b> <a href="mailto:nicholascai123@gmail.com">nicholascai123@gmail.com</a></li>
-    <li><b>Yuan Ruan:</b> <a href="mailto:yuan.ruan65@bcmail.cuny.edu">yuan.ruan65@bcmail.cuny.edu</a></li>
-    <li><b>Andrew Castillo-Fajardo:</b> <a href="mailto:ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu">ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu</a></li>
-    <li><b>Gabriel Krishtul:</b> <a href="mailto:gabrielkrishtul1@gmail.com">gabrielkrishtul1@gmail.com</a></li>
-    </ul>
-  </div>
-
   <footer>
     <div>© <span id="year"></span> Grocery Inflation Measurement (CISC 4900)</div>
     <div class="small muted" style="margin-top:6px;">
@@ -178,6 +233,30 @@
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      body.classList.add("dark");
+      themeToggle.textContent = "☀️ Light Mode";
+    } else {
+      themeToggle.textContent = "🌙 Dark Mode";
+    }
+
+    themeToggle.addEventListener("click", () => {
+      body.classList.toggle("dark");
+
+      if (body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+        themeToggle.textContent = "☀️ Light Mode";
+      } else {
+        localStorage.setItem("theme", "light");
+        themeToggle.textContent = "🌙 Dark Mode";
+      }
+    });
   </script>
 </body>
 </html>
