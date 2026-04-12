@@ -6,257 +6,1427 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <title>Grocery Inflation Tracker (CISC 4900)</title>
+  <title>BC-Basket | Grocery Inflation Tracker</title>
 
   <style>
     :root {
-      --bg: #fafafa;
-      --text: #111;
-      --card-bg: #ffffff;
-      --card-border: #ddd;
-      --nav-text: #111;
-      --nav-hover: #333;
-      --pill-bg: #fff;
-      --pill-border: #ddd;
-      --iframe-bg: #f3f3f3;
-      --btn-bg: #01ad48;
-      --btn-text: #ffffff;
-      --muted: 0.75;
+      --bg: #f5f8fc;
+      --bg2: #eef7f1;
+      --surface: rgba(255,255,255,0.88);
+      --surface-strong: #ffffff;
+      --text: #0f172a;
+      --soft: #475569;
+      --border: rgba(15, 23, 42, 0.08);
+      --green: #01ad48;
+      --green-dark: #017c35;
+      --accent: #e8f7ee;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.06);
+      --nav: rgba(255,255,255,0.7);
+      --muted: 0.8;
     }
 
     body.dark {
-      --bg: #121212;
-      --text: #f5f5f5;
-      --card-bg: #1e1e1e;
-      --card-border: #333;
-      --nav-text: #f5f5f5;
-      --nav-hover: #66ccff;
-      --pill-bg: #2a2a2a;
-      --pill-border: #444;
-      --iframe-bg: #222;
-      --btn-bg: #01ad48;
-      --btn-text: #ffffff;
-      --muted: 0.85;
+      --bg: #081018;
+      --bg2: #0d1c14;
+      --surface: rgba(15, 23, 42, 0.76);
+      --surface-strong: #111827;
+      --text: #f8fafc;
+      --soft: #cbd5e1;
+      --border: rgba(255,255,255,0.08);
+      --green: #22c55e;
+      --green-dark: #16a34a;
+      --accent: rgba(34, 197, 94, 0.12);
+      --shadow: 0 18px 40px rgba(0,0,0,0.28);
+      --shadow-soft: 0 10px 24px rgba(0,0,0,0.2);
+      --nav: rgba(15, 23, 42, 0.72);
+      --muted: 0.88;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
+      margin: 0;
       font-family: 'Inter', sans-serif;
-      max-width: 960px;
-      margin: 40px auto;
-      padding: 0 16px;
-      line-height: 1.5;
-      background: var(--bg);
       color: var(--text);
-      transition: background 0.3s, color 0.3s;
+      background:
+        radial-gradient(circle at top left, var(--bg2), transparent 28%),
+        var(--bg);
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    header {
+    a, p, h1, h2, h3, h4, div, li, ul, span, main, section {
+      color: inherit;
+    }
+
+    .container {
+      width: min(1380px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 14px;
+      z-index: 100;
+      margin-bottom: 26px;
+    }
+
+    .topbar-inner {
       display: flex;
-      gap: 16px;
       justify-content: space-between;
       align-items: center;
+      gap: 18px;
       flex-wrap: wrap;
-      margin-bottom: 18px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--nav);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-soft);
     }
 
-    h1 {
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: clamp(24px, 4vw, 34px);
+      line-height: 1.02;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .brand .sub {
+      font-size: 14px;
+      color: var(--soft);
+      font-weight: 500;
     }
 
     nav {
       display: flex;
-      align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     nav a {
-      display: inline-block;
       text-decoration: none;
-      border-bottom: 2px solid transparent;
-      padding-bottom: 2px;
-      color: var(--nav-text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s ease, transform 0.2s ease;
     }
 
     nav a:hover {
-      border-bottom-color: var(--nav-hover);
-    }
-
-    .card {
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 18px;
-      margin-top: 16px;
-      background: var(--card-bg);
-      scroll-margin-top: 16px;
-      transition: background 0.3s, border-color 0.3s;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 10px 14px;
-      border: 1px solid #333;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 600;
-      color: var(--btn-text);
-      background: var(--btn-bg);
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-    }
-
-    .btn:hover {
-      opacity: 0.85;
+      background: var(--accent);
+      transform: translateY(-1px);
     }
 
     .theme-toggle {
-      padding: 10px 14px;
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      background: var(--card-bg);
+      border: 1px solid var(--border);
+      background: var(--surface);
       color: var(--text);
-      font-weight: 600;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.3s, color 0.3s, border-color 0.3s;
     }
 
-    .theme-toggle:hover {
-      opacity: 0.9;
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 22px;
+      margin-bottom: 22px;
     }
 
-    iframe {
+    .hero-main,
+    .hero-side,
+    .card {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .hero-main {
+      padding: 34px;
+    }
+
+    .hero-side {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      justify-content: space-between;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .hero-main h2 {
+      margin: 0 0 14px;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-main p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--soft);
+      max-width: 760px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.96;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      color: #fff;
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--border);
+      background: var(--surface-strong);
+      color: var(--text);
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .mini-stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .mini-stat-label {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      color: var(--soft);
+      margin-bottom: 8px;
+    }
+
+    .mini-stat-value {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .card {
+      padding: 28px;
+      scroll-margin-top: 110px;
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-size: 26px;
+      letter-spacing: -0.02em;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: var(--soft);
+    }
+
+    .section-intro {
+      margin-bottom: 18px;
+      max-width: 900px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .feature-card {
+      padding: 18px;
+      border-radius: 20px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .feature-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      letter-spacing: -0.02em;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .flow-step {
+      position: relative;
+      padding: 18px;
+      border-radius: 20px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      min-height: 160px;
+    }
+
+    .flow-step .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .flow-step h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .flow-step p {
+      font-size: 14px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .info-box {
+      padding: 18px;
+      border-radius: 20px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .info-box h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .info-box p {
+      font-size: 14px;
+    }
+
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .contact-list li {
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--surface-strong);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .contact-list a {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .contact-list a:hover {
+      text-decoration: underline;
+    }
+
+    .sheet-frame {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 22px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .sheet-frame iframe {
       width: 100%;
-      height: 720px;
+      height: 760px;
       border: 0;
+      border-radius: 16px;
+      display: block;
+      background: #fff;
+    }
+
+    .tracker-toolbar {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .toolbar-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 12px 14px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--surface-strong);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .tracker-toolbar label {
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .tracker-toolbar select,
+    .week-counter {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 10px 12px;
       border-radius: 12px;
-      margin-top: 12px;
-      background: var(--iframe-bg);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-strong);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .cat-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.22);
+    }
+
+    .tracker-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .tracker-row {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+    }
+
+    .item-meta {
+      padding: 10px 4px;
+    }
+
+    .item-name {
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .item-cat {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .bar-shell {
+      display: grid;
+      grid-template-columns: 118px minmax(0, 1fr) 118px;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .arrow-pill {
+      appearance: none;
+      border: none;
+      min-height: 52px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 18px;
+      cursor: pointer;
+      color: #fff;
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,0.55),
+        inset 0 -3px 8px rgba(0,0,0,0.22),
+        0 5px 14px rgba(0,0,0,0.14);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .arrow-pill::before,
+    .glossy-track::before {
+      content: "";
+      position: absolute;
+      left: 3%;
+      right: 3%;
+      top: 8%;
+      height: 30%;
+      border-radius: 999px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.25));
+      pointer-events: none;
+    }
+
+    .arrow-pill::after,
+    .glossy-track::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.18);
+      pointer-events: none;
+    }
+
+    .glossy-track {
+      position: relative;
+      min-height: 66px;
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,0.45),
+        inset 0 -5px 14px rgba(0,0,0,0.18),
+        0 8px 18px rgba(0,0,0,0.12);
+      isolation: isolate;
+    }
+
+    .segment-lines {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(to right,
+        transparent calc(16.66% - 1px), rgba(255,255,255,0.55) calc(16.66% - 1px), rgba(255,255,255,0.55) calc(16.66% + 1px), transparent calc(16.66% + 1px),
+        transparent calc(33.33% - 1px), rgba(255,255,255,0.55) calc(33.33% - 1px), rgba(255,255,255,0.55) calc(33.33% + 1px), transparent calc(33.33% + 1px),
+        transparent calc(50% - 1px), rgba(255,255,255,0.55) calc(50% - 1px), rgba(255,255,255,0.55) calc(50% + 1px), transparent calc(50% + 1px),
+        transparent calc(66.66% - 1px), rgba(255,255,255,0.55) calc(66.66% - 1px), rgba(255,255,255,0.55) calc(66.66% + 1px), transparent calc(66.66% + 1px),
+        transparent calc(83.33% - 1px), rgba(255,255,255,0.55) calc(83.33% - 1px), rgba(255,255,255,0.55) calc(83.33% + 1px), transparent calc(83.33% + 1px)
+      );
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    .thumb {
+      position: absolute;
+      top: 10px;
+      width: 16.66%;
+      height: calc(100% - 20px);
+      border-radius: 999px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.26), rgba(255,255,255,0.08));
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.2);
+      transition: left .25s ease;
+      z-index: 0;
+    }
+
+    .track-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 0 18px;
+      color: white;
+      font-weight: 800;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.28);
+    }
+
+    .track-main {
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .track-sub {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 4px;
+      opacity: 0.95;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--soft);
+      font-size: 13px;
+      line-height: 1.6;
     }
 
     footer {
-      margin-top: 40px;
-      opacity: 0.8;
+      margin-top: 24px;
+      padding: 18px 6px 10px;
+      color: var(--soft);
       font-size: 14px;
-      padding-bottom: 30px;
     }
 
     .small {
-      opacity: 0.85;
       font-size: 14px;
+      opacity: 0.9;
     }
 
     .muted {
       opacity: var(--muted);
     }
 
-    .pill {
-      display: inline-block;
-      font-size: 12px;
-      padding: 4px 10px;
-      border: 1px solid var(--pill-border);
-      border-radius: 999px;
-      margin-right: 8px;
-      background: var(--pill-bg);
+    @media (max-width: 1000px) {
+      .hero,
+      .feature-grid,
+      .flow-grid,
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
-    a, p, h1, h2, h3, div, li, ul, main {
-      color: inherit;
+    @media (max-width: 980px) {
+      .tracker-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .hero,
+      .feature-grid,
+      .flow-grid,
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-inner,
+      .hero-main,
+      .hero-side,
+      .card {
+        padding: 20px;
+      }
+
+      nav {
+        width: 100%;
+      }
+
+      nav a,
+      .theme-toggle {
+        width: 100%;
+        text-align: center;
+      }
+
+      .sheet-frame iframe {
+        height: 560px;
+      }
+
+      .bar-shell {
+        grid-template-columns: 84px minmax(0, 1fr) 84px;
+        gap: 8px;
+      }
+
+      .arrow-pill {
+        min-height: 48px;
+        font-size: 16px;
+      }
+
+      .glossy-track {
+        min-height: 74px;
+        border-radius: 28px;
+      }
+
+      .track-main {
+        font-size: 13px;
+      }
     }
   </style>
 </head>
-
 <body>
-  <header>
-    <div>
-      <h1>Grocery Inflation Tracker</h1>
-      <div class="small">
-        CISC 4900 Student Project | Brooklyn College
-      </div>
-      <div class="small muted" style="margin-top:6px;">
-        <span class="pill">Weekly collection</span>
-        <span class="pill">Monthly averages</span>
-        <span class="pill">Anonymized stores/brands</span>
-      </div>
+  <div class="container">
+    <div class="topbar">
+      <header class="topbar-inner">
+        <div class="brand">
+          <h1>BC-Basket</h1>
+          <div class="sub">Grocery Inflation Tracker | CISC 4900 Student Project | Brooklyn College</div>
+        </div>
+
+        <nav>
+          <a href="#home">Home</a>
+          <a href="#overview">Overview</a>
+          <a href="#system">System</a>
+          <a href="#sheet">Spreadsheet</a>
+          <a href="#tracker">Tracker</a>
+          <a href="method.html#method">Method</a>
+          <a href="credits.html#credits">Credits</a>
+          <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
+        </nav>
+      </header>
     </div>
 
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#tracker">Tracker</a>
-      <a href="method.html#method">Method</a>
-      <a href="credits.html#credits">Credits</a>
-      <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
-    </nav>
-  </header>
+    <section class="hero" id="home">
+      <div class="hero-main">
+        <div class="eyebrow">Brooklyn College Student Research Project</div>
+        <h2>Tracking grocery inflation through real weekly price collection.</h2>
+        <p>
+          BC-Basket is a student-built grocery inflation tracker focused on identifying price trends over time through consistent weekly observations, structured data collection, monthly averages, and a website that makes the results easier to explore.
+        </p>
 
-  <div class="card" id="home">
-    <h2>Welcome</h2>
-    <p>
-      This project measures grocery inflation using real in-store prices for a consistent set of essential products.
-      <br>Our primary output is a <b>monthly average</b> for each item, updated from weekly observations.
-    </p>
+        <div class="hero-actions">
+          <a
+            class="btn btn-primary"
+            href="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/edit?gid=881796074#gid=881796074"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open Full Spreadsheet
+          </a>
+          <a class="btn btn-secondary" href="#sheet">View Live Spreadsheet</a>
+        </div>
 
-    <p>
-      <a class="btn"
-         href="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/edit?gid=881796074#gid=881796074"
-         target="_blank" rel="noopener noreferrer">
-        Open Tracker in Google Sheets
-      </a>
-    </p>
-    <p class="small muted">
-      Tip: The embedded sheet above requires sharing set to <b>Anyone with the link: Viewer</b>.
-    </p>
+        <div class="chip-row">
+          <span class="chip">Weekly price collection</span>
+          <span class="chip">Monthly averages</span>
+          <span class="chip">Trend-focused analysis</span>
+          <span class="chip">Built for continuity</span>
+        </div>
+      </div>
+
+      <aside class="hero-side">
+        <div class="mini-stat">
+          <span class="mini-stat-label">Main Goal</span>
+          <div class="mini-stat-value">Measure grocery inflation trends rather than focus on exact one-time prices.</div>
+        </div>
+
+        <div class="mini-stat">
+          <span class="mini-stat-label">Core Workflow</span>
+          <div class="mini-stat-value">Collect prices → organize data → store records → present trends.</div>
+        </div>
+
+        <div class="mini-stat">
+          <span class="mini-stat-label">Planned Interaction</span>
+          <div class="mini-stat-value">Users should be able to explore results by date, store, and item.</div>
+        </div>
+      </aside>
+    </section>
+
+    <main class="grid">
+      <section class="card" id="overview">
+        <h2>Project Overview</h2>
+        <p class="section-intro">
+          This project grew from real data collection trips, spreadsheet standardization, database design, website development, filtering research, and ongoing testing. The website is meant to communicate that this is not just a spreadsheet embed—it is a full course project built around methodology, consistency, and long-term usability.
+        </p>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>Weekly Collection</h3>
+            <p>Prices are collected on a recurring weekly schedule so changes can be tracked consistently over time.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3>Monthly Averages</h3>
+            <p>The main output is a monthly average built from weekly observations instead of a single snapshot.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3>Filtering Focus</h3>
+            <p>The project is designed around exploring results by date, store, and item in a simple and understandable way.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3>Future Continuation</h3>
+            <p>This project is meant to continue beyond one semester so future groups can build on the same structure.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="system">
+        <h2>How the System Works</h2>
+        <p class="section-intro">
+          The project is built as a pipeline. Grocery prices are collected and standardized, recorded in shared project materials, moved into the database, and then presented through the website in a format that is easier to read and eventually easier to filter.
+        </p>
+
+        <div class="flow-grid">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <h3>Price Collection</h3>
+            <p>Weekly grocery prices are collected from selected stores using consistent item definitions and substitution rules.</p>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <h3>Google Sheets</h3>
+            <p>Collected prices are organized into shared sheets, reviewed, averaged, and documented for consistency.</p>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <h3>MariaDB Database</h3>
+            <p>Structured records are stored in the database so the data can scale beyond static documents and support future queries.</p>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">4</div>
+            <h3>Website Display</h3>
+            <p>The website presents the project, explains the methodology, and serves as the public-facing layer for trend exploration.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="sheet">
+        <h2>Spreadsheet</h2>
+        <p class="section-intro">
+          The live Google Sheet below shows the full working dataset exactly as it appears in the project spreadsheet, including the weekly tabs and the Inflation Summary tab.
+        </p>
+
+        <div class="sheet-frame">
+          <iframe
+            src="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/preview?gid=881796074"
+            loading="lazy"
+            title="BC-Basket Google Sheet"
+          ></iframe>
+        </div>
+
+        <p class="small muted" style="margin-top: 16px;">
+          Use the tab bar at the bottom of the embedded sheet to switch across week1 through week16 and the Inflation Summary tab, just like in the original spreadsheet view.
+        </p>
+      </section>
+
+      <section class="card" id="tracker">
+        <h2>Inflation Tracker</h2>
+        <p class="section-intro">
+          The tracker below shows the working dataset used to support the project. The long-term goal is to make this data easier to explore through a cleaner interface, more structured filtering, and clearer presentation of averages and trends.
+        </p>
+
+        <div class="tracker-toolbar">
+          <div class="toolbar-group">
+            <label for="storeSelect">Store</label>
+            <select id="storeSelect"></select>
+          </div>
+
+          <div class="toolbar-group">
+            <label>Weeks in file</label>
+            <div class="week-counter" id="weekCount">6 recorded week blocks</div>
+          </div>
+        </div>
+
+        <div class="legend" id="legend"></div>
+        <div class="tracker-list" id="trackerList"></div>
+
+        <p class="small muted" style="margin-top: 16px;">
+          The live spreadsheet is shown in the section above. The tracker below is the custom slider interface for week-by-week comparison.
+        </p>
+
+        <div class="footer-note">
+          Missing values show as “No data” for that week/store combination. The first two week blocks in your pasted data do not include Fresh Direct, while later blocks do. :contentReference[oaicite:0]{index=0}
+        </div>
+      </section>
+
+      <section class="card" id="why">
+        <h2>Why Methodology Matters</h2>
+        <p class="section-intro">
+          Grocery inflation data can be affected by substitutions, product availability, sales, packaging changes, collection timing, and differences between stores. Because of that, this project emphasizes consistency, documentation, and structured averages so the results are more reliable and meaningful.
+        </p>
+
+        <div class="info-grid">
+          <div class="info-box">
+            <h3>Consistency</h3>
+            <p>Matching size, type, and brand as closely as possible helps keep results comparable from week to week.</p>
+          </div>
+
+          <div class="info-box">
+            <h3>Trend Analysis</h3>
+            <p>The project is designed to highlight patterns over time rather than treat one recorded price as the final story.</p>
+          </div>
+
+          <div class="info-box">
+            <h3>Clear Navigation</h3>
+            <p>Methods and Credits are separated into their own pages so the website stays organized and easier to understand.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="contact">
+        <h2>Contact</h2>
+        <ul class="contact-list">
+          <li><b>Mohamed Massoud:</b> <a href="mailto:mohamedadam.massoud07@bcmail.cuny.edu">mohamedadam.massoud07@bcmail.cuny.edu</a></li>
+          <li><b>Nicholas Cai:</b> <a href="mailto:nicholascai123@gmail.com">nicholascai123@gmail.com</a></li>
+          <li><b>Yuan Ruan:</b> <a href="mailto:yuan.ruan65@bcmail.cuny.edu">yuan.ruan65@bcmail.cuny.edu</a></li>
+          <li><b>Andrew Castillo-Fajardo:</b> <a href="mailto:ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu">ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu</a></li>
+          <li><b>Gabriel Krishtul:</b> <a href="mailto:gabrielkrishtul1@gmail.com">gabrielkrishtul1@gmail.com</a></li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <div>© <span id="year"></span> BC-Basket | Grocery Inflation Measurement (CISC 4900)</div>
+      <div class="small muted" style="margin-top: 8px;">
+        This is a student project website for Brooklyn College coursework and does not represent an official Brooklyn College or CUNY website.
+      </div>
+    </footer>
   </div>
-
-  <div class="card" id="tracker">
-    <h2>Inflation Tracker (Spreadsheet)</h2>
-
-    <iframe
-      src="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/preview?gid=881796074"
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-      allowfullscreen>
-    </iframe>
-
-    <p class="small muted" style="margin-top:10px;">
-      If the embed is blank on your network/browser, use the button above to open the sheet directly.
-    </p>
-  </div>
-
-  <footer>
-    <div>© <span id="year"></span> Grocery Inflation Measurement (CISC 4900)</div>
-    <div class="small muted" style="margin-top:6px;">
-      This is a student project website for Brooklyn College coursework and does not represent an official Brooklyn College or CUNY website.
-    </div>
-  </footer>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    const CATEGORY_COLORS = {
+      "Bakery / Grains": "#1f5fff",
+      "Baking & Cooking Essentials": "#f39c12",
+      "Beverages": "#d91c28",
+      "Canned & Shelf Stable Foods": "#ff1493",
+      "Dairy": "#00a651",
+      "Frozen Foods": "#7c3aed",
+      "Fruits": "#179c48",
+      "Grains & Dried Goods": "#8b5a2b",
+      "Meat & Protein": "#a020f0",
+      "Seafood": "#0b84d8",
+      "Vegtables": "#5f5f5f"
+    };
 
+    const STORE_OPTIONS = [
+      "Aldi",
+      "Fresh Direct",
+      "Key Food",
+      "Stop & Shop",
+      "Trader Joe's",
+      "Store Avg.",
+      "National Avg."
+    ];
+
+    const ITEMS = [
+      ["20 oz Organic White Bread","Bakery / Grains",[
+        [2.78,null,3.39,2.50,2.49,2.79,1.83],
+        [2.75,null,3.99,3.69,2.49,3.23,1.83],
+        [2.79,6.49,3.39,2.59,2.49,3.55,1.83],
+        [2.69,6.49,3.29,2.59,2.59,3.53,1.83],
+        [4.39,6.49,5.39,4.99,2.19,4.69,1.83],
+        [4.39,6.20,5.19,4.99,2.26,4.61,1.83]
+      ]],
+      ["Gold Medal All-Purpose Flour (2 lb)","Baking & Cooking Essentials",[
+        [1.99,null,1.50,3.79,2.99,2.57,1.10],
+        [1.99,null,3.59,3.49,2.99,3.02,1.10],
+        [1.99,4.99,1.59,3.79,2.99,3.07,1.10],
+        [2.09,4.99,1.49,3.79,3.09,3.09,1.10],
+        [2.15,4.79,3.50,3.00,1.29,2.95,1.10],
+        [2.35,4.99,4.19,3.00,1.20,3.15,1.10]
+      ]],
+      ["Morton’s Salt (24 oz)","Baking & Cooking Essentials",[
+        [0.85,null,0.75,0.99,1.69,1.07,0.75],
+        [0.75,null,3.19,1.99,1.69,1.91,0.75],
+        [0.89,3.99,0.75,0.99,1.69,1.66,0.75],
+        [0.85,3.99,0.79,0.99,1.59,1.64,0.75],
+        [0.75,3.49,2.50,1.99,2.19,2.18,0.75],
+        [1.35,3.60,2.99,1.99,2.30,2.45,0.75]
+      ]],
+      ["Granulated White Sugar (4 lb)","Baking & Cooking Essentials",[
+        [2.89,null,3.99,4.99,4.49,4.09,3.96],
+        [3.10,null,4.99,4.99,4.49,4.39,3.96],
+        [2.99,6.49,3.99,4.99,4.49,4.59,3.96],
+        [2.89,6.49,3.89,4.99,4.59,4.57,3.96],
+        [3.09,6.29,3.49,3.49,8.69,5.01,3.96],
+        [3.09,6.49,3.69,3.49,8.98,5.15,3.96]
+      ]],
+      ["Folgers Classic Roast Coffee (12 oz, Medium Roast)","Beverages",[
+        [5.71,null,10.99,1.99,6.99,6.42,9.05],
+        [6.29,null,11.99,7.99,6.99,8.32,9.05],
+        [5.79,10.49,10.99,8.29,6.99,8.51,9.05],
+        [5.69,10.49,10.49,8.29,7.09,8.41,9.05],
+        [6.89,8.99,7.99,6.49,5.79,7.23,9.05],
+        [6.89,8.28,18.09,6.49,5.99,9.15,9.05]
+      ]],
+      ["Coca-Cola (1 can)","Beverages",[
+        [2.09,null,2.89,3.69,1.99,2.67,1.31],
+        [2.15,null,1.18,1.13,1.99,1.61,1.31],
+        [2.19,3.49,2.99,3.69,1.99,2.87,1.31],
+        [2.09,3.49,2.79,3.69,2.09,2.83,1.31],
+        [2.09,1.29,1.18,2.49,1.89,1.79,1.31],
+        [2.09,1.13,1.79,2.29,1.99,1.86,1.31]
+      ]],
+      ["Tropicana Orange Juice No Pulp (46 oz)","Beverages",[
+        [3.29,null,5.49,5.59,3.99,4.59,4.87],
+        [3.65,null,5.27,4.99,3.99,4.48,4.87],
+        [3.39,5.39,5.49,5.59,3.99,4.77,4.87],
+        [3.49,5.39,5.29,5.59,4.09,4.77,4.87],
+        [3.39,5.49,3.99,4.99,4.09,4.39,4.87],
+        [3.39,5.39,5.19,3.49,4.24,4.34,4.87]
+      ]],
+      ["Campbell’s Chicken Soup (10.5 oz, 1 can)","Canned & Shelf Stable Foods",[
+        [1.19,null,5.78,2.49,2.49,2.99,1.30],
+        [1.39,null,3.49,1.25,2.49,2.16,1.30],
+        [1.29,3.49,5.79,2.49,2.49,3.11,1.30],
+        [1.19,3.49,5.69,2.49,2.59,3.09,1.30],
+        [1.19,3.29,3.79,1.79,2.09,2.43,1.30],
+        [1.09,3.49,2.69,1.79,2.18,2.25,1.30]
+      ]],
+      ["Ragu Tomato Pasta Sauce (24 oz)","Canned & Shelf Stable Foods",[
+        [1.10,null,3.30,2.49,4.99,2.97,2.29],
+        [3.85,null,4.79,2.49,4.99,4.03,2.29],
+        [1.19,3.49,3.39,2.49,4.99,3.11,2.29],
+        [1.09,3.49,3.19,2.49,5.09,3.07,2.29],
+        [1.65,3.29,6.99,3.49,4.79,4.04,2.29],
+        [2.65,3.49,4.19,3.49,4.92,3.75,2.29]
+      ]],
+      ["Canola Oil (24 oz)","Canned & Shelf Stable Foods",[
+        [10.64,null,6.99,17.55,9.99,11.29,5.08],
+        [3.45,null,5.19,3.29,9.99,5.48,5.08],
+        [10.79,9.99,6.99,3.79,9.99,8.31,5.08],
+        [10.59,9.99,6.89,3.89,10.09,8.29,5.08],
+        [3.45,4.39,4.49,3.29,14.99,6.12,5.08],
+        [3.45,4.56,5.19,3.29,15.17,6.33,5.08]
+      ]],
+      ["Bush’s Baked Beans (15 oz)","Canned & Shelf Stable Foods",[
+        [1.99,null,2.57,2.00,1.19,1.94,1.71],
+        [2.09,null,3.19,2.49,1.19,2.24,1.71],
+        [2.09,3.99,2.57,2.00,1.19,2.37,1.71],
+        [1.99,3.99,2.49,2.00,1.29,2.35,1.71],
+        [2.09,1.99,1.67,1.99,3.29,2.21,1.71],
+        [2.09,2.10,2.89,1.99,3.58,2.53,1.71]
+      ]],
+      ["Organic Whole Milk (1 gallon)","Dairy",[
+        [3.77,null,4.89,5.39,3.99,4.51,4.05],
+        [3.35,null,4.99,5.49,3.99,4.46,4.05],
+        [3.79,6.29,4.89,5.39,3.99,4.87,4.05],
+        [3.69,6.29,4.79,5.39,4.09,4.85,4.05],
+        [4.25,13.99,13.99,7.49,11.49,10.24,4.05],
+        [4.45,14.38,7.29,7.49,11.98,9.12,4.05]
+      ]],
+      ["Grade A Organic White Eggs (1 dozen)","Dairy",[
+        [1.97,null,3.99,5.79,2.99,3.69,2.71],
+        [2.19,null,2.50,3.49,2.99,2.79,2.71],
+        [1.99,3.79,3.99,5.79,2.99,3.71,2.71],
+        [2.09,3.79,3.79,5.79,3.09,3.71,2.71],
+        [4.69,6.19,3.99,3.29,6.79,4.99,2.71],
+        [4.75,6.49,3.09,3.29,6.99,4.92,2.71]
+      ]],
+      ["Land O’ Lakes Unsalted Butter (1 lb)","Dairy",[
+        [3.25,null,9.38,4.49,3.99,5.28,4.38],
+        [3.59,null,8.49,5.99,3.49,5.39,4.38],
+        [3.29,3.70,9.49,4.49,3.99,4.99,4.38],
+        [3.19,3.70,9.19,4.49,4.09,4.93,4.38],
+        [2.99,7.19,6.99,5.49,2.79,5.09,4.38],
+        [2.99,7.49,3.09,5.49,2.99,4.41,4.38]
+      ]],
+      ["Kraft Cheddar Cheese (8 oz, any cheddar)","Dairy",[
+        [1.69,null,8.78,2.00,4.79,4.32,5.98],
+        [1.89,null,4.99,2.00,4.79,3.42,5.98],
+        [1.69,4.99,8.78,2.00,4.79,4.45,5.98],
+        [1.79,4.99,8.49,2.00,4.89,4.43,5.98],
+        [3.65,4.79,3.50,3.99,4.79,4.14,5.98],
+        [3.35,4.99,2.09,3.99,4.99,3.88,5.98]
+      ]],
+      ["Chobani Original Yogurt (6.7 oz, single)","Dairy",[
+        [3.49,null,1.75,1.79,1.19,2.06,1.52],
+        [1.39,null,1.67,1.79,1.19,1.51,1.52],
+        [3.49,1.69,1.75,1.79,1.19,1.98,1.52],
+        [3.39,1.69,1.69,1.79,1.29,1.97,1.52],
+        [1.55,1.89,2.59,1.79,1.19,1.80,1.52],
+        [1.30,2.01,1.29,1.79,1.25,1.53,1.52]
+      ]],
+      ["Eggo Waffles (12 ct)","Frozen Foods",[
+        [2.09,null,8.21,4.29,2.79,4.35,3.99],
+        [2.35,null,4.99,3.39,2.79,3.38,3.99],
+        [2.19,4.39,8.29,4.29,2.79,4.39,3.99],
+        [2.09,4.39,8.09,4.29,2.89,4.35,3.99],
+        [3.95,4.79,7.59,3.39,4.69,4.88,3.99],
+        [3.95,4.99,3.19,3.39,4.88,4.08,3.99]
+      ]],
+      ["Gala Apples (1 lb)","Fruits",[
+        [2.29,null,3.49,4.99,1.50,3.07,1.32],
+        [2.29,null,1.99,1.60,1.50,1.85,1.32],
+        [2.39,4.99,3.49,4.99,1.59,3.49,1.32],
+        [2.29,4.99,3.29,4.99,1.49,3.41,1.32],
+        [2.55,2.79,1.99,2.50,2.29,2.42,1.32],
+        [2.88,3.00,2.09,2.50,2.49,2.59,1.32]
+      ]],
+      ["Regular Yellow Bananas (1 lb)","Fruits",[
+        [0.73,null,0.89,0.64,0.23,0.62,0.66],
+        [0.73,null,0.89,1.66,0.23,0.88,0.66],
+        [0.75,2.99,0.89,0.64,0.23,1.10,0.66],
+        [0.73,2.99,0.85,0.64,0.25,1.09,0.66],
+        [1.46,1.09,1.99,1.66,0.59,1.36,0.66],
+        [1.50,1.20,1.39,1.66,0.69,1.29,0.66]
+      ]],
+      ["Navel Oranges (1 lb)","Fruits",[
+        [1.30,null,2.66,1.50,1.25,1.68,1.57],
+        [1.30,null,2.66,2.56,1.25,1.94,1.57],
+        [1.39,1.49,2.69,1.50,1.25,1.66,1.57],
+        [1.29,1.49,2.59,1.50,1.29,1.63,1.57],
+        [3.59,1.99,5.00,1.59,1.19,2.67,1.57],
+        [3.59,2.13,2.09,1.59,1.33,2.15,1.57]
+      ]],
+      ["Store-Brand White Rice (2 lb)","Grains & Dried Goods",[
+        [1.03,null,4.19,1.50,1.90,2.16,1.08],
+        [4.29,null,2.40,2.99,1.90,2.90,1.08],
+        [1.09,4.99,4.29,1.50,1.90,2.75,1.08],
+        [1.03,4.99,4.09,1.50,1.99,2.72,1.08],
+        [2.35,8.79,5.69,3.79,4.99,5.12,1.08],
+        [2.35,9.19,4.19,3.79,5.32,4.97,1.08]
+      ]],
+      ["Barilla Spaghetti Pasta (16 oz)","Grains & Dried Goods",[
+        [1.89,null,2.29,1.99,1.49,1.92,1.31],
+        [1.89,null,2.39,1.99,1.49,1.94,1.31],
+        [1.89,2.29,2.29,1.99,1.49,1.99,1.31],
+        [1.79,2.29,2.19,1.99,1.59,1.97,1.31],
+        [2.09,2.19,2.49,1.99,0.89,1.93,1.31],
+        [2.49,2.29,2.39,1.99,0.99,2.03,1.31]
+      ]],
+      ["Kellogg’s Frosted Flakes","Grains & Dried Goods",[
+        [2.49,null,4.99,4.99,1.99,3.62,3.32],
+        [2.49,null,6.99,3.00,1.99,3.62,3.32],
+        [2.59,6.49,4.99,4.99,1.99,4.21,3.32],
+        [2.49,6.49,4.79,4.99,2.09,4.17,3.32],
+        [3.85,6.29,5.99,3.99,2.59,4.54,3.32],
+        [3.85,6.49,4.19,3.99,2.79,4.26,3.32]
+      ]],
+      ["Ground Chicken (1 lb, 80% lean)","Meat & Protein",[
+        [3.99,null,5.39,5.49,5.99,5.22,4.17],
+        [3.99,null,9.59,6.29,5.99,6.47,4.17],
+        [4.09,7.49,5.39,5.49,5.99,5.69,4.17],
+        [3.99,7.49,5.29,5.49,6.09,5.67,4.17],
+        [3.39,7.99,6.99,7.29,4.29,5.99,4.17],
+        [3.39,8.49,6.29,7.29,4.49,5.99,4.17]
+      ]],
+      ["Ground Beef (1 lb, 80% lean)","Meat & Protein",[
+        [5.29,null,8.29,5.49,7.49,6.64,6.52],
+        [5.29,null,8.69,3.49,7.49,6.24,6.52],
+        [5.39,8.39,8.29,5.49,7.49,7.01,6.52],
+        [5.29,8.39,8.09,5.49,7.59,6.97,6.52],
+        [6.59,9.69,8.29,6.99,6.29,7.57,6.52],
+        [6.59,10.19,6.79,6.99,6.49,7.41,6.52]
+      ]],
+      ["Bumble Bee Canned Tuna (5 oz, 1 can)","Seafood",[
+        [1.99,null,5.11,1.49,1.99,2.65,3.17],
+        [1.99,null,3.79,1.39,1.99,2.29,3.17],
+        [2.09,2.99,5.11,1.49,1.99,2.73,3.17],
+        [1.99,2.99,4.99,1.49,2.09,2.71,3.17],
+        [1.49,2.79,2.00,2.29,1.89,2.09,3.17],
+        [1.15,2.99,2.89,2.29,1.99,2.26,3.17]
+      ]],
+      ["Big Beef Tomatoes (1 lb)","Vegtables",[
+        [3.19,null,4.57,2.49,2.49,3.19,1.83],
+        [3.19,null,2.69,3.49,2.49,2.97,1.83],
+        [3.29,6.99,4.59,2.49,2.49,3.97,1.83],
+        [3.19,6.99,4.49,2.49,2.59,3.95,1.83],
+        [1.99,2.79,4.99,2.72,3.59,3.22,1.83],
+        [1.99,2.99,4.19,2.72,3.79,3.14,1.83]
+      ]],
+      ["Russet Potatoes (1 lb)","Vegtables",[
+        [0.41,null,0.99,0.80,0.87,0.77,0.87],
+        [0.41,null,0.99,0.80,0.87,0.77,0.87],
+        [0.45,1.49,0.99,0.80,0.87,0.92,0.87],
+        [0.41,1.49,0.95,0.80,0.89,0.91,0.87],
+        [1.55,1.29,0.99,1.46,1.79,1.42,0.87],
+        [1.55,1.49,0.99,1.46,1.98,1.49,0.87]
+      ]],
+      ["Yellow Onions (1 lb)","Vegtables",[
+        [1.10,null,1.00,1.00,3.99,1.77,1.29],
+        [1.10,null,0.99,0.96,3.99,1.76,1.29],
+        [1.19,1.99,1.00,1.00,3.99,1.83,1.29],
+        [1.10,1.99,0.95,1.00,3.89,1.79,1.29],
+        [1.79,1.79,2.69,1.50,1.49,1.85,1.29],
+        [1.69,1.99,2.09,1.50,1.59,1.77,1.29]
+      ]],
+      ["Fresh Garlic (8 oz)","Vegtables",[
+        [1.25,null,5.89,2.79,1.99,2.98,1.20],
+        [1.25,null,3.99,2.79,1.99,2.51,1.20],
+        [1.29,3.99,5.89,2.79,1.99,3.19,1.20],
+        [1.25,3.99,5.69,2.79,2.09,3.16,1.20],
+        [3.29,6.99,4.59,2.79,1.79,3.89,1.20],
+        [3.29,8.72,6.29,2.79,1.99,4.62,1.20]
+      ]],
+      ["Whole Carrots (1 lb)","Vegtables",[
+        [1.05,null,1.49,1.05,1.99,1.40,1.95],
+        [1.05,null,1.49,1.99,1.99,1.63,1.95],
+        [1.09,2.99,1.49,1.05,1.99,1.72,1.95],
+        [1.05,2.99,1.39,1.05,2.09,1.71,1.95],
+        [1.29,2.79,1.49,1.99,1.39,1.79,1.95],
+        [2.29,2.99,2.09,1.99,1.49,2.17,1.95]
+      ]],
+      ["Organic Chicken Breast (1 lb)","Meat & Protein",[
+        [5.79,null,3.29,8.99,5.99,6.02,2.02],
+        [5.79,null,3.49,5.49,5.99,5.19,2.02],
+        [5.89,9.49,3.29,8.99,5.99,6.73,2.02],
+        [5.79,9.49,3.39,8.99,6.09,6.75,2.02],
+        [5.79,9.19,5.29,9.99,7.19,7.49,2.02],
+        [5.79,9.49,11.49,9.99,7.49,8.85,2.02]
+      ]],
+      ["Distilled White Vinegar (32 oz)","Baking & Cooking Essentials",[
+        [1.49,null,2.49,1.10,2.79,1.97,1.58],
+        [1.39,null,2.99,2.19,2.79,2.34,1.58],
+        [1.59,4.49,2.49,1.10,2.79,2.49,1.58],
+        [1.49,4.49,2.39,1.10,2.89,2.47,1.58],
+        [1.39,4.19,1.25,4.39,4.99,3.24,1.58],
+        [3.49,4.49,2.19,4.39,5.28,3.97,1.58]
+      ]]
+    ];
+
+    let selectedStore = "Aldi";
+    const rowWeekIndex = {};
+
+    const storeSelect = document.getElementById("storeSelect");
+    const trackerList = document.getElementById("trackerList");
+    const legend = document.getElementById("legend");
+    const weekCount = document.getElementById("weekCount");
     const themeToggle = document.getElementById("themeToggle");
-    const body = document.body;
 
-    const savedTheme = localStorage.getItem("theme");
-
-    if (savedTheme === "dark") {
-      body.classList.add("dark");
-      themeToggle.textContent = "☀️ Light Mode";
-    } else {
-      themeToggle.textContent = "🌙 Dark Mode";
+    function formatMoney(value) {
+      if (value === null || value === undefined || Number.isNaN(value)) return "No data";
+      return `$${Number(value).toFixed(2)}`;
     }
 
-    themeToggle.addEventListener("click", () => {
-      body.classList.toggle("dark");
+    function storeIndex(storeName) {
+      return {
+        "Aldi": 0,
+        "Fresh Direct": 1,
+        "Key Food": 2,
+        "Stop & Shop": 3,
+        "Trader Joe's": 4,
+        "Store Avg.": 5,
+        "National Avg.": 6
+      }[storeName];
+    }
 
-      if (body.classList.contains("dark")) {
-        localStorage.setItem("theme", "dark");
+    function buildLegend() {
+      legend.innerHTML = "";
+      Object.keys(CATEGORY_COLORS).forEach(category => {
+        const item = document.createElement("div");
+        item.className = "legend-item";
+        item.innerHTML = `<span class="cat-dot" style="background:${CATEGORY_COLORS[category]}"></span>${category}`;
+        legend.appendChild(item);
+      });
+    }
+
+    function buildStoreOptions() {
+      STORE_OPTIONS.forEach(store => {
+        const option = document.createElement("option");
+        option.value = store;
+        option.textContent = store;
+        if (store === selectedStore) option.selected = true;
+        storeSelect.appendChild(option);
+      });
+
+      storeSelect.addEventListener("change", e => {
+        selectedStore = e.target.value;
+        renderAll();
+      });
+    }
+
+    function glossyGradient(color) {
+      return `
+        linear-gradient(to bottom,
+          rgba(255,255,255,0.25) 0%,
+          ${color} 20%,
+          ${color} 58%,
+          rgba(0,0,0,0.12) 100%
+        )
+      `;
+    }
+
+    function createRow(itemName, category, weeksData, rowIndex) {
+      const row = document.createElement("div");
+      row.className = "tracker-row";
+
+      const currentWeek = rowWeekIndex[rowIndex] ?? 0;
+      const idx = storeIndex(selectedStore);
+      const currentValues = weeksData[currentWeek];
+      const currentValue = currentValues[idx];
+      const currentStoreAvg = currentValues[5];
+      const currentNational = currentValues[6];
+      const color = CATEGORY_COLORS[category] || "#777";
+
+      const meta = document.createElement("div");
+      meta.className = "item-meta";
+      meta.innerHTML = `
+        <div class="item-name">${itemName}</div>
+        <div class="item-cat">
+          <span class="cat-dot" style="background:${color}"></span>
+          ${category}
+        </div>
+      `;
+
+      const shell = document.createElement("div");
+      shell.className = "bar-shell";
+
+      const leftBtn = document.createElement("button");
+      leftBtn.className = "arrow-pill";
+      leftBtn.style.background = glossyGradient(color);
+      leftBtn.innerHTML = "◀";
+      leftBtn.onclick = () => {
+        rowWeekIndex[rowIndex] = (currentWeek - 1 + weeksData.length) % weeksData.length;
+        renderAll();
+      };
+
+      const track = document.createElement("div");
+      track.className = "glossy-track";
+      track.style.background = glossyGradient(color);
+
+      const thumb = document.createElement("div");
+      thumb.className = "thumb";
+      thumb.style.left = `${(100 / weeksData.length) * currentWeek}%`;
+
+      const segments = document.createElement("div");
+      segments.className = "segment-lines";
+
+      const content = document.createElement("div");
+      content.className = "track-content";
+      content.innerHTML = `
+        <div class="track-main">
+          Week ${currentWeek + 1} · ${selectedStore}: ${formatMoney(currentValue)}
+          <span class="track-sub">Store Avg.: ${formatMoney(currentStoreAvg)} · National Avg.: ${formatMoney(currentNational)}</span>
+        </div>
+      `;
+
+      track.appendChild(thumb);
+      track.appendChild(segments);
+      track.appendChild(content);
+
+      const rightBtn = document.createElement("button");
+      rightBtn.className = "arrow-pill";
+      rightBtn.style.background = glossyGradient(color);
+      rightBtn.innerHTML = "▶";
+      rightBtn.onclick = () => {
+        rowWeekIndex[rowIndex] = (currentWeek + 1) % weeksData.length;
+        renderAll();
+      };
+
+      shell.appendChild(leftBtn);
+      shell.appendChild(track);
+      shell.appendChild(rightBtn);
+
+      row.appendChild(meta);
+      row.appendChild(shell);
+
+      return row;
+    }
+
+    function renderAll() {
+      trackerList.innerHTML = "";
+      ITEMS.forEach((entry, i) => {
+        const [itemName, category, weeksData] = entry;
+        if (rowWeekIndex[i] === undefined) rowWeekIndex[i] = 0;
+        trackerList.appendChild(createRow(itemName, category, weeksData, i));
+      });
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem("theme");
+      if (saved === "dark") {
+        document.body.classList.add("dark");
         themeToggle.textContent = "☀️ Light Mode";
       } else {
-        localStorage.setItem("theme", "light");
         themeToggle.textContent = "🌙 Dark Mode";
       }
-    });
+
+      themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        const dark = document.body.classList.contains("dark");
+        localStorage.setItem("theme", dark ? "dark" : "light");
+        themeToggle.textContent = dark ? "☀️ Light Mode" : "🌙 Dark Mode";
+      });
+    }
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    weekCount.textContent = `${ITEMS[0][2].length} recorded week blocks`;
+
+    buildLegend();
+    buildStoreOptions();
+    renderAll();
+    initTheme();
   </script>
 </body>
 </html>
