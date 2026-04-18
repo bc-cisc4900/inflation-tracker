@@ -135,7 +135,11 @@
       background: var(--accent);
       transform: translateY(-1px);
     }
-
+    nav a.active {
+      background: var(--accent);
+      color: var(--text);
+      font-weight: 700;
+    }
     .theme-toggle {
       border: 1px solid var(--border);
       background: var(--surface);
@@ -145,16 +149,6 @@
       font-weight: 700;
       cursor: pointer;
     }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 22px;
-      margin-bottom: 22px;
-    }
-
-    .hero-main,
-    .hero-side,
     .card {
       border: 1px solid var(--border);
       background: var(--surface);
@@ -164,128 +158,9 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
-    .hero-main {
-      padding: 34px;
-    }
-
-    .hero-side {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      justify-content: space-between;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: var(--accent);
-      border: 1px solid var(--border);
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 16px;
-    }
-
-    .hero-main h2 {
-      margin: 0 0 14px;
-      font-size: clamp(32px, 5vw, 56px);
-      line-height: 1.02;
-      letter-spacing: -0.05em;
-    }
-
-    .hero-main p {
-      margin: 0;
-      font-size: 16px;
-      line-height: 1.75;
-      color: var(--soft);
-      max-width: 760px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 24px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      padding: 13px 18px;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 14px;
-      transition: transform 0.2s ease, opacity 0.2s ease;
-    }
-
     .btn:hover {
       transform: translateY(-2px);
       opacity: 0.96;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--green), var(--green-dark));
-      color: #fff;
-    }
-
-    .btn-secondary {
-      border: 1px solid var(--border);
-      background: var(--surface-strong);
-      color: var(--text);
-    }
-
-    .chip-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: var(--accent);
-      border: 1px solid var(--border);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .mini-stat {
-      padding: 16px;
-      border-radius: 18px;
-      background: var(--surface-strong);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .mini-stat-label {
-      display: block;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 700;
-      color: var(--soft);
-      margin-bottom: 8px;
-    }
-
-    .mini-stat-value {
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 1.35;
-    }
-
-    .grid {
-      display: grid;
-      gap: 22px;
     }
 
     .card {
@@ -310,141 +185,6 @@
       margin-bottom: 18px;
       max-width: 900px;
     }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 20px;
-    }
-
-    .feature-card {
-      padding: 18px;
-      border-radius: 20px;
-      background: var(--surface-strong);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .feature-card h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-      letter-spacing: -0.02em;
-    }
-
-    .feature-card p {
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    .flow-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 20px;
-    }
-
-    .flow-step {
-      position: relative;
-      padding: 18px;
-      border-radius: 20px;
-      background: var(--surface-strong);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      min-height: 160px;
-    }
-
-    .flow-step .step-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: var(--green);
-      color: #fff;
-      font-weight: 800;
-      margin-bottom: 12px;
-    }
-
-    .flow-step h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-    }
-
-    .flow-step p {
-      font-size: 14px;
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 20px;
-    }
-
-    .info-box {
-      padding: 18px;
-      border-radius: 20px;
-      background: var(--surface-strong);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .info-box h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-    }
-
-    .info-box p {
-      font-size: 14px;
-    }
-
-    .contact-list {
-      list-style: none;
-      padding: 0;
-      margin: 18px 0 0;
-      display: grid;
-      gap: 14px;
-    }
-
-    .contact-list li {
-      padding: 16px 18px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: var(--surface-strong);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .contact-list a {
-      color: var(--green);
-      text-decoration: none;
-      font-weight: 600;
-      word-break: break-word;
-    }
-
-    .contact-list a:hover {
-      text-decoration: underline;
-    }
-
-    .sheet-frame {
-      margin-top: 18px;
-      padding: 12px;
-      border-radius: 22px;
-      background: var(--surface-strong);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .sheet-frame iframe {
-      width: 100%;
-      height: 760px;
-      border: 0;
-      border-radius: 16px;
-      display: block;
-      background: #fff;
-    }
-
     .tracker-toolbar {
       display: flex;
       gap: 14px;
@@ -462,7 +202,7 @@
       border-radius: 18px;
       border: 1px solid var(--border);
       background: var(--surface-strong);
-      box-shadow: var(--shadow-soft);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
     }
 
     .tracker-toolbar label {
@@ -510,7 +250,7 @@
 
     .tracker-list {
       display: grid;
-      gap: 18px;
+      gap: 22px;
     }
 
     .tracker-row {
@@ -525,10 +265,10 @@
     }
 
     .item-name {
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 800;
-      line-height: 1.35;
-      margin-bottom: 6px;
+      line-height: 1.4;
+      margin-bottom: 8px;
     }
 
     .item-cat {
@@ -536,7 +276,7 @@
       align-items: center;
       gap: 8px;
       color: var(--soft);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
     }
 
@@ -557,9 +297,8 @@
       cursor: pointer;
       color: #fff;
       box-shadow:
-        inset 0 2px 0 rgba(255,255,255,0.55),
-        inset 0 -3px 8px rgba(0,0,0,0.22),
-        0 5px 14px rgba(0,0,0,0.14);
+        inset 0 1px 0 rgba(255,255,255,0.35),
+        0 4px 10px rgba(0,0,0,0.10);
       position: relative;
       overflow: hidden;
     }
@@ -568,12 +307,12 @@
     .glossy-track::before {
       content: "";
       position: absolute;
-      left: 3%;
-      right: 3%;
-      top: 8%;
-      height: 30%;
+      left: 4%;
+      right: 4%;
+      top: 10%;
+      height: 22%;
       border-radius: 999px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.25));
+      background: linear-gradient(to bottom, rgba(255,255,255,0.45), rgba(255,255,255,0.08));
       pointer-events: none;
     }
 
@@ -593,9 +332,8 @@
       border-radius: 999px;
       overflow: hidden;
       box-shadow:
-        inset 0 2px 0 rgba(255,255,255,0.45),
-        inset 0 -5px 14px rgba(0,0,0,0.18),
-        0 8px 18px rgba(0,0,0,0.12);
+        inset 0 1px 0 rgba(255,255,255,0.28),
+        0 6px 14px rgba(0,0,0,0.10);
       isolation: isolate;
     }
 
@@ -609,7 +347,7 @@
         transparent calc(66.66% - 1px), rgba(255,255,255,0.55) calc(66.66% - 1px), rgba(255,255,255,0.55) calc(66.66% + 1px), transparent calc(66.66% + 1px),
         transparent calc(83.33% - 1px), rgba(255,255,255,0.55) calc(83.33% - 1px), rgba(255,255,255,0.55) calc(83.33% + 1px), transparent calc(83.33% + 1px)
       );
-      opacity: 0.85;
+      opacity: 0.45;
       pointer-events: none;
     }
 
@@ -627,28 +365,33 @@
 
     .track-content {
       position: relative;
+      top:10px;
       z-index: 1;
       height: 100%;
       display: grid;
       place-items: center;
       text-align: center;
-      padding: 0 18px;
-      color: white;
+      padding: 0 20px;
+      color: #ffffff;
       font-weight: 800;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.28);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.42);
     }
 
     .track-main {
-      font-size: 15px;
-      line-height: 1.25;
+      font-size: 17px;
+      font-weight: 900;
+      line-height: 1.3;
     }
 
     .track-sub {
       display: block;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       margin-top: 4px;
-      opacity: 0.95;
+      opacity: .85;
+    }
+    .tracker-row {
+      padding: 6px 0;
     }
 
     .footer-note {
@@ -749,145 +492,14 @@
         </div>
 
         <nav>
-          <a href="#home">Home</a>
-          <a href="#overview">Overview</a>
-          <a href="#system">System</a>
-          <a href="#sheet">Spreadsheet</a>
-          <a href="#tracker">Tracker</a>
+          <a href="#home" class="active">Home</a>
+          <a href="data.html#data">Data</a>
           <a href="method.html#method">Method</a>
           <a href="credits.html#credits">Credits</a>
           <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
         </nav>
       </header>
     </div>
-
-    <section class="hero" id="home">
-      <div class="hero-main">
-        <div class="eyebrow">Brooklyn College Student Research Project</div>
-        <h2>Tracking grocery inflation through real weekly price collection.</h2>
-        <p>
-          BC-Basket is a student-built grocery inflation tracker focused on identifying price trends over time through consistent weekly observations, structured data collection, monthly averages, and a website that makes the results easier to explore.
-        </p>
-
-        <div class="hero-actions">
-          <a
-            class="btn btn-primary"
-            href="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/edit?gid=881796074#gid=881796074"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Open Full Spreadsheet
-          </a>
-          <a class="btn btn-secondary" href="#sheet">View Live Spreadsheet</a>
-        </div>
-
-        <div class="chip-row">
-          <span class="chip">Weekly price collection</span>
-          <span class="chip">Monthly averages</span>
-          <span class="chip">Trend-focused analysis</span>
-          <span class="chip">Built for continuity</span>
-        </div>
-      </div>
-
-      <aside class="hero-side">
-        <div class="mini-stat">
-          <span class="mini-stat-label">Main Goal</span>
-          <div class="mini-stat-value">Measure grocery inflation trends rather than focus on exact one-time prices.</div>
-        </div>
-
-        <div class="mini-stat">
-          <span class="mini-stat-label">Core Workflow</span>
-          <div class="mini-stat-value">Collect prices → organize data → store records → present trends.</div>
-        </div>
-
-        <div class="mini-stat">
-          <span class="mini-stat-label">Planned Interaction</span>
-          <div class="mini-stat-value">Users should be able to explore results by date, store, and item.</div>
-        </div>
-      </aside>
-    </section>
-
-    <main class="grid">
-      <section class="card" id="overview">
-        <h2>Project Overview</h2>
-        <p class="section-intro">
-          This project grew from real data collection trips, spreadsheet standardization, database design, website development, filtering research, and ongoing testing. The website is meant to communicate that this is not just a spreadsheet embed—it is a full course project built around methodology, consistency, and long-term usability.
-        </p>
-
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h3>Weekly Collection</h3>
-            <p>Prices are collected on a recurring weekly schedule so changes can be tracked consistently over time.</p>
-          </div>
-
-          <div class="feature-card">
-            <h3>Monthly Averages</h3>
-            <p>The main output is a monthly average built from weekly observations instead of a single snapshot.</p>
-          </div>
-
-          <div class="feature-card">
-            <h3>Filtering Focus</h3>
-            <p>The project is designed around exploring results by date, store, and item in a simple and understandable way.</p>
-          </div>
-
-          <div class="feature-card">
-            <h3>Future Continuation</h3>
-            <p>This project is meant to continue beyond one semester so future groups can build on the same structure.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="card" id="system">
-        <h2>How the System Works</h2>
-        <p class="section-intro">
-          The project is built as a pipeline. Grocery prices are collected and standardized, recorded in shared project materials, moved into the database, and then presented through the website in a format that is easier to read and eventually easier to filter.
-        </p>
-
-        <div class="flow-grid">
-          <div class="flow-step">
-            <div class="step-num">1</div>
-            <h3>Price Collection</h3>
-            <p>Weekly grocery prices are collected from selected stores using consistent item definitions and substitution rules.</p>
-          </div>
-
-          <div class="flow-step">
-            <div class="step-num">2</div>
-            <h3>Google Sheets</h3>
-            <p>Collected prices are organized into shared sheets, reviewed, averaged, and documented for consistency.</p>
-          </div>
-
-          <div class="flow-step">
-            <div class="step-num">3</div>
-            <h3>MariaDB Database</h3>
-            <p>Structured records are stored in the database so the data can scale beyond static documents and support future queries.</p>
-          </div>
-
-          <div class="flow-step">
-            <div class="step-num">4</div>
-            <h3>Website Display</h3>
-            <p>The website presents the project, explains the methodology, and serves as the public-facing layer for trend exploration.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="card" id="sheet">
-        <h2>Spreadsheet</h2>
-        <p class="section-intro">
-          The live Google Sheet below shows the full working dataset exactly as it appears in the project spreadsheet, including the weekly tabs and the Inflation Summary tab.
-        </p>
-
-        <div class="sheet-frame">
-          <iframe
-            src="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/preview?gid=881796074"
-            loading="lazy"
-            title="BC-Basket Google Sheet"
-          ></iframe>
-        </div>
-
-        <p class="small muted" style="margin-top: 16px;">
-          Use the tab bar at the bottom of the embedded sheet to switch across week1 through week16 and the Inflation Summary tab, just like in the original spreadsheet view.
-        </p>
-      </section>
 
       <section class="card" id="tracker">
         <h2>Inflation Tracker</h2>
@@ -910,49 +522,11 @@
         <div class="legend" id="legend"></div>
         <div class="tracker-list" id="trackerList"></div>
 
-        <p class="small muted" style="margin-top: 16px;">
-          The live spreadsheet is shown in the section above. The tracker below is the custom slider interface for week-by-week comparison.
-        </p>
-
         <div class="footer-note">
           Missing values show as “No data” for that week/store combination. The first two week blocks in your pasted data do not include Fresh Direct, while later blocks do. :contentReference[oaicite:0]{index=0}
         </div>
       </section>
 
-      <section class="card" id="why">
-        <h2>Why Methodology Matters</h2>
-        <p class="section-intro">
-          Grocery inflation data can be affected by substitutions, product availability, sales, packaging changes, collection timing, and differences between stores. Because of that, this project emphasizes consistency, documentation, and structured averages so the results are more reliable and meaningful.
-        </p>
-
-        <div class="info-grid">
-          <div class="info-box">
-            <h3>Consistency</h3>
-            <p>Matching size, type, and brand as closely as possible helps keep results comparable from week to week.</p>
-          </div>
-
-          <div class="info-box">
-            <h3>Trend Analysis</h3>
-            <p>The project is designed to highlight patterns over time rather than treat one recorded price as the final story.</p>
-          </div>
-
-          <div class="info-box">
-            <h3>Clear Navigation</h3>
-            <p>Methods and Credits are separated into their own pages so the website stays organized and easier to understand.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="card" id="contact">
-        <h2>Contact</h2>
-        <ul class="contact-list">
-          <li><b>Mohamed Massoud:</b> <a href="mailto:mohamedadam.massoud07@bcmail.cuny.edu">mohamedadam.massoud07@bcmail.cuny.edu</a></li>
-          <li><b>Nicholas Cai:</b> <a href="mailto:nicholascai123@gmail.com">nicholascai123@gmail.com</a></li>
-          <li><b>Yuan Ruan:</b> <a href="mailto:yuan.ruan65@bcmail.cuny.edu">yuan.ruan65@bcmail.cuny.edu</a></li>
-          <li><b>Andrew Castillo-Fajardo:</b> <a href="mailto:ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu">ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu</a></li>
-          <li><b>Gabriel Krishtul:</b> <a href="mailto:gabrielkrishtul1@gmail.com">gabrielkrishtul1@gmail.com</a></li>
-        </ul>
-      </section>
     </main>
 
     <footer>
