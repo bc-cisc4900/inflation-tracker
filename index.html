@@ -830,6 +830,37 @@
         setThemeButtonText();
       });
     }
+
+ const navLinks = document.querySelectorAll("nav a");
+    const sections = [
+      document.getElementById("home"),
+      document.getElementById("method"),
+      document.getElementById("tracker"),
+      document.getElementById("credits")
+    ].filter(Boolean);
+
+    function updateActiveNav() {
+      let currentSectionId = "home";
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 180;
+
+        if (window.scrollY >= sectionTop) {
+          currentSectionId = section.id;
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+
+        if (link.getAttribute("href") === `#${currentSectionId}`) {
+          link.classList.add("active");
+        }
+      });
+    }
+
+    window.addEventListener("scroll", updateActiveNav);
+    window.addEventListener("load", updateActiveNav);
   </script>
 </body>
 </html>
