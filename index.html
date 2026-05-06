@@ -289,6 +289,254 @@
       line-height: 1.6;
     }
 
+
+    /* Method page sections copied into this single index.html */
+    .hero {
+      width: min(1380px, calc(100% - 32px));
+      margin-left: auto;
+      margin-right: auto;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 22px;
+      margin-bottom: 22px;
+      scroll-margin-top: 110px;
+    }
+
+    .hero-main,
+    .hero-side {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .hero-main {
+      padding: 34px;
+    }
+
+    .hero-side {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      justify-content: space-between;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .hero-main h2 {
+      margin: 0 0 14px;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-main p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--soft);
+      max-width: 760px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .hero-actions .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      box-shadow: none;
+    }
+
+    .hero-actions .btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.96;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green), #017c35);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--border);
+      background: var(--surface-strong);
+      color: var(--text);
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .mini-stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .mini-stat-label {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      color: var(--soft);
+      margin-bottom: 8px;
+    }
+
+    .mini-stat-value {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    #system,
+    #method-detail,
+    #credits {
+      width: min(1380px, calc(100% - 32px));
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .flow-step {
+      position: relative;
+      padding: 18px;
+      border-radius: 20px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      min-height: 160px;
+    }
+
+    .flow-step .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .flow-step h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .flow-step p {
+      font-size: 14px;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .method-box {
+      padding: 24px;
+      border-radius: 20px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .method-box h3 {
+      margin: 0 0 14px;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .method-box p {
+      margin: 0 0 14px;
+      line-height: 1.75;
+      color: var(--soft);
+    }
+
+    .formula-box {
+      margin: 16px 0;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: var(--accent);
+      border: 1px solid var(--border);
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    #credits h3 {
+      margin-top: 24px;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    #credits a {
+      color: var(--green);
+      text-decoration: none;
+    }
+
+    #credits a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1000px) {
+      .hero,
+      .flow-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
     @media (max-width: 720px) {
       .topbar-inner,
       .card {
@@ -314,6 +562,20 @@
         background: var(--surface-strong);
       }
     }
+
+    @media (max-width: 720px) {
+      .hero,
+      .flow-grid,
+      .method-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-main,
+      .hero-side {
+        padding: 20px;
+      }
+    }
+
   </style>
 </head>
 
@@ -334,8 +596,8 @@
         <nav>
           <a href="#home" class="active">Home</a>
           <a href="#tracker">Tracker</a>
-          <a href="method.html">Method</a>
-          <a href="credits.html">Credits</a>
+          <a href="#method">Method</a>
+          <a href="#credits">Credits</a>
           <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
         </nav>
       </header>
@@ -368,6 +630,170 @@
           If the embed is blank on your network or browser, use the button above to open the sheet directly.
         </p>
       </section>
+
+      <section class="hero" id="method">
+        <div class="hero-main">
+          <div class="eyebrow">Brooklyn College Student Research Project</div>
+          <h2>Tracking grocery inflation through real weekly price collection.</h2>
+          <p>
+            BC-Basket is a student-built grocery inflation tracker focused on identifying price trends over time through consistent weekly observations, structured data collection, monthly averages, and a website that makes the results easier to explore.
+          </p>
+
+          <div class="hero-actions">
+            <a
+              class="btn btn-primary"
+              href="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/edit?gid=881796074#gid=881796074"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open Full Spreadsheet
+            </a>
+            <a class="btn btn-secondary" href="#tracker">View Live Spreadsheet</a>
+          </div>
+
+          <div class="chip-row">
+            <span class="chip">Weekly price collection</span>
+            <span class="chip">Monthly averages</span>
+            <span class="chip">Trend-focused analysis</span>
+            <span class="chip">Built for continuity</span>
+          </div>
+        </div>
+
+        <aside class="hero-side">
+          <div class="mini-stat">
+            <span class="mini-stat-label">Main Goal</span>
+            <div class="mini-stat-value">Measure grocery inflation trends rather than focus on exact one-time prices.</div>
+          </div>
+
+          <div class="mini-stat">
+            <span class="mini-stat-label">Core Workflow</span>
+            <div class="mini-stat-value">Collect prices → organize data → store records → present trends.</div>
+          </div>
+
+          <div class="mini-stat">
+            <span class="mini-stat-label">Planned Interaction</span>
+            <div class="mini-stat-value">Users should be able to explore results by date, store, and item.</div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="card" id="system">
+        <div class="flow-grid">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <h3>Price Collection</h3>
+            <p>Weekly grocery prices are collected from selected stores using consistent item definitions and substitution rules.</p>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <h3>Google Sheets</h3>
+            <p>Collected prices are organized into shared sheets, reviewed, averaged, and documented for consistency.</p>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <h3>MariaDB Database</h3>
+            <p>Structured records are stored in the database so the data can scale beyond static documents and support future queries.</p>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">4</div>
+            <h3>Website Display</h3>
+            <p>The website presents the project, explains the methodology, and serves as the public-facing layer for trend exploration.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="method-detail">
+        <h2 style="margin-bottom: 16px;">Detailed Methodology</h2>
+        <div class="method-grid">
+          <div class="method-box">
+            <h3>Data Collection</h3>
+            <p>
+              Prices are collected once per week from selected grocery stores. The goal is to record prices as they appear in-store so the data reflects what consumers actually see on the shelf.
+            </p>
+            <p>
+              For each item, we aim to keep product selection consistent by matching the same brand, size, and type across all stores whenever possible. If an exact match is not available, the closest equivalent product is selected and documented.
+            </p>
+            <p>
+              Loyalty-card-only prices are not included in the official data because they are not available to all customers. However, temporary sale prices may be recorded separately for context.
+            </p>
+          </div>
+
+          <div class="method-box">
+            <h3>Data Consistency</h3>
+            <p>
+              To ensure fair comparisons between stores, all prices are recorded as unit prices when necessary, for example price per ounce or per item. This allows items of slightly different sizes to still be compared accurately.
+            </p>
+            <p>
+              Any substitutions or inconsistencies are noted to maintain transparency in the dataset.
+            </p>
+          </div>
+
+          <div class="method-box">
+            <h3>Average Calculation</h3>
+            <p>
+              Weekly prices are recorded for each item, and a monthly average is calculated using those values.
+            </p>
+            <p>
+              The monthly average is computed by adding all weekly prices for an item and dividing by the number of weeks recorded.
+            </p>
+            <div class="formula-box">
+              Average Price = (Week 1 + Week 2 + Week 3 + Week 4) ÷ Number of Weeks
+            </div>
+            <p>
+              If a price is missing for a given week, only the available weeks are used in the calculation.
+            </p>
+          </div>
+
+          <div class="method-box">
+            <h3>Output and Continuation</h3>
+            <p>
+              The main output of this project is a monthly average price per item for each store. These averages are used to compare pricing trends across different grocery stores over time.
+            </p>
+            <p>
+              This project is designed to be continued by future groups. The standardized data collection process allows new data to be added consistently, making it possible to track long-term price trends.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="credits">
+        <h2>Credits</h2>
+
+        <h3>Contributors</h3>
+        <p>
+          Gabriel Krishtul (Project Manager, Database Architect):
+          <a href="mailto:gabrielkrishtul1@gmail.com">gabrielkrishtul1@gmail.com</a><br>
+          Andrew Castillo-Fajardo (Backend Developer):
+          <a href="mailto:ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu">ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu</a><br>
+          Yuan Ruan (Frontend Developer):
+          <a href="mailto:yuan.ruan65@bcmail.cuny.edu">yuan.ruan65@bcmail.cuny.edu</a><br>
+          Nicholas Cai (Data Collection, QA):
+          <a href="mailto:nicholascai123@gmail.com">nicholascai123@gmail.com</a><br>
+          Mohamed Massoud (Data Collection, QA):
+          <a href="mailto:mohamedadam.massoud07@bcmail.cuny.edu">mohamedadam.massoud07@bcmail.cuny.edu</a>
+        </p>
+
+        <h3>Sources</h3>
+        <p>
+          Aldi<br>
+          Fresh Direct<br>
+          Key Food<br>
+          Stop & Shop<br>
+          Trader Joe's
+        </p>
+
+        <h3>Tools / Technologies</h3>
+        <p>
+          Frontend: HTML, CSS<br>
+          Backend: MariaDB, Node.js, UNIX (Brooklyn College web server host)<br>
+          Tools: MariaDB, GitHub, Google Sheets<br>
+          Optional Tools: draw.io (for diagrams)
+        </p>
+      </section>
+
     </main>
 
     <footer>
