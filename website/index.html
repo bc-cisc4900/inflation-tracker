@@ -6,101 +6,377 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <title>Grocery Inflation Tracker (CISC 4900)</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>BC Basket (CISC 4900)</title>
+
+  <style>
+    :root {
+      --bg: #f5f8fc;
+      --bg2: #eef7f1;
+      --surface: rgba(255,255,255,0.88);
+      --surface-strong: #ffffff;
+      --text: #0f172a;
+      --soft: #475569;
+      --border: rgba(15, 23, 42, 0.08);
+      --green: #01ad48;
+      --green-dark: #017c35;
+      --accent: #e8f7ee;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.06);
+      --nav: rgba(255,255,255,0.7);
+      --muted: 0.8;
+    }
+
+    body.dark {
+      --bg: #081018;
+      --bg2: #0d1c14;
+      --surface: rgba(15, 23, 42, 0.76);
+      --surface-strong: #111827;
+      --text: #f8fafc;
+      --soft: #cbd5e1;
+      --border: rgba(255,255,255,0.08);
+      --green: #22c55e;
+      --green-dark: #16a34a;
+      --accent: rgba(34, 197, 94, 0.12);
+      --shadow: 0 18px 40px rgba(0,0,0,0.28);
+      --shadow-soft: 0 10px 24px rgba(0,0,0,0.2);
+      --nav: rgba(15, 23, 42, 0.72);
+      --muted: 0.88;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, var(--bg2), transparent 28%),
+        var(--bg);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    a, p, h1, h2, h3, h4, div, li, ul, span, main, section {
+      color: inherit;
+    }
+
+    .container {
+      width: min(1380px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 14px;
+      z-index: 100;
+      margin-bottom: 26px;
+    }
+
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--nav);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 34px);
+      line-height: 1.02;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .brand .sub {
+      font-size: 14px;
+      color: var(--soft);
+      font-weight: 500;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--green-dark);
+    }
+
+    body.dark .pill {
+      color: var(--green);
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    main {
+      display: grid;
+      gap: 24px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 28px;
+      scroll-margin-top: 110px;
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-size: 26px;
+      letter-spacing: -0.02em;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: var(--soft);
+    }
+
+    .intro-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      color: #ffffff;
+      font-weight: 800;
+      box-shadow: 0 10px 22px rgba(1, 173, 72, 0.18);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.96;
+    }
+
+    .tracker-note,
+    .footer-note,
+    .small {
+      font-size: 14px;
+    }
+
+    .muted {
+      opacity: var(--muted);
+    }
+
+    .sheet-frame {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      overflow: hidden;
+      background: var(--surface-strong);
+      box-shadow: var(--shadow-soft);
+      margin-top: 18px;
+    }
+
+    .sheet-frame iframe {
+      width: 100%;
+      height: 780px;
+      min-height: 75vh;
+      border: 0;
+      display: block;
+      background: var(--surface-strong);
+    }
+
+    footer {
+      margin-top: 24px;
+      padding: 18px 6px 10px;
+      color: var(--soft);
+      font-size: 14px;
+    }
+
+    .footer-note {
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 720px) {
+      .topbar-inner,
+      .card {
+        padding: 20px;
+      }
+
+      nav {
+        width: 100%;
+      }
+
+      nav a,
+      .theme-toggle {
+        width: 100%;
+        text-align: center;
+      }
+
+      .sheet-frame iframe {
+        height: 560px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <header>
-    <div>
-      <h1>Grocery Inflation Tracker</h1>
-      <div class="small">
-        CISC 4900 Student Project | Brooklyn College
-      </div>
-      <div class="small muted meta-row">
-        <span class="pill">Weekly collection</span>
-        <span class="pill">Monthly averages</span>
-        <span class="pill">Anonymized stores/brands</span>
-      </div>
+  <div class="container">
+    <div class="topbar">
+      <header class="topbar-inner">
+        <div class="brand">
+          <h1>BC Basket</h1>
+          <div class="sub">CISC 4900 Student Project | Brooklyn College</div>
+          <div class="small muted meta-row">
+            <span class="pill">Weekly collection</span>
+            <span class="pill">Monthly averages</span>
+            <span class="pill">Anonymized stores/brands</span>
+          </div>
+        </div>
+
+        <nav>
+          <a href="#home" class="active">Home</a>
+          <a href="#tracker">Tracker</a>
+          <a href="method.html">Method</a>
+          <a href="credits.html">Credits</a>
+          <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
+        </nav>
+      </header>
     </div>
 
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#tracker">Tracker</a>
-      <a href="method.html">Method</a>
-      <a href="credits.html">Credits</a>
-    </nav>
-  </header>
+    <main>
+      <section class="card intro-card" id="home">
+        <a class="btn"
+           href="https://docs.google.com/spreadsheets/d/1TYVb5ORqiWjHgtpa8Hy903av002WGWKijMZCa2sejeQ/edit?gid=1581963923#gid=1581963923"
+           target="_blank" rel="noopener noreferrer">
+          Open Tracker in Google Sheets
+        </a>
 
-  <div class="card" id="home">
-    <h2>Welcome</h2>
-    <p>
-      This project measures grocery inflation using real in-store prices for a consistent set of essential products.
-      Our primary output is a <b>monthly average</b> for each item, updated from weekly observations.
-    </p>
+        
+      </section>
 
-    <p>
-      <a class="btn"
-         href="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/edit?gid=881796074#gid=881796074"
-         target="_blank" rel="noopener noreferrer">
-        Open Tracker in Google Sheets
-      </a>
-    </p>
+      <section class="card" id="tracker">
+        <h2>Inflation Tracker (Spreadsheet)</h2>
 
-    <p class="small muted">
-      Tip: The embedded sheet below requires sharing set to <b>Anyone with the link: Viewer</b>.
-    </p>
+        <div class="sheet-frame">
+          <iframe
+            src="https://docs.google.com/spreadsheets/d/1TYVb5ORqiWjHgtpa8Hy903av002WGWKijMZCa2sejeQ/preview?gid=1581963923"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+          </iframe>
+        </div>
+
+        <p class="small muted tracker-note" style="margin-top: 14px;">
+          If the embed is blank on your network or browser, use the button above to open the sheet directly.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <div>© <span id="year"></span> BC Basket | Grocery Inflation Measurement (CISC 4900)</div>
+      <div class="small muted footer-note">
+        This is a student project website for Brooklyn College coursework and does not represent an official Brooklyn College or CUNY website.
+      </div>
+    </footer>
   </div>
 
-  <div class="card" id="tracker">
-    <h2>Inflation Tracker (Spreadsheet)</h2>
+  <script>
+    const year = document.getElementById("year");
+    if (year) year.textContent = new Date().getFullYear();
 
-    <iframe
-      src="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/preview?gid=881796074"
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-      allowfullscreen>
-    </iframe>
+    const themeToggle = document.getElementById("themeToggle");
 
-    <p class="small muted tracker-note">
-      If the embed is blank on your network or browser, use the button above to open the sheet directly.
-    </p>
-  </div>
+    function setThemeButtonText() {
+      if (!themeToggle) return;
+      const dark = document.body.classList.contains("dark");
+      themeToggle.textContent = dark ? "☀️ Light Mode" : "🌙 Dark Mode";
+    }
 
-  <div class="card" id="method">
-    <h2>Method (Process)</h2>
-    <ul>
-      <li><b>Collection frequency:</b> prices are recorded <b>once per week</b>.</li>
-      <li><b>Unit price focus:</b> the project compares item prices as consistently as possible across stores.</li>
-      <li><b>Product consistency:</b> items are recorded using consistent quality, size, and type whenever possible.</li>
-      <li><b>Loyalty pricing:</b> loyalty-card-only prices are <b>ignored</b> for official averages.</li>
-      <li><b>Promotions:</b> sale prices may be noted for context.</li>
-      <li><b>Substitutions:</b> if an exact item is unavailable, the closest valid equivalent is recorded and documented.</li>
-      <li><b>Reporting:</b> the main output is a <b>monthly average</b> per item, built from weekly observations.</li>
-      <li><b>Continuation:</b> this project is designed so future groups can continue collecting and comparing data.</li>
-    </ul>
-  </div>
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark");
+    }
+    setThemeButtonText();
 
-  <div class="card" id="contact">
-    <h2>Contact</h2>
-    <ul>
-      <li><b>Mohamed Massoud:</b> <a href="mailto:mohamedadam.massoud07@bcmail.cuny.edu">mohamedadam.massoud07@bcmail.cuny.edu</a></li>
-      <li><b>Nicholas Cai:</b> <a href="mailto:nicholascai123@gmail.com">nicholascai123@gmail.com</a></li>
-      <li><b>Yuan Ruan:</b> <a href="mailto:yuan.ruan65@bcmail.cuny.edu">yuan.ruan65@bcmail.cuny.edu</a></li>
-      <li><b>Andrew Castillo-Fajardo:</b> <a href="mailto:ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu">ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu</a></li>
-      <li><b>Gabriel Krishtul:</b> <a href="mailto:gabrielkrishtul1@gmail.com">gabrielkrishtul1@gmail.com</a></li>
-    </ul>
-  </div>
-
-  <footer>
-    <div>© <span id="year"></span> Grocery Inflation Measurement (CISC 4900)</div>
-    <div class="small muted footer-note">
-      This is a student project website for Brooklyn College coursework and does not represent an official Brooklyn College or CUNY website.
-    </div>
-  </footer>
-
-  <script src="js/app.js"></script>
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        const dark = document.body.classList.contains("dark");
+        localStorage.setItem("theme", dark ? "dark" : "light");
+        setThemeButtonText();
+      });
+    }
+  </script>
 </body>
 </html>
