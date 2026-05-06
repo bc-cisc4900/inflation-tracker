@@ -68,7 +68,7 @@
     }
 
     .container {
-      width: min(1380px, calc(100% - 32px));
+      width: min(2200px, calc(100% - 0px));
       margin: 0 auto;
       padding: 24px 0 48px;
     }
@@ -238,21 +238,43 @@
     }
 
     .sheet-frame {
-      border: 1px solid var(--border);
-      border-radius: 22px;
+      width: 100%;
+      border: 0;
+      border-radius: 0;
       overflow: hidden;
       background: var(--surface-strong);
-      box-shadow: var(--shadow-soft);
-      margin-top: 18px;
+      box-shadow: none;
+      margin-top: 0;
     }
 
     .sheet-frame iframe {
       width: 100%;
-      height: 780px;
-      min-height: 75vh;
+      height: 1600px;
+      min-height: 1600px;
       border: 0;
       display: block;
       background: var(--surface-strong);
+    }
+
+
+    #tracker {
+      width: min(1730px, calc(100vw + 50px));
+      max-width: 1730px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 0;
+      padding-right: 0;
+      transform: translateX(6px);
+    }
+
+
+    #tracker h2 {
+      padding: 28px 28px 0;
+      margin-bottom: 18px;
+    }
+
+    #tracker .tracker-note {
+      padding: 0 28px 28px;
     }
 
     footer {
@@ -284,7 +306,12 @@
       }
 
       .sheet-frame iframe {
-        height: 560px;
+        width: 100%;
+        height: 1100px;
+        min-height: 1100px;
+        border: 0;
+        display: block;
+        background: var(--surface-strong);
       }
     }
   </style>
@@ -317,7 +344,7 @@
     <main>
       <section class="card intro-card" id="home">
         <a class="btn"
-           href="https://docs.google.com/spreadsheets/d/1TYVb5ORqiWjHgtpa8Hy903av002WGWKijMZCa2sejeQ/edit?gid=1581963923#gid=1581963923"
+           href="https://docs.google.com/spreadsheets/d/1TYVb5ORqiWjHgtpa8Hy903av002WGWKijMZCa2sejeQ/preview?gid=1581963923"
            target="_blank" rel="noopener noreferrer">
           Open Tracker in Google Sheets
         </a>
