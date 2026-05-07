@@ -713,6 +713,9 @@
             <p>
               Any substitutions or inconsistencies are noted to maintain transparency in the dataset.
             </p>
+	    <p>
+	      The final tracker table is produced from a reverse-pivot-style spreadsheet process: raw store-level prices are organized by item, averaged across stores, and displayed as one row per item with month columns across the page.
+	    </p>
           </div>
 
           <div class="method-box">
@@ -724,7 +727,7 @@
               The monthly average is computed by adding all weekly prices for an item and dividing by the number of weeks recorded.
             </p>
             <div class="formula-box">
-              Average Price = (Week 1 + Week 2 + Week 3 + Week 4) ÷ Number of Weeks
+              Monthly Average Price = Sum of weekly item averages ÷ Number of weeks recorded
             </div>
             <p>
               If a price is missing for a given week, only the available weeks are used in the calculation.
