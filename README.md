@@ -75,4 +75,4 @@ Additional project details are available in the `docs/` folder, including:
 - manual fallback procedures
 
 ## Future Cohort Documentation
-See HANDOFF.md for setup, deployment, and continuation instructions.
+See SETUP.md for setup, deployment, and continuation instructions.
