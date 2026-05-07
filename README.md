@@ -52,8 +52,8 @@ See:
 - Gabriel Krishtul — Project Manager, Database Architect
 - Andrew Castillo-Fajardo — Backend Developer
 - Yuan Ruan — Frontend Developer
+- Mohamed Massoud — Database Architect, Web Developer
 - Nicholas Cai — Data Collection, QA
-- Mohamed Massoud — Data Collection, QA
 
 ## Current Project Status
 The project currently includes:
@@ -73,3 +73,6 @@ Additional project details are available in the `docs/` folder, including:
 - team roles
 - test cases
 - manual fallback procedures
+
+## Future Cohort Documentation
+See HANDOFF.md for setup, deployment, and continuation instructions.
