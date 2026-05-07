@@ -50,7 +50,9 @@ Google Sheets is used to enter/review grocery prices. Supabase stores the struct
 
 Recommended columns:
 
+-----------------------------------------------------------------------------------------------
 | Item | Category | Aldi | Key Food | Stop & Shop | Trader Joe's | Store Avg. | National Avg. |
+-----------------------------------------------------------------------------------------------
 
 Guidelines:
 
