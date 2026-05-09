@@ -4,6 +4,7 @@
 
 Link to Group Meeting Notes: https://docs.google.com/document/d/12wIxHZITvYMX94EEUfoCmIPFZYnbcl7tQ3wrw0Mazxk/edit?tab=t.2u7vyan4i8yi
 Link to Hand-Off Document For Future Groups: https://docs.google.com/document/d/1IPaZB4fUfsX4hqmfqDeX0cIzWxPe7qWQyINxg5CpEE0/edit?usp=sharing
+
 Link to Live Website: https://bc-cisc4900.github.io/inflation-tracker
 
 ## Project Description
