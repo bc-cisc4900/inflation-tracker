@@ -13,7 +13,7 @@ The project currently focuses on essential grocery items across stores such as A
 - Weekly grocery price tracking
 - Monthly average price calculation
 - Website display of grocery pricing data
-- MariaDB database support
+- Supabase database support
 - Grocery data import support through the `grocery-importer/` folder
 - Standardized substitution rules for comparable products
 - Future support for 12-month sliding display logic
@@ -24,7 +24,7 @@ The project currently focuses on essential grocery items across stores such as A
 - CSS
 - JavaScript
 - Node.js
-- MariaDB
+- Supabase
 - SQL
 - Git / GitHub
 - Google Sheets
