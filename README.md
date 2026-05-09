@@ -1,25 +1,51 @@
 ![Grocery Store Inflation Tracker Banner](website/assets/grocery-banner.png)
 
-Link to Group Meeting Notes: https://docs.google.com/document/d/12wIxHZITvYMX94EEUfoCmIPFZYnbcl7tQ3wrw0Mazxk/edit?tab=t.2u7vyan4i8yi
+# BC-Basket (Formerly Grocery Store Inflation Tracker)
 
-# Grocery Store Inflation Tracker
+Link to Group Meeting Notes: https://docs.google.com/document/d/12wIxHZITvYMX94EEUfoCmIPFZYnbcl7tQ3wrw0Mazxk/edit?tab=t.2u7vyan4i8yi
+Link to Hand-Off Document For Future Groups: https://docs.google.com/document/d/1IPaZB4fUfsX4hqmfqDeX0cIzWxPe7qWQyINxg5CpEE0/edit?usp=sharing
+Link to Live Website: https://bc-cisc4900.github.io/inflation-tracker
 
 ## Project Description
-The Grocery Store Inflation Tracker is a Brooklyn College group project that tracks the weekly prices of essential grocery items across multiple stores and compares local grocery price trends over time. The goal of the project is to organize, store, and display grocery price data so users can observe weekly changes, monthly averages, and inflation-related trends.
+BC-Basket is a Brooklyn College group project that tracks the weekly prices of essential grocery items across multiple stores and compares local grocery price trends over time. The goal of the project is to organize, store, and display grocery price data so users can observe weekly changes, monthly averages, and inflation-related trends.
 
-The project currently focuses on essential grocery items across stores such as Aldi, Key Food, Stop & Shop, Trader Joe’s, NetCost, and FreshDirect. Data is collected weekly, standardized using substitution rules, stored in a MariaDB database, and displayed through a website.
+### Team Members
+- Gabriel Krishtul — Project Manager, Database Architect
+- Andrew Castillo-Fajardo — Backend Developer
+- Yuan Ruan — Frontend Developer
+- Mohamed Massoud — Database Architect, Web Developer
+- Nicholas Cai — Data Collection, QA
 
-## Features
+## Repository Structure
+- `website/` - project website files
+- `grocery-importer/` - importer/backend-related files
+- `database/` - SQL schema, setup files, and queries
+- `docs/` - project documentation, methodology, notes, and test cases
+- `tests/` - sample inputs and expected outputs
+- `samples/` - backup copy of our 14 weeks of recorded prices and 12-Month Breakdown
+- `database_schema.jpg` - visual database schema image
+
+### Features
 - Weekly grocery price tracking
 - Monthly average price calculation
 - Website display of grocery pricing data
 - Supabase database support
 - Grocery data import support through the `grocery-importer/` folder
 - Standardized substitution rules for comparable products
-- Future support for 12-month sliding display logic
+- 12-month breakdown display showing the most recent monthly grocery price trends
+- Future improvement: reverse-sort the pivot table so the newest months appear first automatically
 - Documentation of methodology and workflow
 
-## Technologies Used
+### Installation Instructions
+See:
+- `docs/installation.md`
+- `database/db_setup_instructions.md`
+
+### Execution Instructions
+See:
+- `docs/execution.md`
+
+### Technologies Used
 - HTML
 - CSS
 - JavaScript
@@ -30,41 +56,32 @@ The project currently focuses on essential grocery items across stores such as A
 - Google Sheets
 - Brooklyn College UNIX / web server environment
 
-## Repository Structure
-- `website/` - project website files
-- `grocery-importer/` - importer/backend-related files
-- `database/` - SQL schema, setup files, and queries
-- `docs/` - project documentation, methodology, notes, and test cases
-- `tests/` - sample inputs and expected outputs
-- `samples/` - example CSV/sample data files
-- `database_schema.jpg` - visual database schema image
+### Database Note
+Earlier versions of this project used MariaDB/SkySQL. The final handoff version moved toward Supabase/PostgreSQL and Google Sheets as the main data workflow. Some older importer files may still reference MariaDB. Future groups should either update those scripts for Supabase/PostgreSQL or use the final spreadsheet/CSV workflow as the source of truth.
 
-## Installation Instructions
-See:
-- `docs/installation.md`
-- `database/db_setup_instructions.md`
+### Security Note
+Do not commit private database passwords, service role keys, `.env` files, or editable Google Sheet links to the repository. Public links should only provide view access unless the professor or project owner approves otherwise.
 
-## Execution Instructions
-See:
-- `docs/execution.md`
+### Final Handoff Completed
+- Completed 14 weeks of grocery price collection.
+- Created final 12-Month Breakdown table.
+- Simplified website to focus on readable grocery price data.
+- Added hand-off document for future semester groups.
+- Updated setup and continuation instructions.
+- Prepared final presentation and demo video materials.
 
-## Team Members
-- Gabriel Krishtul — Project Manager, Database Architect
-- Andrew Castillo-Fajardo — Backend Developer
-- Yuan Ruan — Frontend Developer
-- Mohamed Massoud — Database Architect, Web Developer
-- Nicholas Cai — Data Collection, QA
-
-## Current Project Status
+### Current Project Status
 The project currently includes:
-- grocery item planning and standardization
-- weekly spreadsheet tracking
-- live website hosting
-- database schema planning
-- grocery importer/backend files
-- initial GitHub repo and project workflow documentation
+- Final website hosted through GitHub Pages
+- 14 weeks of collected grocery price data
+- Final 12-Month Breakdown table
+- Google Sheets workflow for data entry and review
+- Supabase/PostgreSQL database setup
+- SQL schema and sample queries
+- Documentation for setup, execution, methodology, testing, and future continuation
+- Hand-off document for the next semester group
 
-## Documentation
+### Documentation
 Additional project details are available in the `docs/` folder, including:
 - project description
 - meeting notes
@@ -74,5 +91,5 @@ Additional project details are available in the `docs/` folder, including:
 - test cases
 - manual fallback procedures
 
-## Future Cohort Documentation
+### Future Cohort Documentation
 See SETUP.md for setup, deployment, and continuation instructions.
