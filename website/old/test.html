@@ -590,49 +590,6 @@
     .pivot-zero { opacity: 0.4; }
     .pivot-state { padding: 22px; text-align: center; font-size: 14px; color: var(--soft); }
 
-    /* Annual average column — emphasized */
-    .pivot-table td.pivot-annual, .pivot-table th.pivot-annual {
-      font-weight: 800; border-left: 2px solid var(--border);
-    }
-    .pivot-cell-price { display: block; }
-    /* Percent-change indicator under each price */
-    .pivot-delta { display: block; font-size: 10px; font-weight: 700; margin-top: 2px; }
-    .pivot-delta.up   { color: #dc2626; }   /* price rose */
-    .pivot-delta.down { color: var(--green); } /* price fell */
-    .pivot-delta.flat { color: var(--soft); opacity: 0.7; }
-
-    /* Legend for the color coding */
-    .pivot-legend {
-      display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--soft);
-    }
-    .pivot-legend span { display: inline-flex; align-items: center; gap: 6px; }
-    .pivot-legend .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
-
-    /* Store comparison view */
-    .compare-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin: 8px 0 16px; }
-    .compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
-    .compare-card {
-      border: 1px solid var(--border); border-radius: 14px; padding: 16px; text-align: center;
-      background: var(--surface-strong);
-    }
-    .compare-card.cheapest { border-color: var(--green); border-width: 2px; background: var(--accent); }
-    .compare-card .store { font-size: 13px; font-weight: 700; }
-    .compare-card .price { font-size: 22px; font-weight: 800; margin-top: 6px; color: var(--green-dark); }
-    body.dark .compare-card .price { color: var(--green); }
-    .compare-card .tag {
-      display: inline-block; margin-top: 8px; font-size: 10px; font-weight: 800; text-transform: uppercase;
-      letter-spacing: 0.05em; color: var(--green-dark); padding: 2px 8px; border-radius: 999px; background: var(--accent);
-    }
-    body.dark .compare-card.cheapest .tag { color: var(--green); background: rgba(34,197,94,0.18); }
-
-    /* Accessibility — visible focus states for keyboard users */
-    .pivot-controls select:focus-visible,
-    .pivot-controls input:focus-visible,
-    .pivot-controls button:focus-visible,
-    .compare-controls select:focus-visible {
-      outline: 3px solid var(--green); outline-offset: 2px;
-    }
-
     @media (max-width: 720px) {
       .topbar-inner,
       .card {
@@ -678,7 +635,6 @@
         <nav>
           <a href="#home" class="active">Home</a>
           <a href="#summary">Price Summary</a>
-          <a href="#compare">Compare</a>
           <a href="#tracker">Spreadsheet</a>
           <a href="#method">Method</a>
           <a href="#credits">Credits</a>
@@ -737,25 +693,13 @@
         <div class="pivot-controls">
           <div class="control-group">
             <label for="pivotStoreFilter">Store</label>
-            <select id="pivotStoreFilter" aria-label="Filter by store">
+            <select id="pivotStoreFilter">
               <option value="">All Stores (average)</option>
             </select>
           </div>
           <div class="control-group">
             <label for="pivotItemSearch">Item search</label>
-            <input type="text" id="pivotItemSearch" placeholder="e.g. eggs, bread, coffee..." aria-label="Search items by name" />
-          </div>
-          <div class="control-group">
-            <label for="pivotStartMonth">From week</label>
-            <select id="pivotStartMonth" aria-label="Start of week range">
-              <option value="">Newest</option>
-            </select>
-          </div>
-          <div class="control-group">
-            <label for="pivotEndMonth">To week</label>
-            <select id="pivotEndMonth" aria-label="End of week range">
-              <option value="">Oldest</option>
-            </select>
+            <input type="text" id="pivotItemSearch" placeholder="e.g. eggs, bread, coffee..." />
           </div>
           <button class="secondary" id="pivotReset" type="button">Reset</button>
           <button id="pivotExport" type="button">Export CSV</button>
@@ -770,36 +714,9 @@
           </table>
         </div>
 
-        <div class="pivot-legend" aria-hidden="true">
-          <span><span class="swatch" style="background:#dc2626"></span> Price rose vs. previous week</span>
-          <span><span class="swatch" style="background:var(--green)"></span> Price fell vs. previous week</span>
-          <span><span class="swatch" style="background:var(--soft)"></span> No change / no prior week</span>
-        </div>
-
         <p class="small muted" style="margin-top: 14px;">
-          Each cell shows the average price for that item in that week, with the percent change from the previous week below it. The final <strong>Annual Avg</strong> column averages every week with data. Cells showing 0 indicate no data was recorded.
+          Each cell is the average price for that item in that week. With a store selected, values are that store's prices. Cells showing 0 indicate no data was recorded.
         </p>
-      </section>
-
-      <!-- STORE COMPARISON (live, from /api/prices/compare/:itemId) -->
-      <section class="card" id="compare">
-        <h2>Compare Stores for an Item</h2>
-        <p style="margin-bottom: 4px;">
-          Pick a grocery item to see its average price at each store side by side. The cheapest store is highlighted.
-        </p>
-
-        <div class="compare-controls">
-          <div class="control-group">
-            <label for="compareItem">Item</label>
-            <select id="compareItem" aria-label="Choose an item to compare across stores">
-              <option value="">Select an item...</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="compare-grid" id="compareGrid">
-          <p class="pivot-state" style="grid-column: 1 / -1;">Choose an item above to compare prices across stores.</p>
-        </div>
       </section>
 
       <!-- SPREADSHEET EMBED -->
@@ -937,10 +854,8 @@
 
     // ─────────────────────────────────────────────────────────
     // WEEKLY PRICE SUMMARY (PIVOT TABLE) — live from Express API
-    // Fetches /api/prices once, caches it, then renders & filters
-    // entirely client-side. Adds a date-range filter, a percent-
-    // change indicator per cell, and an annual-average column.
-    // CSV export uses the filtered data model (not the DOM).
+    // Fetches /api/prices once, caches it, renders & filters
+    // client-side. CSV export uses the filtered data model.
     // ─────────────────────────────────────────────────────────
     const API_BASE = "http://localhost:3000"; // change if the API is hosted elsewhere
 
@@ -948,44 +863,17 @@
     const pivotBody   = document.getElementById("pivotBody");
     const storeFilter = document.getElementById("pivotStoreFilter");
     const itemSearch  = document.getElementById("pivotItemSearch");
-    const startMonth  = document.getElementById("pivotStartMonth");
-    const endMonth    = document.getElementById("pivotEndMonth");
     const resetBtn    = document.getElementById("pivotReset");
     const exportBtn   = document.getElementById("pivotExport");
 
     let pivotRaw = [];
-    let pivotMonths = [];   // all months, newest first
-    let pivotItems = [];    // [{ item_id, item_name }] for the compare dropdown
+    let pivotMonths = [];
 
     function pivotState(msg) {
       pivotHead.innerHTML = "";
       pivotBody.innerHTML = `<tr><td colspan="100" class="pivot-state">${msg}</td></tr>`;
     }
 
-    // Label a month by its position so the newest is "Week N".
-    function weekLabel(month) {
-      const idx = pivotMonths.indexOf(month);
-      return `Week ${pivotMonths.length - idx}`;
-    }
-
-    // The months currently in range (respects the From/To selectors).
-    function monthsInRange() {
-      // pivotMonths is newest-first; the selectors hold month values.
-      const start = startMonth.value; // newer bound (From week)
-      const end   = endMonth.value;   // older bound (To week)
-      let months = [...pivotMonths];
-      if (start) {
-        const si = pivotMonths.indexOf(start);
-        if (si > -1) months = months.filter(m => pivotMonths.indexOf(m) >= si);
-      }
-      if (end) {
-        const ei = pivotMonths.indexOf(end);
-        if (ei > -1) months = months.filter(m => pivotMonths.indexOf(m) <= ei);
-      }
-      return months;
-    }
-
-    // Build { item -> { month -> [prices] } } honoring the store + search filters.
     function buildPivotData(storeName, search) {
       const rows = pivotRaw.filter(r => {
         if (storeName && r.store_name !== storeName) return false;
@@ -998,24 +886,10 @@
         if (!lookup[r.item_name][r.month]) lookup[r.item_name][r.month] = [];
         [r.week1, r.week2, r.week3, r.week4, r.week5].forEach(w => {
           const v = parseFloat(w);
-          if (!isNaN(v) && v > 0) lookup[r.item_name][r.month].push(v); // ignore 0 / missing
+          if (!isNaN(v) && v > 0) lookup[r.item_name][r.month].push(v);
         });
       });
       return lookup;
-    }
-
-    // Average a month's prices, or null when there's no data.
-    function monthAvg(lookup, item, month) {
-      const prices = (lookup[item] && lookup[item][month]) || [];
-      if (prices.length === 0) return null;
-      return prices.reduce((s, v) => s + v, 0) / prices.length;
-    }
-
-    // Annual average across every month that has data for the item.
-    function annualAvg(lookup, item) {
-      const vals = pivotMonths.map(m => monthAvg(lookup, item, m)).filter(v => v !== null);
-      if (vals.length === 0) return null;
-      return vals.reduce((s, v) => s + v, 0) / vals.length;
     }
 
     function renderPivot() {
@@ -1023,71 +897,39 @@
       const search = itemSearch.value.trim();
       const lookup = buildPivotData(store, search);
       const items  = Object.keys(lookup).sort();
-      const months = monthsInRange();
 
       pivotHead.innerHTML = "";
       pivotBody.innerHTML = "";
 
       if (items.length === 0) { pivotState("No items match the current filters."); return; }
-      if (months.length === 0) { pivotState("No weeks fall in the selected range."); return; }
 
-      // Header: Item | Week N ... | Annual Avg
       const headRow = document.createElement("tr");
       const itemTh = document.createElement("th");
       itemTh.textContent = "Item";
-      itemTh.scope = "col";
       headRow.appendChild(itemTh);
-      months.forEach(m => {
+      pivotMonths.forEach((m, i) => {
         const th = document.createElement("th");
-        th.textContent = weekLabel(m);
-        th.scope = "col";
+        th.textContent = `Week ${pivotMonths.length - i}`;
         headRow.appendChild(th);
       });
-      const annualTh = document.createElement("th");
-      annualTh.textContent = "Annual Avg";
-      annualTh.scope = "col";
-      annualTh.className = "pivot-annual";
-      headRow.appendChild(annualTh);
       pivotHead.appendChild(headRow);
 
-      // Rows. Each price cell shows the % change from the previous (older) week.
       items.forEach(itemName => {
         const tr = document.createElement("tr");
         const nameTd = document.createElement("td");
         nameTd.textContent = itemName;
-        nameTd.scope = "row";
         tr.appendChild(nameTd);
-
-        months.forEach((month, i) => {
+        pivotMonths.forEach(month => {
           const td = document.createElement("td");
-          const avg = monthAvg(lookup, itemName, month);
-          if (avg === null) {
+          const prices = lookup[itemName][month] || [];
+          if (prices.length === 0) {
             td.innerHTML = '<span class="pivot-zero">0</span>';
           } else {
-            // Previous week is the next entry in the newest-first list.
-            const prevMonth = months[i + 1];
-            const prevAvg = prevMonth ? monthAvg(lookup, itemName, prevMonth) : null;
-            let delta = "";
-            if (prevAvg !== null && prevAvg > 0) {
-              const pct = ((avg - prevAvg) / prevAvg) * 100;
-              const cls = pct > 0.05 ? "up" : pct < -0.05 ? "down" : "flat";
-              const sign = pct > 0 ? "+" : "";
-              delta = `<span class="pivot-delta ${cls}">${sign}${pct.toFixed(1)}%</span>`;
-            } else {
-              delta = '<span class="pivot-delta flat">—</span>';
-            }
-            td.innerHTML = `<span class="pivot-cell-price">$${avg.toFixed(2)}</span>${delta}`;
+            const avg = prices.reduce((s, v) => s + v, 0) / prices.length;
+            td.textContent = `$${avg.toFixed(2)}`;
           }
           tr.appendChild(td);
         });
-
-        // Annual average column
-        const annualTd = document.createElement("td");
-        annualTd.className = "pivot-annual";
-        const yr = annualAvg(lookup, itemName);
-        annualTd.textContent = yr === null ? "—" : `$${yr.toFixed(2)}`;
-        tr.appendChild(annualTd);
-
         pivotBody.appendChild(tr);
       });
     }
@@ -1097,17 +939,15 @@
       const search = itemSearch.value.trim();
       const lookup = buildPivotData(store, search);
       const items  = Object.keys(lookup).sort();
-      const months = monthsInRange();
-
-      const header = ["Item", ...months.map(weekLabel), "Annual Avg"];
+      const header = ["Item", ...pivotMonths.map((m, i) => `Week ${pivotMonths.length - i}`)];
       const lines = [header.join(",")];
       items.forEach(itemName => {
-        const cells = months.map(month => {
-          const avg = monthAvg(lookup, itemName, month);
-          return avg === null ? "0" : avg.toFixed(2);
+        const cells = pivotMonths.map(month => {
+          const prices = lookup[itemName][month] || [];
+          if (prices.length === 0) return "0";
+          const avg = prices.reduce((s, v) => s + v, 0) / prices.length;
+          return avg.toFixed(2);
         });
-        const yr = annualAvg(lookup, itemName);
-        cells.push(yr === null ? "" : yr.toFixed(2));
         lines.push([`"${itemName.replace(/"/g, '""')}"`, ...cells].join(","));
       });
       const blob = new Blob([lines.join("\n")], { type: "text/csv" });
@@ -1125,69 +965,10 @@
       searchTimer = setTimeout(renderPivot, 200);
     });
     storeFilter.addEventListener("change", renderPivot);
-    startMonth.addEventListener("change", renderPivot);
-    endMonth.addEventListener("change", renderPivot);
     resetBtn.addEventListener("click", () => {
-      storeFilter.value = "";
-      itemSearch.value = "";
-      startMonth.value = "";
-      endMonth.value = "";
-      renderPivot();
+      storeFilter.value = ""; itemSearch.value = ""; renderPivot();
     });
     exportBtn.addEventListener("click", exportPivotCSV);
-
-    // ── STORE COMPARISON (live, from /api/prices/compare/:itemId) ──
-    const compareItem = document.getElementById("compareItem");
-    const compareGrid = document.getElementById("compareGrid");
-
-    compareItem.addEventListener("change", async () => {
-      const itemId = compareItem.value;
-      if (!itemId) {
-        compareGrid.innerHTML = '<p class="pivot-state" style="grid-column: 1 / -1;">Choose an item above to compare prices across stores.</p>';
-        return;
-      }
-      compareGrid.innerHTML = '<p class="pivot-state" style="grid-column: 1 / -1;">Loading comparison...</p>';
-      try {
-        const res = await fetch(`${API_BASE}/api/prices/compare/${itemId}`);
-        if (!res.ok) throw new Error(`API responded with ${res.status}`);
-        const rows = await res.json();
-        const withPrice = rows.filter(r => r.avg_price !== null);
-        if (withPrice.length === 0) {
-          compareGrid.innerHTML = '<p class="pivot-state" style="grid-column: 1 / -1;">No price data for this item yet.</p>';
-          return;
-        }
-        // API already sorts cheapest-first; the first is the cheapest.
-        const cheapest = withPrice[0].avg_price;
-        compareGrid.innerHTML = "";
-        withPrice.forEach(r => {
-          const card = document.createElement("div");
-          card.className = "compare-card" + (Number(r.avg_price) === Number(cheapest) ? " cheapest" : "");
-          card.innerHTML = `
-            <div class="store">${r.store_name}</div>
-            <div class="price">$${Number(r.avg_price).toFixed(2)}</div>
-            ${Number(r.avg_price) === Number(cheapest) ? '<span class="tag">Cheapest</span>' : ""}
-          `;
-          compareGrid.appendChild(card);
-        });
-      } catch (err) {
-        compareGrid.innerHTML = `<p class="pivot-state" style="grid-column: 1 / -1;">Could not load comparison: ${err.message}</p>`;
-        console.error("Compare error:", err);
-      }
-    });
-
-    // ── INITIAL LOAD ──
-    function populateMonthSelectors() {
-      // Newest-first; label each by week number for readability.
-      pivotMonths.forEach(m => {
-        const label = weekLabel(m);
-        [startMonth, endMonth].forEach(sel => {
-          const opt = document.createElement("option");
-          opt.value = m;
-          opt.textContent = label;
-          sel.appendChild(opt);
-        });
-      });
-    }
 
     async function initPivot() {
       try {
@@ -1195,40 +976,15 @@
         if (!res.ok) throw new Error(`API responded with ${res.status}`);
         pivotRaw = await res.json();
         if (!pivotRaw || pivotRaw.length === 0) {
-          pivotState("No data available yet. Import weekly data and refresh.");
-          return;
+          pivotState("No data available yet. Import weekly data and refresh."); return;
         }
-
         pivotMonths = [...new Set(pivotRaw.map(r => r.month))].sort((a, b) => new Date(b) - new Date(a));
-
-        // Store filter options
         const stores = [...new Set(pivotRaw.map(r => r.store_name))].sort();
         stores.forEach(st => {
           const opt = document.createElement("option");
           opt.value = st; opt.textContent = st;
           storeFilter.appendChild(opt);
         });
-
-        // From/To week selectors
-        populateMonthSelectors();
-
-        // Compare dropdown — needs item_id, so fetch the items list
-        try {
-          const itemsRes = await fetch(`${API_BASE}/api/items`);
-          if (itemsRes.ok) {
-            pivotItems = await itemsRes.json();
-            pivotItems
-              .slice()
-              .sort((a, b) => a.item_name.localeCompare(b.item_name))
-              .forEach(it => {
-                const opt = document.createElement("option");
-                opt.value = it.item_id;
-                opt.textContent = it.item_name;
-                compareItem.appendChild(opt);
-              });
-          }
-        } catch (_) { /* compare is optional; ignore if items endpoint is unavailable */ }
-
         renderPivot();
       } catch (err) {
         pivotState(`Could not load data: ${err.message}. Make sure the API server is running (node server.js).`);

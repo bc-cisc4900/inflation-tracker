@@ -19,6 +19,7 @@
  *   GET  /api/prices                      - Get all price records
  *   GET  /api/prices/:itemId              - Get prices for a specific item
  *   GET  /api/prices/store/:storeId       - Get prices for a specific store
+ *   GET  /api/prices/compare/:itemId      - Compare an item's avg price across all stores
  *   GET  /api/monthly-avg                 - Get stored monthly averages
  *   GET  /api/monthly-avg/pivot           - Get monthly averages in pivot table format
  *
@@ -408,6 +409,7 @@ app.get('/api/prices', async (req, res) => {
     const result = await client.query(sql, params);
     res.json(result.rows);
   } catch (err) {
+    console.error('GET /api/prices failed:', err.message);
     res.status(500).json({ error: err.message });
   } finally {
     if (client) client.release();
@@ -478,6 +480,51 @@ app.get('/api/prices/store/:storeId', async (req, res) => {
     }
     sql += ' ORDER BY i.category, i.item_name, pr.month';
     const result = await client.query(sql, params);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  } finally {
+    if (client) client.release();
+  }
+});
+
+// GET /api/prices/compare/:itemId - compare one item's average price across all stores
+// Returns each store's average (across all weeks/months, excluding 0/NULL), cheapest first.
+// Used by the website's store-comparison view.
+app.get('/api/prices/compare/:itemId', async (req, res) => {
+  const { itemId } = req.params;
+  let client;
+  try {
+    client = await pool.connect();
+    // Average each non-null, non-zero weekly price per store for this item.
+    // NULLIF guards against dividing by zero when a store has no usable prices.
+    const sql = `
+      SELECT
+        s.store_id,
+        s.store_name,
+        ROUND(
+          SUM(
+            COALESCE(NULLIF(pr.week1, 0), 0) + COALESCE(NULLIF(pr.week2, 0), 0) +
+            COALESCE(NULLIF(pr.week3, 0), 0) + COALESCE(NULLIF(pr.week4, 0), 0) +
+            COALESCE(NULLIF(pr.week5, 0), 0)
+          ) / NULLIF(
+            SUM(
+              (CASE WHEN NULLIF(pr.week1, 0) IS NOT NULL THEN 1 ELSE 0 END) +
+              (CASE WHEN NULLIF(pr.week2, 0) IS NOT NULL THEN 1 ELSE 0 END) +
+              (CASE WHEN NULLIF(pr.week3, 0) IS NOT NULL THEN 1 ELSE 0 END) +
+              (CASE WHEN NULLIF(pr.week4, 0) IS NOT NULL THEN 1 ELSE 0 END) +
+              (CASE WHEN NULLIF(pr.week5, 0) IS NOT NULL THEN 1 ELSE 0 END)
+            ), 0)
+        , 2) AS avg_price
+      FROM price_records pr
+      JOIN prices p ON pr.price_id = p.price_id
+      JOIN items  i ON p.item_id   = i.item_id
+      JOIN stores s ON p.store_id  = s.store_id
+      WHERE i.item_id = $1
+      GROUP BY s.store_id, s.store_name
+      ORDER BY avg_price ASC NULLS LAST
+    `;
+    const result = await client.query(sql, [itemId]);
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -596,6 +643,7 @@ app.listen(PORT, () => {
   console.log(`  GET  /api/prices`);
   console.log(`  GET  /api/prices/:itemId`);
   console.log(`  GET  /api/prices/store/:storeId`);
+  console.log(`  GET  /api/prices/compare/:itemId`);
   console.log(`  GET  /api/monthly-avg`);
   console.log(`  GET  /api/monthly-avg/pivot`);
 });
