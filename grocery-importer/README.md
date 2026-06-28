@@ -127,7 +127,10 @@ Runs on `http://localhost:3000`.
 | `GET` | `/api/prices` | All price records (`?month=` to filter) |
 | `GET` | `/api/prices/:itemId` | Prices for one item across stores |
 | `GET` | `/api/prices/store/:storeId` | Prices for one store across items |
+<<<<<<< HEAD
 | `GET` | `/api/prices/compare/:itemId` | One item's average price at each store, cheapest first |
+=======
+>>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
 | `GET` | `/api/monthly-avg` | Stored monthly averages per item/store |
 | `GET` | `/api/monthly-avg/pivot` | Monthly averages in pivot-table format |
 
@@ -137,7 +140,10 @@ curl http://localhost:3000/api/status/2026-02-04/1
 curl -X POST http://localhost:3000/api/import/2026-02-04/1 -F "file=@week1.csv"
 curl -X POST http://localhost:3000/api/finalize/2026-02-04
 curl http://localhost:3000/api/monthly-avg/pivot
+<<<<<<< HEAD
 curl http://localhost:3000/api/prices/compare/12
+=======
+>>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
 ```
 
 > **Windows:** if `curl` is unavailable, use PowerShell's `Invoke-WebRequest`.
@@ -146,6 +152,7 @@ curl http://localhost:3000/api/prices/compare/12
 
 ## Frontend Integration
 
+<<<<<<< HEAD
 The website (`website/index.html` — a single page combining the home, methodology, and credits content) connects to this API for two live sections:
 
 **Weekly Price Summary** (`#summary`)
@@ -165,16 +172,34 @@ The website (`website/index.html` — a single page combining the home, methodol
 
 Accessibility: filter controls have ARIA labels and visible keyboard focus states; the table uses `scope` on headers and row labels.
 
+=======
+The website (`website/web2.html`) connects to this API for its **Weekly Price Summary** section:
+
+- Fetches `/api/prices` once on page load and caches it
+- Pivot table: one row per item, one column per week (newest first), each cell averaged across stores
+- **Store filter** dropdown (populated from live data) and **item search** (real-time, debounced)
+- **Export CSV** downloads the currently filtered view
+- Zero values display dimmed; loading and error states are shown while fetching
+
+>>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
 To test locally, run the API in one terminal and serve the website in another:
 ```bash
 node server.js
 # in another terminal, from the website folder:
 python3 -m http.server 8080
+<<<<<<< HEAD
 # open http://localhost:8080/index.html
 ```
 If the site is hosted elsewhere, update the `API_BASE` constant near the bottom of `index.html`.
 
 CORS is enabled on the server (`app.use(cors())`) so the frontend can fetch from a different origin. (Note: GitHub Pages serves static files only, so `server.js` must run separately — locally or on a host.)
+=======
+# open http://localhost:8080/web2.html
+```
+If the site is hosted elsewhere, update the `API_BASE` constant near the bottom of `web2.html`.
+
+CORS is enabled on the server (`app.use(cors())`) so the frontend can fetch from a different origin.
+>>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
 
 ---
 

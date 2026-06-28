@@ -19,7 +19,10 @@
  *   GET  /api/prices                      - Get all price records
  *   GET  /api/prices/:itemId              - Get prices for a specific item
  *   GET  /api/prices/store/:storeId       - Get prices for a specific store
+<<<<<<< HEAD
  *   GET  /api/prices/compare/:itemId      - Compare an item's avg price across all stores
+=======
+>>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
  *   GET  /api/monthly-avg                 - Get stored monthly averages
  *   GET  /api/monthly-avg/pivot           - Get monthly averages in pivot table format
  *
@@ -488,6 +491,7 @@ app.get('/api/prices/store/:storeId', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 // GET /api/prices/compare/:itemId - compare one item's average price across all stores
 // Returns each store's average (across all weeks/months, excluding 0/NULL), cheapest first.
 // Used by the website's store-comparison view.
@@ -533,6 +537,8 @@ app.get('/api/prices/compare/:itemId', async (req, res) => {
   }
 });
 
+=======
+>>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
 // GET /api/monthly-avg - get stored monthly averages per item/store
 // Optional query params: ?month=2026-02-04
 app.get('/api/monthly-avg', async (req, res) => {
@@ -643,7 +649,10 @@ app.listen(PORT, () => {
   console.log(`  GET  /api/prices`);
   console.log(`  GET  /api/prices/:itemId`);
   console.log(`  GET  /api/prices/store/:storeId`);
+<<<<<<< HEAD
   console.log(`  GET  /api/prices/compare/:itemId`);
+=======
+>>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
   console.log(`  GET  /api/monthly-avg`);
   console.log(`  GET  /api/monthly-avg/pivot`);
 });

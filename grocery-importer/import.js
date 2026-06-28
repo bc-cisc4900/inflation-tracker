@@ -25,7 +25,10 @@
  * Note:
  *   If Fresh Direct is missing from the CSV (e.g. week1, week2),
  *   the script will automatically insert 0 for Fresh Direct.
+<<<<<<< HEAD
  *   The "2026-02-04" stands for the first week recorded for the whole month since we cannot put "February"
+=======
+>>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
  *   Use --finalize on the last week of the month to store monthly_avg.
 */
 
