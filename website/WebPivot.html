@@ -1,3 +1,5 @@
+<!--PLEASE DELETE GOOGLE SHEET EMBED ONCE API IS HOSTED-->
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -698,7 +700,7 @@
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary"
-               href="https://docs.google.com/spreadsheets/d/1TYVb5ORqiWjHgtpa8Hy903av002WGWKijMZCa2sejeQ/preview?gid=1581963923"
+               href="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/edit?gid=881796074#gid=881796074"
                target="_blank" rel="noopener noreferrer">
               Open Full Spreadsheet
             </a>
@@ -746,14 +748,14 @@
             <input type="text" id="pivotItemSearch" placeholder="e.g. eggs, bread, coffee..." aria-label="Search items by name" />
           </div>
           <div class="control-group">
-            <label for="pivotStartMonth">From week</label>
-            <select id="pivotStartMonth" aria-label="Start of week range">
+            <label for="pivotStartMonth">From month</label>
+            <select id="pivotStartMonth" aria-label="Start of month range">
               <option value="">Newest</option>
             </select>
           </div>
           <div class="control-group">
-            <label for="pivotEndMonth">To week</label>
-            <select id="pivotEndMonth" aria-label="End of week range">
+            <label for="pivotEndMonth">To month</label>
+            <select id="pivotEndMonth" aria-label="End of month range">
               <option value="">Oldest</option>
             </select>
           </div>
@@ -771,13 +773,13 @@
         </div>
 
         <div class="pivot-legend" aria-hidden="true">
-          <span><span class="swatch" style="background:#dc2626"></span> Price rose vs. previous week</span>
-          <span><span class="swatch" style="background:var(--green)"></span> Price fell vs. previous week</span>
-          <span><span class="swatch" style="background:var(--soft)"></span> No change / no prior week</span>
+          <span><span class="swatch" style="background:#dc2626"></span> Price rose vs. previous month</span>
+          <span><span class="swatch" style="background:var(--green)"></span> Price fell vs. previous month</span>
+          <span><span class="swatch" style="background:var(--soft)"></span> No change / no prior month</span>
         </div>
 
         <p class="small muted" style="margin-top: 14px;">
-          Each cell shows the average price for that item in that week, with the percent change from the previous week below it. The final <strong>Annual Avg</strong> column averages every week with data. Cells showing 0 indicate no data was recorded.
+          Each cell shows the average price for that item in that month, with the percent change from the previous month below it. The final <strong>Annual Avg</strong> column averages every month with data. Cells showing 0 indicate no data was recorded.
         </p>
       </section>
 
@@ -895,6 +897,7 @@
           Frontend: HTML, CSS, JavaScript<br>
           Backend/Database: Supabase (PostgreSQL), Node.js, Express<br>
           Tools: Supabase, GitHub, GitHub Pages, Google Sheets<br>
+          Optional Tools: draw.io (for diagrams)
         </p>
       </section>
     </main>
@@ -961,17 +964,17 @@
       pivotBody.innerHTML = `<tr><td colspan="100" class="pivot-state">${msg}</td></tr>`;
     }
 
-    // Label a month by its position so the newest is "Week N".
-    function weekLabel(month) {
+    // Label a column by its position so the newest month is "Month N".
+    function monthLabel(month) {
       const idx = pivotMonths.indexOf(month);
-      return `Week ${pivotMonths.length - idx}`;
+      return `Month ${pivotMonths.length - idx}`;
     }
 
     // The months currently in range (respects the From/To selectors).
     function monthsInRange() {
       // pivotMonths is newest-first; the selectors hold month values.
-      const start = startMonth.value; // newer bound (From week)
-      const end   = endMonth.value;   // older bound (To week)
+      const start = startMonth.value; // newer bound (From month)
+      const end   = endMonth.value;   // older bound (To month)
       let months = [...pivotMonths];
       if (start) {
         const si = pivotMonths.indexOf(start);
@@ -1038,7 +1041,7 @@
       headRow.appendChild(itemTh);
       months.forEach(m => {
         const th = document.createElement("th");
-        th.textContent = weekLabel(m);
+        th.textContent = monthLabel(m);
         th.scope = "col";
         headRow.appendChild(th);
       });
@@ -1049,7 +1052,7 @@
       headRow.appendChild(annualTh);
       pivotHead.appendChild(headRow);
 
-      // Rows. Each price cell shows the % change from the previous (older) week.
+      // Rows. Each price cell shows the % change from the previous (older) month.
       items.forEach(itemName => {
         const tr = document.createElement("tr");
         const nameTd = document.createElement("td");
@@ -1063,7 +1066,7 @@
           if (avg === null) {
             td.innerHTML = '<span class="pivot-zero">0</span>';
           } else {
-            // Previous week is the next entry in the newest-first list.
+            // Previous month is the next entry in the newest-first list.
             const prevMonth = months[i + 1];
             const prevAvg = prevMonth ? monthAvg(lookup, itemName, prevMonth) : null;
             let delta = "";
@@ -1098,7 +1101,7 @@
       const items  = Object.keys(lookup).sort();
       const months = monthsInRange();
 
-      const header = ["Item", ...months.map(weekLabel), "Annual Avg"];
+      const header = ["Item", ...months.map(monthLabel), "Annual Avg"];
       const lines = [header.join(",")];
       items.forEach(itemName => {
         const cells = months.map(month => {
@@ -1178,7 +1181,7 @@
     function populateMonthSelectors() {
       // Newest-first; label each by week number for readability.
       pivotMonths.forEach(m => {
-        const label = weekLabel(m);
+        const label = monthLabel(m);
         [startMonth, endMonth].forEach(sel => {
           const opt = document.createElement("option");
           opt.value = m;
@@ -1208,7 +1211,7 @@
           storeFilter.appendChild(opt);
         });
 
-        // From/To week selectors
+        // From/To month selectors
         populateMonthSelectors();
 
         // Compare dropdown — needs item_id, so fetch the items list

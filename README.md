@@ -3,6 +3,7 @@
 # BC-Basket (Formerly Grocery Store Inflation Tracker)
 
 Link to Group Meeting Notes: https://docs.google.com/document/d/12wIxHZITvYMX94EEUfoCmIPFZYnbcl7tQ3wrw0Mazxk/edit?tab=t.2u7vyan4i8yi
+
 Link to Hand-Off Document For Future Groups: https://docs.google.com/document/d/1IPaZB4fUfsX4hqmfqDeX0cIzWxPe7qWQyINxg5CpEE0/edit?usp=sharing
 
 Link to Live Website: https://bc-cisc4900.github.io/inflation-tracker
@@ -12,7 +13,7 @@ BC-Basket is a Brooklyn College group project that tracks the weekly prices of e
 
 ### Team Members
 - Gabriel Krishtul — Project Manager, Database Architect
-- Andrew Castillo-Fajardo — Backend Developer
+- Andrew Castillo-Fajardo — Fullstack Developer
 - Yuan Ruan — Frontend Developer
 - Mohamed Massoud — Database Architect, Web Developer
 - Nicholas Cai — Data Collection, QA
@@ -24,7 +25,6 @@ BC-Basket is a Brooklyn College group project that tracks the weekly prices of e
 - `docs/` - project documentation, methodology, notes, and test cases
 - `tests/` - sample inputs and expected outputs
 - `samples/` - backup copy of our 14 weeks of recorded prices and 12-Month Breakdown
-- `database_schema.jpg` - visual database schema image
 
 ### Features
 - Weekly grocery price tracking
