@@ -62,15 +62,24 @@ npm install
 Key packages: `pg` (PostgreSQL driver), `express`, `cors`, `multer`, `dotenv`.
 
 ### 4. Create your `.env` file
+
+> ⚠️ **Important — use the connection POOLER, not the direct host.** Supabase's direct connection (`db.<project-ref>.supabase.co`) resolves to an **IPv6-only** address. On networks without IPv6 (most home networks), every query fails with `connect ENETUNREACH 2600:...`. The connection pooler supports IPv4 and is what this project uses.
+
 Create a file called `.env` in the `grocery-importer` folder:
 ```
-DB_HOST=db.jwxxjeovkkmabwyrfgvh.supabase.co
+DB_HOST=aws-1-us-east-1.pooler.supabase.com
 DB_PORT=5432
-DB_USER=postgres
+DB_USER=postgres.jwxxjeovkkmabwyrfgvh
 DB_PASSWORD=your_supabase_password
 DB_NAME=postgres
 ```
-Find the password in Supabase → **Project Settings → Database**. Note the `db.` prefix on the host and that `DB_NAME` is `postgres` (the actual database name), not the project display name.
+
+Three things that are easy to get wrong:
+1. **`DB_HOST`** — get your exact pooler host from the Supabase Dashboard → **Connect** button (top of the project page) → the pooler connection string. It looks like `aws-1-<region>.pooler.supabase.com`.
+2. **`DB_USER`** — for the pooler this is `postgres.<project-ref>` (the project ref appended with a dot), **not** plain `postgres`. Plain `postgres` fails to authenticate against the pooler.
+3. **`DB_NAME`** — is `postgres` (the actual database name), not the project's display name.
+
+Port `5432` is the session pooler (recommended for this long-running server); `6543` is the transaction pooler. The password is in Supabase → **Project Settings → Database**.
 
 ---
 
@@ -127,10 +136,7 @@ Runs on `http://localhost:3000`.
 | `GET` | `/api/prices` | All price records (`?month=` to filter) |
 | `GET` | `/api/prices/:itemId` | Prices for one item across stores |
 | `GET` | `/api/prices/store/:storeId` | Prices for one store across items |
-<<<<<<< HEAD
 | `GET` | `/api/prices/compare/:itemId` | One item's average price at each store, cheapest first |
-=======
->>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
 | `GET` | `/api/monthly-avg` | Stored monthly averages per item/store |
 | `GET` | `/api/monthly-avg/pivot` | Monthly averages in pivot-table format |
 
@@ -140,10 +146,7 @@ curl http://localhost:3000/api/status/2026-02-04/1
 curl -X POST http://localhost:3000/api/import/2026-02-04/1 -F "file=@week1.csv"
 curl -X POST http://localhost:3000/api/finalize/2026-02-04
 curl http://localhost:3000/api/monthly-avg/pivot
-<<<<<<< HEAD
 curl http://localhost:3000/api/prices/compare/12
-=======
->>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
 ```
 
 > **Windows:** if `curl` is unavailable, use PowerShell's `Invoke-WebRequest`.
@@ -152,7 +155,6 @@ curl http://localhost:3000/api/prices/compare/12
 
 ## Frontend Integration
 
-<<<<<<< HEAD
 The website (`website/index.html` — a single page combining the home, methodology, and credits content) connects to this API for two live sections:
 
 **Weekly Price Summary** (`#summary`)
@@ -172,34 +174,16 @@ The website (`website/index.html` — a single page combining the home, methodol
 
 Accessibility: filter controls have ARIA labels and visible keyboard focus states; the table uses `scope` on headers and row labels.
 
-=======
-The website (`website/web2.html`) connects to this API for its **Weekly Price Summary** section:
-
-- Fetches `/api/prices` once on page load and caches it
-- Pivot table: one row per item, one column per week (newest first), each cell averaged across stores
-- **Store filter** dropdown (populated from live data) and **item search** (real-time, debounced)
-- **Export CSV** downloads the currently filtered view
-- Zero values display dimmed; loading and error states are shown while fetching
-
->>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
 To test locally, run the API in one terminal and serve the website in another:
 ```bash
 node server.js
 # in another terminal, from the website folder:
 python3 -m http.server 8080
-<<<<<<< HEAD
 # open http://localhost:8080/index.html
 ```
 If the site is hosted elsewhere, update the `API_BASE` constant near the bottom of `index.html`.
 
 CORS is enabled on the server (`app.use(cors())`) so the frontend can fetch from a different origin. (Note: GitHub Pages serves static files only, so `server.js` must run separately — locally or on a host.)
-=======
-# open http://localhost:8080/web2.html
-```
-If the site is hosted elsewhere, update the `API_BASE` constant near the bottom of `web2.html`.
-
-CORS is enabled on the server (`app.use(cors())`) so the frontend can fetch from a different origin.
->>>>>>> b6305463086f4b2c4674ddf508373c80b8cc5350
 
 ---
 
@@ -251,6 +235,28 @@ Each month should have **165 records** (33 items × 5 stores).
 Relationships: `items (1)→(many) prices` · `stores (1)→(many) prices` · `prices (1)→(many) price_records`
 
 `monthly_avg` is stored when `--finalize` (or `POST /api/finalize/:month`) runs; it averages only the weeks that have data, so 4- and 5-week months are both handled.
+
+---
+
+## Troubleshooting
+
+**`Could not load data: API responded with 500` on the website**
+The server is reachable but a query is failing. Check the terminal running `node server.js` — every endpoint logs its real error (e.g. `GET /api/prices failed: <reason>`). Diagnose top-down: error text → query → connection → network.
+
+**`connect ENETUNREACH 2600:...` (an IPv6 address)**
+You're using the direct connection host (`db.<ref>.supabase.co`), which is IPv6-only, on a network without IPv6. Switch `.env` to the **pooler** host and the `postgres.<project-ref>` username (see Setup step 4). This is the single most common setup failure for this project.
+
+**`getaddrinfo ENOTFOUND aws-...pooler.supabase.com`**
+The pooler host is a placeholder or misspelled. Copy the exact host from Supabase Dashboard → **Connect** — the region part (`aws-1-us-east-1`, etc.) must match your project.
+
+**`password authentication failed`**
+Against the pooler, `DB_USER` must be `postgres.<project-ref>`, not plain `postgres`.
+
+**`Failed to fetch` in the browser (but curl works)**
+CORS: the page was opened from `file://` or the server isn't sending CORS headers. Serve the site over HTTP (`python3 -m http.server 8080`) and confirm `app.use(cors())` is in `server.js`.
+
+**Averages look too low**
+Missing weeks stored as `0.00` instead of `NULL` drag averages down. The frontend and the compare endpoint both exclude zero values; if you write new queries, remember 0 and NULL are different facts.
 
 ---
 
