@@ -1,0 +1,1243 @@
+<!--PLEASE DELETE GOOGLE SHEET EMBED ONCE API IS HOSTED-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <title>BC Basket (CISC 4900)</title>
+
+  <style>
+    :root {
+      --bg: #f5f8fc;
+      --bg2: #eef7f1;
+      --surface: rgba(255,255,255,0.88);
+      --surface-strong: #ffffff;
+      --text: #0f172a;
+      --soft: #475569;
+      --border: rgba(15, 23, 42, 0.08);
+      --green: #01ad48;
+      --green-dark: #017c35;
+      --accent: #e8f7ee;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.06);
+      --nav: rgba(255,255,255,0.7);
+      --muted: 0.8;
+    }
+
+    body.dark {
+      --bg: #081018;
+      --bg2: #0d1c14;
+      --surface: rgba(15, 23, 42, 0.76);
+      --surface-strong: #111827;
+      --text: #f8fafc;
+      --soft: #cbd5e1;
+      --border: rgba(255,255,255,0.08);
+      --green: #22c55e;
+      --green-dark: #16a34a;
+      --accent: rgba(34, 197, 94, 0.12);
+      --shadow: 0 18px 40px rgba(0,0,0,0.28);
+      --shadow-soft: 0 10px 24px rgba(0,0,0,0.2);
+      --nav: rgba(15, 23, 42, 0.72);
+      --muted: 0.88;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, var(--bg2), transparent 28%),
+        var(--bg);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    a, p, h1, h2, h3, h4, div, li, ul, span, main, section {
+      color: inherit;
+    }
+
+    .container {
+      width: min(2200px, calc(100% - 0px));
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 14px;
+      z-index: 100;
+      margin-bottom: 26px;
+    }
+
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--nav);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 34px);
+      line-height: 1.02;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .brand .sub {
+      font-size: 14px;
+      color: var(--soft);
+      font-weight: 500;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--green-dark);
+    }
+
+    body.dark .pill {
+      color: var(--green);
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    main {
+      display: grid;
+      gap: 24px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 28px;
+      scroll-margin-top: 110px;
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-size: 26px;
+      letter-spacing: -0.02em;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: var(--soft);
+    }
+
+    .intro-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      color: #ffffff;
+      font-weight: 800;
+      box-shadow: 0 10px 22px rgba(1, 173, 72, 0.18);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.96;
+    }
+
+    .tracker-note,
+    .footer-note,
+    .small {
+      font-size: 14px;
+    }
+
+    .muted {
+      opacity: var(--muted);
+    }
+
+    .sheet-frame {
+      width: 100%;
+      border: 0;
+      border-radius: 0;
+      overflow: hidden;
+      background: var(--surface-strong);
+      box-shadow: none;
+      margin-top: 0;
+    }
+
+    .sheet-frame iframe {
+      width: 100%;
+      height: 1600px;
+      min-height: 1600px;
+      border: 0;
+      display: block;
+      background: var(--surface-strong);
+    }
+
+
+    #tracker {
+      width: min(1730px, calc(100vw + 50px));
+      max-width: 1730px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 0;
+      padding-right: 0;
+      transform: translateX(6px);
+    }
+
+
+    #tracker h2 {
+      padding: 28px 28px 0;
+      margin-bottom: 18px;
+    }
+
+    #tracker .tracker-note {
+      padding: 0 28px 28px;
+    }
+
+    footer {
+      margin-top: 24px;
+      padding: 18px 6px 10px;
+      color: var(--soft);
+      font-size: 14px;
+    }
+
+    .footer-note {
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+
+    /* --- METHOD PAGE CLASSES (merged) --- */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 22px;
+    margin-bottom: 22px;
+  }
+
+  .hero-main,
+  .hero-side,
+  .card {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .hero-main {
+    padding: 34px;
+  }
+
+  .hero-side {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    justify-content: space-between;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+
+  .hero-main h2 {
+    margin: 0 0 14px;
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+  }
+
+  .hero-main p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--soft);
+    max-width: 760px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 13px 18px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.96;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--green), #017c35);
+    color: #fff;
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--border);
+    background: var(--surface-strong);
+    color: var(--text);
+  }
+
+  .chip-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .mini-stat {
+    padding: 16px;
+    border-radius: 18px;
+    background: var(--surface-strong);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .mini-stat-label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: var(--soft);
+    margin-bottom: 8px;
+  }
+
+  .mini-stat-value {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .grid {
+    display: grid;
+    gap: 22px;
+  }
+
+  .card {
+    padding: 28px;
+    scroll-margin-top: 110px;
+  }
+
+  .card h2 {
+    margin: 0 0 14px;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+  }
+
+  .card p {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: var(--soft);
+  }
+
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .flow-step {
+    position: relative;
+    padding: 18px;
+    border-radius: 20px;
+    background: var(--surface-strong);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+    min-height: 160px;
+  }
+
+  .flow-step .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  .flow-step h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+  }
+
+  .flow-step p {
+    font-size: 14px;
+  }
+
+  .footer-note {
+    margin-top: 18px;
+    color: var(--soft);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  footer {
+    margin-top: 24px;
+    padding: 18px 6px 10px;
+    color: var(--soft);
+    font-size: 14px;
+  }
+
+  .small {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  .muted {
+    opacity: var(--muted);
+  }
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .method-box {
+    padding: 24px;
+    border-radius: 20px;
+    background: var(--surface-strong);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .method-box h3 {
+    margin: 0 0 14px;
+    font-size: 22px;
+    font-weight: 800;
+  }
+
+  .method-box p {
+    margin: 0 0 14px;
+    line-height: 1.75;
+    color: var(--soft);
+  }
+
+  .formula-box {
+    margin: 16px 0;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: var(--accent);
+    border: 1px solid var(--border);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+
+
+    /* --- PIVOT TABLE (Weekly Price Summary, live from API) --- */
+    .pivot-controls {
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin: 14px 0 16px;
+    }
+    .pivot-controls .control-group { display: flex; flex-direction: column; gap: 4px; }
+    .pivot-controls label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--soft);
+    }
+    .pivot-controls select, .pivot-controls input {
+      padding: 9px 12px; border: 1px solid var(--border); border-radius: 10px;
+      font-size: 14px; font-family: inherit; min-width: 180px;
+      background: var(--surface-strong); color: var(--text);
+    }
+    .pivot-controls button {
+      padding: 9px 16px; border: none; border-radius: 999px; font-size: 14px;
+      font-weight: 800; cursor: pointer;
+      background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #fff;
+      box-shadow: 0 10px 22px rgba(1,173,72,0.18);
+    }
+    .pivot-controls button.secondary {
+      background: var(--surface); color: var(--text); border: 1px solid var(--border); box-shadow: none;
+    }
+    .pivot-wrapper { overflow-x: auto; margin-top: 6px; border-radius: 16px; border: 1px solid var(--border); }
+    .pivot-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .pivot-table th, .pivot-table td {
+      border-bottom: 1px solid var(--border); padding: 11px 14px; text-align: center; white-space: nowrap;
+    }
+    .pivot-table th {
+      background: var(--green); color: #fff; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.05em; position: sticky; top: 0;
+    }
+    .pivot-table td:first-child, .pivot-table th:first-child {
+      text-align: left; font-weight: 700; min-width: 230px;
+      position: -webkit-sticky; position: sticky; left: 0; z-index: 1; background: var(--surface-strong);
+    }
+    .pivot-table th:first-child { background: var(--green); z-index: 2; }
+    .pivot-table tbody tr:nth-child(even) td { background: var(--accent); }
+    .pivot-zero { opacity: 0.4; }
+    .pivot-state { padding: 22px; text-align: center; font-size: 14px; color: var(--soft); }
+
+    /* Annual average column — emphasized */
+    .pivot-table td.pivot-annual, .pivot-table th.pivot-annual {
+      font-weight: 800; border-left: 2px solid var(--border);
+    }
+    .pivot-cell-price { display: block; }
+    /* Percent-change indicator under each price */
+    .pivot-delta { display: block; font-size: 10px; font-weight: 700; margin-top: 2px; }
+    .pivot-delta.up   { color: #dc2626; }   /* price rose */
+    .pivot-delta.down { color: var(--green); } /* price fell */
+    .pivot-delta.flat { color: var(--soft); opacity: 0.7; }
+
+    /* Legend for the color coding */
+    .pivot-legend {
+      display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--soft);
+    }
+    .pivot-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .pivot-legend .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+    /* Store comparison view */
+    .compare-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin: 8px 0 16px; }
+    .compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+    .compare-card {
+      border: 1px solid var(--border); border-radius: 14px; padding: 16px; text-align: center;
+      background: var(--surface-strong);
+    }
+    .compare-card.cheapest { border-color: var(--green); border-width: 2px; background: var(--accent); }
+    .compare-card .store { font-size: 13px; font-weight: 700; }
+    .compare-card .price { font-size: 22px; font-weight: 800; margin-top: 6px; color: var(--green-dark); }
+    body.dark .compare-card .price { color: var(--green); }
+    .compare-card .tag {
+      display: inline-block; margin-top: 8px; font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.05em; color: var(--green-dark); padding: 2px 8px; border-radius: 999px; background: var(--accent);
+    }
+    body.dark .compare-card.cheapest .tag { color: var(--green); background: rgba(34,197,94,0.18); }
+
+    /* Accessibility — visible focus states for keyboard users */
+    .pivot-controls select:focus-visible,
+    .pivot-controls input:focus-visible,
+    .pivot-controls button:focus-visible,
+    .compare-controls select:focus-visible {
+      outline: 3px solid var(--green); outline-offset: 2px;
+    }
+
+    @media (max-width: 720px) {
+      .topbar-inner,
+      .card {
+        padding: 20px;
+      }
+
+      nav {
+        width: 100%;
+      }
+
+      nav a,
+      .theme-toggle {
+        width: 100%;
+        text-align: center;
+      }
+
+      .sheet-frame iframe {
+        width: 100%;
+        height: 1100px;
+        min-height: 1100px;
+        border: 0;
+        display: block;
+        background: var(--surface-strong);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="topbar">
+      <header class="topbar-inner">
+        <div class="brand">
+          <h1>BC Basket</h1>
+          <div class="sub">CISC 4900 Student Project | Brooklyn College</div>
+          <div class="small muted meta-row">
+            <span class="pill">Weekly collection</span>
+            <span class="pill">Monthly averages</span>
+            <span class="pill">Anonymized stores/brands</span>
+          </div>
+        </div>
+
+        <nav>
+          <a href="#home" class="active">Home</a>
+          <a href="#summary">Price Summary</a>
+          <a href="#compare">Compare</a>
+          <a href="#tracker">Spreadsheet</a>
+          <a href="#method">Method</a>
+          <a href="#credits">Credits</a>
+          <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
+        </nav>
+      </header>
+    </div>
+
+    <main>
+      <!-- HERO / INTRO (from method page) -->
+      <section class="hero" id="home">
+        <div class="hero-main">
+          <div class="eyebrow">Brooklyn College Student Research Project</div>
+          <h2>Tracking grocery inflation through real weekly price collection.</h2>
+          <p>
+            BC-Basket is a student-built grocery inflation tracker focused on identifying price trends over time through consistent weekly observations, structured data collection, monthly averages, and a website that makes the results easier to explore.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary"
+               href="https://docs.google.com/spreadsheets/d/1-U6Gy8KI-ajH7He4ksQ9dPo6TluAoBy75tu9D4PhJR4/edit?gid=881796074#gid=881796074"
+               target="_blank" rel="noopener noreferrer">
+              Open Full Spreadsheet
+            </a>
+            <a class="btn btn-secondary" href="#summary">View Live Price Summary</a>
+          </div>
+          <div class="chip-row">
+            <span class="chip">Weekly price collection</span>
+            <span class="chip">Monthly averages</span>
+            <span class="chip">Trend-focused analysis</span>
+            <span class="chip">Built for continuity</span>
+          </div>
+        </div>
+        <aside class="hero-side">
+          <div class="mini-stat">
+            <span class="mini-stat-label">Main Goal</span>
+            <div class="mini-stat-value">Measure grocery inflation trends rather than focus on exact one-time prices.</div>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-stat-label">Core Workflow</span>
+            <div class="mini-stat-value">Collect prices → organize data → store records → present trends.</div>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-stat-label">Live Interaction</span>
+            <div class="mini-stat-value">Explore results by store and item, then export the view as CSV.</div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- WEEKLY PRICE SUMMARY (live pivot table from API / Supabase) -->
+      <section class="card" id="summary">
+        <h2>Weekly Price Summary</h2>
+        <p style="margin-bottom: 4px;">
+          Live data from the BC-Basket database. Average price per item across all stores, shown by week (newest first). Use the filters to narrow by store or item, then export the view as CSV.
+        </p>
+
+        <div class="pivot-controls">
+          <div class="control-group">
+            <label for="pivotStoreFilter">Store</label>
+            <select id="pivotStoreFilter" aria-label="Filter by store">
+              <option value="">All Stores (average)</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="pivotItemSearch">Item search</label>
+            <input type="text" id="pivotItemSearch" placeholder="e.g. eggs, bread, coffee..." aria-label="Search items by name" />
+          </div>
+          <div class="control-group">
+            <label for="pivotStartMonth">From month</label>
+            <select id="pivotStartMonth" aria-label="Start of month range">
+              <option value="">Newest</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="pivotEndMonth">To month</label>
+            <select id="pivotEndMonth" aria-label="End of month range">
+              <option value="">Oldest</option>
+            </select>
+          </div>
+          <button class="secondary" id="pivotReset" type="button">Reset</button>
+          <button id="pivotExport" type="button">Export CSV</button>
+        </div>
+
+        <div class="pivot-wrapper">
+          <table class="pivot-table">
+            <thead id="pivotHead"></thead>
+            <tbody id="pivotBody">
+              <tr><td colspan="100" class="pivot-state">Loading data from API...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pivot-legend" aria-hidden="true">
+          <span><span class="swatch" style="background:#dc2626"></span> Price rose vs. previous month</span>
+          <span><span class="swatch" style="background:var(--green)"></span> Price fell vs. previous month</span>
+          <span><span class="swatch" style="background:var(--soft)"></span> No change / no prior month</span>
+        </div>
+
+        <p class="small muted" style="margin-top: 14px;">
+          Each cell shows the average price for that item in that month, with the percent change from the previous month below it. The final <strong>Annual Avg</strong> column averages every month with data. Cells showing 0 indicate no data was recorded.
+        </p>
+      </section>
+
+      <!-- STORE COMPARISON (live, from /api/prices/compare/:itemId) -->
+      <section class="card" id="compare">
+        <h2>Compare Stores for an Item</h2>
+        <p style="margin-bottom: 4px;">
+          Pick a grocery item to see its average price at each store side by side. The cheapest store is highlighted.
+        </p>
+
+        <div class="compare-controls">
+          <div class="control-group">
+            <label for="compareItem">Item</label>
+            <select id="compareItem" aria-label="Choose an item to compare across stores">
+              <option value="">Select an item...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="compare-grid" id="compareGrid">
+          <p class="pivot-state" style="grid-column: 1 / -1;">Choose an item above to compare prices across stores.</p>
+        </div>
+      </section>
+
+      <!-- SPREADSHEET EMBED -->
+      <section class="card" id="tracker">
+        <h2>Inflation Tracker (Spreadsheet)</h2>
+        <div class="sheet-frame">
+          <iframe
+            src="https://docs.google.com/spreadsheets/d/1TYVb5ORqiWjHgtpa8Hy903av002WGWKijMZCa2sejeQ/preview?gid=1581963923"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="small muted tracker-note" style="margin-top: 14px;">
+          If the embed is blank on your network or browser, use the button at the top to open the sheet directly.
+        </p>
+      </section>
+
+      <!-- METHOD: WORKFLOW -->
+      <section class="card" id="method">
+        <h2>How It Works</h2>
+        <div class="flow-grid">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <h3>Price Collection</h3>
+            <p>Weekly grocery prices are collected from selected stores using consistent item definitions and substitution rules.</p>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <h3>Google Sheets</h3>
+            <p>Collected prices are organized into shared sheets, reviewed, averaged, and documented for consistency.</p>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <h3>Supabase Database</h3>
+            <p>Structured records are stored in a PostgreSQL database so the data can scale beyond static documents and support live queries through the API.</p>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">4</div>
+            <h3>Website Display</h3>
+            <p>The website fetches data from the Express API and presents it in the live Weekly Price Summary table above.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- METHOD: DETAILED METHODOLOGY -->
+      <section class="card" id="method-detail">
+        <h2 style="margin-bottom: 16px;">Detailed Methodology</h2>
+        <div class="method-grid">
+          <div class="method-box">
+            <h3>Data Collection</h3>
+            <p>Prices are collected once per week from selected grocery stores. The goal is to record prices as they appear in-store so the data reflects what consumers actually see on the shelf.</p>
+            <p>For each item, we aim to keep product selection consistent by matching the same brand, size, and type across all stores whenever possible. If an exact match is not available, the closest equivalent product is selected and documented.</p>
+            <p>Loyalty-card-only prices are not included in the official data because they are not available to all customers. However, temporary sale prices may be recorded separately for context.</p>
+          </div>
+          <div class="method-box">
+            <h3>Data Consistency</h3>
+            <p>To ensure fair comparisons between stores, all prices are recorded as unit prices when necessary, for example price per ounce or per item. This allows items of slightly different sizes to still be compared accurately.</p>
+            <p>Any substitutions or inconsistencies are noted to maintain transparency in the dataset.</p>
+          </div>
+          <div class="method-box">
+            <h3>Average Calculation</h3>
+            <p>Weekly prices are recorded for each item, and a monthly average is calculated using those values.</p>
+            <p>The monthly average is computed by adding all weekly prices for an item and dividing by the number of weeks recorded.</p>
+            <div class="formula-box">
+              Average Price = (Week 1 + Week 2 + Week 3 + Week 4) ÷ Number of Weeks
+            </div>
+            <p>If a price is missing for a given week, only the available weeks are used in the calculation.</p>
+          </div>
+          <div class="method-box">
+            <h3>Output and Continuation</h3>
+            <p>The main output of this project is a monthly average price per item for each store. These averages are used to compare pricing trends across different grocery stores over time.</p>
+            <p>This project is designed to be continued by future groups. The standardized data collection process allows new data to be added consistently, making it possible to track long-term price trends.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CREDITS -->
+      <section class="card" id="credits">
+        <h2>Credits</h2>
+        <h3 style="margin-top: 20px; margin-bottom: 8px; font-size: 18px;">Contributors</h3>
+        <p>
+          Gabriel Krishtul (Project Manager, Database Architect): <a href="mailto:gabrielkrishtul1@gmail.com">gabrielkrishtul1@gmail.com</a><br>
+          Andrew Castillo-Fajardo (Fullstack Developer): <a href="mailto:ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu">ANDREW.CASTILLOFAJARDO35@bcmail.cuny.edu</a><br>
+          Yuan Ruan (Frontend Developer): <a href="mailto:yuan.ruan65@bcmail.cuny.edu">yuan.ruan65@bcmail.cuny.edu</a><br>
+          Nicholas Cai (Data Collection, QA): <a href="mailto:nicholascai123@gmail.com">nicholascai123@gmail.com</a><br>
+          Mohamed Massoud (Data Collection, QA): <a href="mailto:mohamedadam.massoud07@bcmail.cuny.edu">mohamedadam.massoud07@bcmail.cuny.edu</a>
+        </p>
+        <h3 style="margin-top: 20px; margin-bottom: 8px; font-size: 18px;">Sources</h3>
+        <p>Aldi<br>Fresh Direct<br>Key Food<br>Stop &amp; Shop<br>Trader Joe's</p>
+        <h3 style="margin-top: 20px; margin-bottom: 8px; font-size: 18px;">Tools / Technologies</h3>
+        <p>
+          Frontend: HTML, CSS, JavaScript<br>
+          Backend/Database: Supabase (PostgreSQL), Node.js, Express<br>
+          Tools: Supabase, GitHub, GitHub Pages, Google Sheets<br>
+          Optional Tools: draw.io (for diagrams)
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <div>© <span id="year"></span> BC Basket | Grocery Inflation Measurement (CISC 4900)</div>
+      <div class="small muted footer-note">
+        This is a student project website for Brooklyn College coursework and does not represent an official Brooklyn College or CUNY website.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const year = document.getElementById("year");
+    if (year) year.textContent = new Date().getFullYear();
+
+    const themeToggle = document.getElementById("themeToggle");
+
+    function setThemeButtonText() {
+      if (!themeToggle) return;
+      const dark = document.body.classList.contains("dark");
+      themeToggle.textContent = dark ? "☀️ Light Mode" : "🌙 Dark Mode";
+    }
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark");
+    }
+    setThemeButtonText();
+
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        const dark = document.body.classList.contains("dark");
+        localStorage.setItem("theme", dark ? "dark" : "light");
+        setThemeButtonText();
+      });
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // WEEKLY PRICE SUMMARY (PIVOT TABLE) — live from Express API
+    // Fetches /api/prices once, caches it, then renders & filters
+    // entirely client-side. Adds a date-range filter, a percent-
+    // change indicator per cell, and an annual-average column.
+    // CSV export uses the filtered data model (not the DOM).
+    // ─────────────────────────────────────────────────────────
+    const API_BASE = "http://localhost:3000"; // change if the API is hosted elsewhere
+
+    const pivotHead   = document.getElementById("pivotHead");
+    const pivotBody   = document.getElementById("pivotBody");
+    const storeFilter = document.getElementById("pivotStoreFilter");
+    const itemSearch  = document.getElementById("pivotItemSearch");
+    const startMonth  = document.getElementById("pivotStartMonth");
+    const endMonth    = document.getElementById("pivotEndMonth");
+    const resetBtn    = document.getElementById("pivotReset");
+    const exportBtn   = document.getElementById("pivotExport");
+
+    let pivotRaw = [];
+    let pivotMonths = [];   // all months, newest first
+    let pivotItems = [];    // [{ item_id, item_name }] for the compare dropdown
+
+    function pivotState(msg) {
+      pivotHead.innerHTML = "";
+      pivotBody.innerHTML = `<tr><td colspan="100" class="pivot-state">${msg}</td></tr>`;
+    }
+
+    // Label a column by its position so the newest month is "Month N".
+    function monthLabel(month) {
+      const idx = pivotMonths.indexOf(month);
+      return `Month ${pivotMonths.length - idx}`;
+    }
+
+    // The months currently in range (respects the From/To selectors).
+    function monthsInRange() {
+      // pivotMonths is newest-first; the selectors hold month values.
+      const start = startMonth.value; // newer bound (From month)
+      const end   = endMonth.value;   // older bound (To month)
+      let months = [...pivotMonths];
+      if (start) {
+        const si = pivotMonths.indexOf(start);
+        if (si > -1) months = months.filter(m => pivotMonths.indexOf(m) >= si);
+      }
+      if (end) {
+        const ei = pivotMonths.indexOf(end);
+        if (ei > -1) months = months.filter(m => pivotMonths.indexOf(m) <= ei);
+      }
+      return months;
+    }
+
+    // Build { item -> { month -> [prices] } } honoring the store + search filters.
+    function buildPivotData(storeName, search) {
+      const rows = pivotRaw.filter(r => {
+        if (storeName && r.store_name !== storeName) return false;
+        if (search && !r.item_name.toLowerCase().includes(search.toLowerCase())) return false;
+        return true;
+      });
+      const lookup = {};
+      rows.forEach(r => {
+        if (!lookup[r.item_name]) lookup[r.item_name] = {};
+        if (!lookup[r.item_name][r.month]) lookup[r.item_name][r.month] = [];
+        [r.week1, r.week2, r.week3, r.week4, r.week5].forEach(w => {
+          const v = parseFloat(w);
+          if (!isNaN(v) && v > 0) lookup[r.item_name][r.month].push(v); // ignore 0 / missing
+        });
+      });
+      return lookup;
+    }
+
+    // Average a month's prices, or null when there's no data.
+    function monthAvg(lookup, item, month) {
+      const prices = (lookup[item] && lookup[item][month]) || [];
+      if (prices.length === 0) return null;
+      return prices.reduce((s, v) => s + v, 0) / prices.length;
+    }
+
+    // Annual average across every month that has data for the item.
+    function annualAvg(lookup, item) {
+      const vals = pivotMonths.map(m => monthAvg(lookup, item, m)).filter(v => v !== null);
+      if (vals.length === 0) return null;
+      return vals.reduce((s, v) => s + v, 0) / vals.length;
+    }
+
+    function renderPivot() {
+      const store  = storeFilter.value;
+      const search = itemSearch.value.trim();
+      const lookup = buildPivotData(store, search);
+      const items  = Object.keys(lookup).sort();
+      const months = monthsInRange();
+
+      pivotHead.innerHTML = "";
+      pivotBody.innerHTML = "";
+
+      if (items.length === 0) { pivotState("No items match the current filters."); return; }
+      if (months.length === 0) { pivotState("No weeks fall in the selected range."); return; }
+
+      // Header: Item | Week N ... | Annual Avg
+      const headRow = document.createElement("tr");
+      const itemTh = document.createElement("th");
+      itemTh.textContent = "Item";
+      itemTh.scope = "col";
+      headRow.appendChild(itemTh);
+      months.forEach(m => {
+        const th = document.createElement("th");
+        th.textContent = monthLabel(m);
+        th.scope = "col";
+        headRow.appendChild(th);
+      });
+      const annualTh = document.createElement("th");
+      annualTh.textContent = "Annual Avg";
+      annualTh.scope = "col";
+      annualTh.className = "pivot-annual";
+      headRow.appendChild(annualTh);
+      pivotHead.appendChild(headRow);
+
+      // Rows. Each price cell shows the % change from the previous (older) month.
+      items.forEach(itemName => {
+        const tr = document.createElement("tr");
+        const nameTd = document.createElement("td");
+        nameTd.textContent = itemName;
+        nameTd.scope = "row";
+        tr.appendChild(nameTd);
+
+        months.forEach((month, i) => {
+          const td = document.createElement("td");
+          const avg = monthAvg(lookup, itemName, month);
+          if (avg === null) {
+            td.innerHTML = '<span class="pivot-zero">0</span>';
+          } else {
+            // Previous month is the next entry in the newest-first list.
+            const prevMonth = months[i + 1];
+            const prevAvg = prevMonth ? monthAvg(lookup, itemName, prevMonth) : null;
+            let delta = "";
+            if (prevAvg !== null && prevAvg > 0) {
+              const pct = ((avg - prevAvg) / prevAvg) * 100;
+              const cls = pct > 0.05 ? "up" : pct < -0.05 ? "down" : "flat";
+              const sign = pct > 0 ? "+" : "";
+              delta = `<span class="pivot-delta ${cls}">${sign}${pct.toFixed(1)}%</span>`;
+            } else {
+              delta = '<span class="pivot-delta flat">—</span>';
+            }
+            td.innerHTML = `<span class="pivot-cell-price">$${avg.toFixed(2)}</span>${delta}`;
+          }
+          tr.appendChild(td);
+        });
+
+        // Annual average column
+        const annualTd = document.createElement("td");
+        annualTd.className = "pivot-annual";
+        const yr = annualAvg(lookup, itemName);
+        annualTd.textContent = yr === null ? "—" : `$${yr.toFixed(2)}`;
+        tr.appendChild(annualTd);
+
+        pivotBody.appendChild(tr);
+      });
+    }
+
+    function exportPivotCSV() {
+      const store  = storeFilter.value;
+      const search = itemSearch.value.trim();
+      const lookup = buildPivotData(store, search);
+      const items  = Object.keys(lookup).sort();
+      const months = monthsInRange();
+
+      const header = ["Item", ...months.map(monthLabel), "Annual Avg"];
+      const lines = [header.join(",")];
+      items.forEach(itemName => {
+        const cells = months.map(month => {
+          const avg = monthAvg(lookup, itemName, month);
+          return avg === null ? "0" : avg.toFixed(2);
+        });
+        const yr = annualAvg(lookup, itemName);
+        cells.push(yr === null ? "" : yr.toFixed(2));
+        lines.push([`"${itemName.replace(/"/g, '""')}"`, ...cells].join(","));
+      });
+      const blob = new Blob([lines.join("\n")], { type: "text/csv" });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement("a");
+      a.href = url;
+      a.download = store ? `bc-basket-${store.replace(/\s+/g, "-").toLowerCase()}.csv` : "bc-basket-all-stores.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    let searchTimer;
+    itemSearch.addEventListener("input", () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(renderPivot, 200);
+    });
+    storeFilter.addEventListener("change", renderPivot);
+    startMonth.addEventListener("change", renderPivot);
+    endMonth.addEventListener("change", renderPivot);
+    resetBtn.addEventListener("click", () => {
+      storeFilter.value = "";
+      itemSearch.value = "";
+      startMonth.value = "";
+      endMonth.value = "";
+      renderPivot();
+    });
+    exportBtn.addEventListener("click", exportPivotCSV);
+
+    // ── STORE COMPARISON (live, from /api/prices/compare/:itemId) ──
+    const compareItem = document.getElementById("compareItem");
+    const compareGrid = document.getElementById("compareGrid");
+
+    compareItem.addEventListener("change", async () => {
+      const itemId = compareItem.value;
+      if (!itemId) {
+        compareGrid.innerHTML = '<p class="pivot-state" style="grid-column: 1 / -1;">Choose an item above to compare prices across stores.</p>';
+        return;
+      }
+      compareGrid.innerHTML = '<p class="pivot-state" style="grid-column: 1 / -1;">Loading comparison...</p>';
+      try {
+        const res = await fetch(`${API_BASE}/api/prices/compare/${itemId}`);
+        if (!res.ok) throw new Error(`API responded with ${res.status}`);
+        const rows = await res.json();
+        const withPrice = rows.filter(r => r.avg_price !== null);
+        if (withPrice.length === 0) {
+          compareGrid.innerHTML = '<p class="pivot-state" style="grid-column: 1 / -1;">No price data for this item yet.</p>';
+          return;
+        }
+        // API already sorts cheapest-first; the first is the cheapest.
+        const cheapest = withPrice[0].avg_price;
+        compareGrid.innerHTML = "";
+        withPrice.forEach(r => {
+          const card = document.createElement("div");
+          card.className = "compare-card" + (Number(r.avg_price) === Number(cheapest) ? " cheapest" : "");
+          card.innerHTML = `
+            <div class="store">${r.store_name}</div>
+            <div class="price">$${Number(r.avg_price).toFixed(2)}</div>
+            ${Number(r.avg_price) === Number(cheapest) ? '<span class="tag">Cheapest</span>' : ""}
+          `;
+          compareGrid.appendChild(card);
+        });
+      } catch (err) {
+        compareGrid.innerHTML = `<p class="pivot-state" style="grid-column: 1 / -1;">Could not load comparison: ${err.message}</p>`;
+        console.error("Compare error:", err);
+      }
+    });
+
+    // ── INITIAL LOAD ──
+    function populateMonthSelectors() {
+      // Newest-first; label each by week number for readability.
+      pivotMonths.forEach(m => {
+        const label = monthLabel(m);
+        [startMonth, endMonth].forEach(sel => {
+          const opt = document.createElement("option");
+          opt.value = m;
+          opt.textContent = label;
+          sel.appendChild(opt);
+        });
+      });
+    }
+
+    async function initPivot() {
+      try {
+        const res = await fetch(`${API_BASE}/api/prices`);
+        if (!res.ok) throw new Error(`API responded with ${res.status}`);
+        pivotRaw = await res.json();
+        if (!pivotRaw || pivotRaw.length === 0) {
+          pivotState("No data available yet. Import weekly data and refresh.");
+          return;
+        }
+
+        pivotMonths = [...new Set(pivotRaw.map(r => r.month))].sort((a, b) => new Date(b) - new Date(a));
+
+        // Store filter options
+        const stores = [...new Set(pivotRaw.map(r => r.store_name))].sort();
+        stores.forEach(st => {
+          const opt = document.createElement("option");
+          opt.value = st; opt.textContent = st;
+          storeFilter.appendChild(opt);
+        });
+
+        // From/To month selectors
+        populateMonthSelectors();
+
+        // Compare dropdown — needs item_id, so fetch the items list
+        try {
+          const itemsRes = await fetch(`${API_BASE}/api/items`);
+          if (itemsRes.ok) {
+            pivotItems = await itemsRes.json();
+            pivotItems
+              .slice()
+              .sort((a, b) => a.item_name.localeCompare(b.item_name))
+              .forEach(it => {
+                const opt = document.createElement("option");
+                opt.value = it.item_id;
+                opt.textContent = it.item_name;
+                compareItem.appendChild(opt);
+              });
+          }
+        } catch (_) { /* compare is optional; ignore if items endpoint is unavailable */ }
+
+        renderPivot();
+      } catch (err) {
+        pivotState(`Could not load data: ${err.message}. Make sure the API server is running (node server.js).`);
+        console.error("Pivot table error:", err);
+      }
+    }
+    initPivot();
+  </script>
+</body>
+</html>
