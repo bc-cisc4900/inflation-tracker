@@ -180,9 +180,16 @@
   }
   tbody td.item{font-family:var(--sans);}
   tbody tr:hover{background:var(--paper-raised);}
-  .delta{font-weight:700;}
+  .delta{font-weight:700;display:block;font-size:10.5px;margin-top:2px;}
+  .delta.flat{color:var(--ink-soft);opacity:.7;font-weight:600;}
   .legend{display:flex;gap:18px;margin-top:16px;font-size:12px;color:var(--ink-soft);}
   .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
+  .state-row td{
+    font-family:var(--sans);color:var(--ink-soft);text-align:center;padding:26px 10px;
+  }
+  .state-row.error td{color:var(--stamp);}
+  .zero{opacity:.4;font-family:var(--mono);}
+  .price-cell{display:block;}
 
   footer{
     border-top:1px solid var(--line);padding:26px 0;
@@ -269,47 +276,21 @@
     <p class="desc">Average price per item across all stores, shown by week, newest first. Narrow by store or item, then export the view as a CSV.</p>
 
     <div class="filters">
-      <select><option>All stores (average)</option></select>
-      <input type="text" placeholder="e.g. eggs, bread, coffee…">
-      <select><option>Newest</option></select>
-      <select><option>Oldest</option></select>
+      <select id="storeFilter" aria-label="Filter by store"><option value="">All stores (average)</option></select>
+      <input type="text" id="itemSearch" placeholder="e.g. eggs, bread, coffee…" aria-label="Search items">
+      <select id="fromMonth" aria-label="From month"><option value="">Newest</option></select>
+      <select id="toMonth" aria-label="To month"><option value="">Oldest</option></select>
       <div class="spacer"></div>
-      <button class="export">Export CSV</button>
+      <button class="export" id="resetBtn" style="background:transparent;color:var(--ink);border:1px solid var(--ink);">Reset</button>
+      <button class="export" id="exportBtn">Export CSV</button>
     </div>
 
     <table>
-      <thead>
-        <tr><th>Item</th><th>Sep 2026</th><th>Aug 2026</th><th>Jul 2026</th><th>Annual Avg</th></tr>
+      <thead id="tableHead">
+        <tr><th>Item</th><th>Annual Avg</th></tr>
       </thead>
-      <tbody>
-        <tr>
-          <td class="item">Milk, 1 gal</td>
-          <td>$4.29 <span class="delta up">+4.2%</span></td>
-          <td>$4.12</td>
-          <td>$4.05</td>
-          <td>$4.10</td>
-        </tr>
-        <tr>
-          <td class="item">Eggs, dozen</td>
-          <td>$3.98 <span class="delta up">+9.8%</span></td>
-          <td>$3.62</td>
-          <td>$3.55</td>
-          <td>$3.61</td>
-        </tr>
-        <tr>
-          <td class="item">Bread, loaf</td>
-          <td>$3.11 <span class="delta down">−1.1%</span></td>
-          <td>$3.15</td>
-          <td>$3.10</td>
-          <td>$3.13</td>
-        </tr>
-        <tr>
-          <td class="item">Coffee, 12oz</td>
-          <td>$7.84 <span class="delta up">+2.6%</span></td>
-          <td>$7.64</td>
-          <td>$7.50</td>
-          <td>$7.58</td>
-        </tr>
+      <tbody id="tableBody">
+        <tr class="state-row"><td colspan="10">Loading data from API…</td></tr>
       </tbody>
     </table>
 
@@ -324,9 +305,195 @@
 <footer>
   <div class="wrap" style="display:flex;justify-content:space-between;width:100%;">
     <span>BC Basket — CISC 4900, Brooklyn College</span>
-    <span>UI mockup, not connected to live data</span>
+    <span id="apiStatus">Connecting to API…</span>
   </div>
 </footer>
 
+<script>
+  // ─────────────────────────────────────────────────────────
+  // Live data wiring for BC Basket — mirrors the API contract
+  // used by the original site's index.html:
+  //   GET  /api/prices   -> [{ store_name, item_name, month, week1..week5 }]
+  //   GET  /api/items    -> [{ item_id, item_name }]   (not used on this page)
+  // Change API_BASE if the backend isn't running on localhost:3000.
+  // ─────────────────────────────────────────────────────────
+  const API_BASE = "http://localhost:3000";
+
+  const tableHead   = document.getElementById("tableHead");
+  const tableBody   = document.getElementById("tableBody");
+  const storeFilter = document.getElementById("storeFilter");
+  const itemSearch  = document.getElementById("itemSearch");
+  const fromMonth   = document.getElementById("fromMonth");
+  const toMonth     = document.getElementById("toMonth");
+  const resetBtn    = document.getElementById("resetBtn");
+  const exportBtn   = document.getElementById("exportBtn");
+  const apiStatus   = document.getElementById("apiStatus");
+
+  let raw = [];
+  let months = []; // newest first
+
+  function setState(msg, isError) {
+    tableHead.innerHTML = "<tr><th>Item</th><th>Annual Avg</th></tr>";
+    tableBody.innerHTML = `<tr class="state-row${isError ? " error" : ""}"><td colspan="10">${msg}</td></tr>`;
+  }
+
+  function monthLabel(m) {
+    const i = months.indexOf(m);
+    return i === -1 ? m : `Month ${months.length - i}`;
+  }
+
+  function monthsInRange() {
+    let list = [...months];
+    if (fromMonth.value) {
+      const i = months.indexOf(fromMonth.value);
+      if (i > -1) list = list.filter(m => months.indexOf(m) >= i);
+    }
+    if (toMonth.value) {
+      const i = months.indexOf(toMonth.value);
+      if (i > -1) list = list.filter(m => months.indexOf(m) <= i);
+    }
+    return list;
+  }
+
+  function buildLookup(store, search) {
+    const rows = raw.filter(r => {
+      if (store && r.store_name !== store) return false;
+      if (search && !r.item_name.toLowerCase().includes(search.toLowerCase())) return false;
+      return true;
+    });
+    const lookup = {};
+    rows.forEach(r => {
+      lookup[r.item_name] = lookup[r.item_name] || {};
+      lookup[r.item_name][r.month] = lookup[r.item_name][r.month] || [];
+      [r.week1, r.week2, r.week3, r.week4, r.week5].forEach(w => {
+        const v = parseFloat(w);
+        if (!isNaN(v) && v > 0) lookup[r.item_name][r.month].push(v);
+      });
+    });
+    return lookup;
+  }
+
+  function monthAvg(lookup, item, m) {
+    const p = (lookup[item] && lookup[item][m]) || [];
+    return p.length ? p.reduce((a, b) => a + b, 0) / p.length : null;
+  }
+
+  function annualAvg(lookup, item) {
+    const vals = months.map(m => monthAvg(lookup, item, m)).filter(v => v !== null);
+    return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+  }
+
+  function render() {
+    const store = storeFilter.value;
+    const search = itemSearch.value.trim();
+    const lookup = buildLookup(store, search);
+    const items = Object.keys(lookup).sort();
+    const range = monthsInRange();
+
+    if (items.length === 0) return setState("No items match the current filters.");
+    if (range.length === 0) return setState("No weeks fall in the selected range.");
+
+    const headRow = document.createElement("tr");
+    headRow.innerHTML = "<th>Item</th>" + range.map(m => `<th>${monthLabel(m)}</th>`).join("") + "<th>Annual Avg</th>";
+    tableHead.innerHTML = "";
+    tableHead.appendChild(headRow);
+
+    tableBody.innerHTML = "";
+    items.forEach(name => {
+      const tr = document.createElement("tr");
+      let cells = `<td class="item">${name}</td>`;
+      range.forEach((m, i) => {
+        const avg = monthAvg(lookup, name, m);
+        if (avg === null) {
+          cells += `<td><span class="zero">0</span></td>`;
+        } else {
+          const prev = range[i + 1];
+          const prevAvg = prev ? monthAvg(lookup, name, prev) : null;
+          let delta = `<span class="delta flat">—</span>`;
+          if (prevAvg !== null && prevAvg > 0) {
+            const pct = ((avg - prevAvg) / prevAvg) * 100;
+            const cls = pct > 0.05 ? "up" : pct < -0.05 ? "down" : "flat";
+            const sign = pct > 0 ? "+" : "";
+            delta = `<span class="delta ${cls}">${sign}${pct.toFixed(1)}%</span>`;
+          }
+          cells += `<td><span class="price-cell">$${avg.toFixed(2)}</span>${delta}</td>`;
+        }
+      });
+      const yr = annualAvg(lookup, name);
+      cells += `<td>${yr === null ? "—" : "$" + yr.toFixed(2)}</td>`;
+      tr.innerHTML = cells;
+      tableBody.appendChild(tr);
+    });
+  }
+
+  function exportCSV() {
+    const store = storeFilter.value;
+    const search = itemSearch.value.trim();
+    const lookup = buildLookup(store, search);
+    const items = Object.keys(lookup).sort();
+    const range = monthsInRange();
+    const header = ["Item", ...range.map(monthLabel), "Annual Avg"];
+    const lines = [header.join(",")];
+    items.forEach(name => {
+      const cells = range.map(m => {
+        const avg = monthAvg(lookup, name, m);
+        return avg === null ? "0" : avg.toFixed(2);
+      });
+      const yr = annualAvg(lookup, name);
+      cells.push(yr === null ? "" : yr.toFixed(2));
+      lines.push([`"${name.replace(/"/g, '""')}"`, ...cells].join(","));
+    });
+    const blob = new Blob([lines.join("\n")], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = store ? `bc-basket-${store.replace(/\s+/g, "-").toLowerCase()}.csv` : "bc-basket-all-stores.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  let searchTimer;
+  itemSearch.addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(render, 200); });
+  storeFilter.addEventListener("change", render);
+  fromMonth.addEventListener("change", render);
+  toMonth.addEventListener("change", render);
+  resetBtn.addEventListener("click", () => {
+    storeFilter.value = ""; itemSearch.value = ""; fromMonth.value = ""; toMonth.value = "";
+    render();
+  });
+  exportBtn.addEventListener("click", exportCSV);
+
+  async function init() {
+    try {
+      const res = await fetch(`${API_BASE}/api/prices`);
+      if (!res.ok) throw new Error(`API responded with ${res.status}`);
+      raw = await res.json();
+      if (!raw || raw.length === 0) { setState("No data available yet."); apiStatus.textContent = "Connected — no data yet"; return; }
+
+      months = [...new Set(raw.map(r => r.month))].sort((a, b) => new Date(b) - new Date(a));
+
+      [...new Set(raw.map(r => r.store_name))].sort().forEach(st => {
+        const opt = document.createElement("option");
+        opt.value = st; opt.textContent = st;
+        storeFilter.appendChild(opt);
+      });
+      months.forEach(m => {
+        [fromMonth, toMonth].forEach(sel => {
+          const opt = document.createElement("option");
+          opt.value = m; opt.textContent = monthLabel(m);
+          sel.appendChild(opt);
+        });
+      });
+
+      render();
+      apiStatus.textContent = "Live data connected";
+    } catch (err) {
+      setState(`Could not load data: ${err.message}. Make sure the API server is running (node server.js).`, true);
+      apiStatus.textContent = "API not reachable";
+      console.error("BC Basket fetch error:", err);
+    }
+  }
+  init();
+</script>
 </body>
 </html>
