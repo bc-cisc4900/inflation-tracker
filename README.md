@@ -6,7 +6,9 @@ Link to Group Meeting Notes: https://docs.google.com/document/d/12wIxHZITvYMX94E
 
 Link to Hand-Off Document For Future Groups: https://docs.google.com/document/d/1IPaZB4fUfsX4hqmfqDeX0cIzWxPe7qWQyINxg5CpEE0/edit?usp=sharing
 
-Link to Live Website: https://bc-cisc4900.github.io/inflation-tracker
+Link to Live Website: https://bc-cisc4900.github.io/inflation-tracker/website/WebPivot.html
+
+Link to UI Mockup: https://bc-cisc4900.github.io/inflation-tracker
 
 ## Project Description
 BC-Basket is a Brooklyn College group project that tracks the weekly prices of essential grocery items across multiple stores and compares local grocery price trends over time. The goal of the project is to organize, store, and display grocery price data so users can observe weekly changes, monthly averages, and inflation-related trends.
