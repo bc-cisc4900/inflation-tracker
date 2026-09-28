@@ -13,12 +13,18 @@ Link to UI Mockup: https://bc-cisc4900.github.io/inflation-tracker
 ## Project Description
 BC-Basket is a Brooklyn College group project that tracks the weekly prices of essential grocery items across multiple stores and compares local grocery price trends over time. The goal of the project is to organize, store, and display grocery price data so users can observe weekly changes, monthly averages, and inflation-related trends.
 
-### Team Members
+### Team Members (Spring/Summer 2026)
 - Gabriel Krishtul — Project Manager, Database Architect
 - Andrew Castillo-Fajardo — Fullstack Developer
 - Yuan Ruan — Frontend Developer
 - Mohamed Massoud — Database Architect, Web Developer
 - Nicholas Cai — Data Collection, QA
+
+### Team Members (Fall 2026)
+- Edmond Mathelier (Project Manager, Database Architect, Data Collection)
+- Kenneth Ouy (Data Collection, Frontend Developer)
+- Lejla Lukacevic (Data Collection, QA)
+- Seth Fernandez (Data Collection, Backend Developer)
 
 ## Repository Structure
 - `website/` - project website files
