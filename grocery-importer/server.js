@@ -39,12 +39,71 @@ const { Pool }   = require('pg');  // PostgreSQL driver
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+// Public-facing store aliases.
+// Real store names remain in Supabase and are used locally for imports.
+const PUBLIC_STORE_NAMES = {
+  'Aldi': 'Store 1',
+  'Fresh Direct': 'Store 2',
+  'Key Food': 'Store 3',
+  'Stop & Shop': 'Store 4',
+  "Trader Joe's": 'Store 5',
+  'Target': 'Store 6'
+};
+
+function anonymizeStoreData(value) {
+  if (Array.isArray(value)) {
+    return value.map(anonymizeStoreData);
+  }
+
+  if (value && typeof value === 'object') {
+    const copy = {};
+
+    for (const [key, item] of Object.entries(value)) {
+      if (key === 'store_name' && typeof item === 'string') {
+        copy[key] = PUBLIC_STORE_NAMES[item] || 'Store';
+      } else {
+        copy[key] = anonymizeStoreData(item);
+      }
+    }
+
+    return copy;
+  }
+
+  return value;
+}
+
 // All stores that should always have a record, even if missing from the CSV
 const ALL_STORES = ['Aldi', 'Fresh Direct', 'Key Food', 'Stop & Shop', "Trader Joe's"];
 
 // --- MIDDLEWARE ---
 app.use(express.json());
 app.use(cors()); // Allow requests from the frontend on a different machine
+
+// On the public deployment, replace real store names before JSON leaves the API.
+app.use((req, res, next) => {
+  const originalJson = res.json.bind(res);
+
+  res.json = (body) => {
+    if (process.env.PUBLIC_ANONYMIZE_STORES === 'true') {
+      body = anonymizeStoreData(body);
+    }
+
+    return originalJson(body);
+  };
+
+  next();
+});
+
+// Block database-changing API routes when deployed publicly.
+function blockPublicWrites(req, res, next) {
+  if (process.env.PUBLIC_READ_ONLY === 'true') {
+    return res.status(403).json({
+      error: 'Write operations are disabled on the public API.'
+    });
+  }
+
+  next();
+}
 
 // Multer handles CSV file uploads, storing them temporarily in /tmp
 const upload = multer({ dest: os.tmpdir() });
@@ -218,7 +277,7 @@ app.get('/api/status/:month/:week', async (req, res) => {
 
 // POST /api/import/:month/:week - upload a CSV and trigger an import
 // Example: POST /api/import/2026-02-04/1
-app.post('/api/import/:month/:week', upload.single('file'), async (req, res) => {
+app.post('/api/import/:month/:week', blockPublicWrites, upload.single('file'), async (req, res) => {
   const { month, week } = req.params;
   const weekColumn = `week${week}`;
   const weekNumber = parseInt(week);
@@ -334,7 +393,7 @@ app.post('/api/import/:month/:week', upload.single('file'), async (req, res) => 
 
 // POST /api/finalize/:month - calculate and store monthly_avg for all records in a month
 // Example: POST /api/finalize/2026-02-04
-app.post('/api/finalize/:month', async (req, res) => {
+app.post('/api/finalize/:month', blockPublicWrites, async (req, res) => {
   const { month } = req.params;
 
   if (!/^\d{4}-\d{2}-\d{2}$/.test(month)) {
@@ -632,7 +691,7 @@ app.get('/api/monthly-avg/pivot', async (req, res) => {
 });
 
 // --- START SERVER ---
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Inflation Tracker API running on http://localhost:${PORT}`);
   console.log(`Endpoints:`);
   console.log(`  GET  /api/status/:month/:week       e.g. /api/status/2026-02-04/1`);
