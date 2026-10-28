@@ -338,10 +338,14 @@
   }
 
   function monthLabel(m) {
-    const i = months.indexOf(m);
-    return i === -1 ? m : `Month ${months.length - i}`;
-  }
+  const [year, month] = m.split("-").map(Number);
 
+  return new Date(year, month - 1, 1).toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric"
+  });
+}
+  
   function monthsInRange() {
     let list = [...months];
     if (fromMonth.value) {
