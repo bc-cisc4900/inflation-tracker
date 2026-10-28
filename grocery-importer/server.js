@@ -55,6 +55,11 @@ function anonymizeStoreData(value) {
     return value.map(anonymizeStoreData);
   }
 
+  // Preserve PostgreSQL date values.
+  if (value instanceof Date) {
+    return value;
+  }
+
   if (value && typeof value === 'object') {
     const copy = {};
 
@@ -451,7 +456,7 @@ app.get('/api/prices', async (req, res) => {
       SELECT
         i.item_name, i.category,
         s.store_name,
-        pr.month,
+        TO_CHAR(DATE_TRUNC('month', pr.month),'YYYY-MM-DD') AS month,
         pr.week1, pr.week2, pr.week3, pr.week4, pr.week5,
         pr.monthly_avg
       FROM price_records pr
