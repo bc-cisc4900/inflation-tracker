@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BC Basket — Simple Price Dashboard</title>
+  <style>
+    :root{
+      --green:#0f6b36;
+      --green-dark:#084f27;
+      --green-soft:#eaf7ee;
+      --yellow:#ffe65a;
+      --yellow-soft:#fff7c2;
+      --orange:#f28c18;
+      --red:#c7352c;
+      --down:#168447;
+      --ink:#17221b;
+      --muted:#5d6a61;
+      --line:#cfd9d1;
+      --paper:#ffffff;
+      --bg:#f4f7f4;
+      --blue:#1769aa;
+      --purple:#6d3dc1;
+    }
+
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;}
+    body{min-height:100vh;}
+
+    .page{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    header{
+      background:#fff;
+      border-bottom:2px solid var(--green);
+      padding:10px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:260px;
+    }
+
+    .cart{
+      font-size:34px;
+      line-height:1;
+    }
+
+    .brand-title{
+      margin:0;
+      color:var(--green);
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:-0.5px;
+    }
+
+    .brand-sub{
+      margin:2px 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .small-link,
+    .mode-btn{
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--ink);
+      padding:9px 12px;
+      border-radius:8px;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .mode-btn.active{
+      background:var(--green);
+      color:#fff;
+      border-color:var(--green);
+    }
+
+    .info-row{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      padding:10px 20px 8px;
+      background:#fff;
+    }
+
+    .info-card{
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:10px 12px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      min-height:70px;
+    }
+
+    .info-card.goal{background:#effaf2;}
+    .info-card.flow{background:#eef6ff;}
+    .info-card.live{background:#f6efff;}
+
+    .info-icon{
+      font-size:28px;
+      line-height:1;
+      margin-top:1px;
+    }
+
+    .info-card h3{
+      margin:0 0 3px;
+      font-size:15px;
+    }
+
+    .goal h3{color:var(--green);}
+    .flow h3{color:var(--blue);}
+    .live h3{color:var(--purple);}
+
+    .info-card p{
+      margin:0;
+      color:#344139;
+      font-size:12.5px;
+      line-height:1.3;
+    }
+
+    main{
+      padding:8px 16px 12px;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+
+    .attention{
+      position:relative;
+      background:linear-gradient(90deg,var(--yellow-soft),var(--yellow),var(--yellow-soft));
+      border:2px solid #efcd00;
+      border-radius:12px 12px 0 0;
+      text-align:center;
+      padding:8px 70px 7px;
+      overflow:hidden;
+    }
+
+    .attention h1{
+      margin:0;
+      color:var(--green-dark);
+      font-size:clamp(22px,2.5vw,38px);
+      line-height:1.05;
+      font-weight:1000;
+      letter-spacing:.2px;
+    }
+
+    .attention p{
+      margin:4px 0 0;
+      font-size:14px;
+      font-weight:700;
+      color:#2c3b31;
+    }
+
+    .attention-arrow{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      color:var(--orange);
+      font-size:44px;
+      font-weight:900;
+      animation:pulseArrow 1.8s ease-in-out infinite;
+      user-select:none;
+    }
+
+    .attention-arrow.left{left:16px;}
+    .attention-arrow.right{right:16px;}
+
+    @keyframes pulseArrow{
+      0%,100%{transform:translateY(-50%) scale(1);opacity:.75;}
+      50%{transform:translateY(-50%) scale(1.15);opacity:1;}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .attention-arrow{animation:none;}
+    }
+
+    .table-shell{
+      background:#fff;
+      border:3px solid #c7da00;
+      border-top:none;
+      border-radius:0 0 12px 12px;
+      box-shadow:0 5px 18px rgba(19,62,34,.10);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      flex:1;
+    }
+
+    .controls{
+      display:grid;
+      grid-template-columns:1.05fr 1.5fr .9fr .9fr .9fr auto auto;
+      gap:8px;
+      padding:10px;
+      align-items:end;
+      background:#f5fbf6;
+      border-bottom:1px solid var(--line);
+    }
+
+    .control{
+      min-width:0;
+    }
+
+    .control label{
+      display:block;
+      font-size:11px;
+      font-weight:800;
+      margin:0 0 4px;
+      color:#3d4b42;
+      text-transform:uppercase;
+      letter-spacing:.35px;
+    }
+
+    select,input,button{
+      font:inherit;
+    }
+
+    select,input{
+      width:100%;
+      height:38px;
+      border:1px solid #bfcac2;
+      border-radius:7px;
+      background:#fff;
+      color:var(--ink);
+      padding:0 10px;
+      font-size:13px;
+    }
+
+    .action-btn{
+      height:38px;
+      border-radius:7px;
+      border:1px solid var(--green);
+      padding:0 14px;
+      font-size:13px;
+      font-weight:800;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .reset{
+      background:#fff;
+      color:var(--green-dark);
+    }
+
+    .export{
+      background:var(--green);
+      color:#fff;
+    }
+
+    .sort-note{
+      grid-column:1/-1;
+      margin:-2px 0 0;
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .sort-note strong{color:var(--green);}
+
+    .table-wrap{
+      overflow:auto;
+      flex:1;
+      min-height:250px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      font-size:13px;
+      min-width:860px;
+    }
+
+    thead th{
+      position:sticky;
+      top:0;
+      z-index:4;
+      background:var(--green);
+      color:#fff;
+      padding:10px 9px;
+      text-align:left;
+      border-right:1px solid rgba(255,255,255,.24);
+      white-space:nowrap;
+    }
+
+    tbody td{
+      padding:9px 9px;
+      border-right:1px solid #dfe6e0;
+      border-bottom:1px solid #dfe6e0;
+      background:#fff;
+      white-space:nowrap;
+    }
+
+    tbody tr:nth-child(even) td{background:#f7faf7;}
+    tbody tr:hover td{background:#fffbd8;}
+
+    th:first-child,
+    td:first-child{
+      position:sticky;
+      left:0;
+      z-index:3;
+    }
+
+    thead th:first-child{z-index:5;}
+    tbody tr:nth-child(odd) td:first-child{background:#fff;}
+    tbody tr:nth-child(even) td:first-child{background:#f7faf7;}
+    tbody tr:hover td:first-child{background:#fffbd8;}
+
+    .item-name{
+      font-weight:800;
+      min-width:190px;
+    }
+
+    .price{
+      display:inline-block;
+      font-weight:800;
+      margin-right:5px;
+    }
+
+    .delta{
+      display:inline-block;
+      font-size:11px;
+      font-weight:900;
+    }
+
+    .delta.up{color:var(--red);}
+    .delta.down{color:var(--down);}
+    .delta.flat{color:#79847d;}
+
+    .state{
+      text-align:center;
+      padding:28px !important;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .statusbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      padding:7px 10px;
+      background:#fff;
+      color:var(--muted);
+      font-size:11.5px;
+      border-top:1px solid var(--line);
+      flex-wrap:wrap;
+    }
+
+    .tip strong{color:var(--green-dark);}
+
+    @media (max-width:1000px){
+      .controls{
+        grid-template-columns:repeat(3,1fr);
+      }
+      .action-btn{width:100%;}
+      .info-row{grid-template-columns:1fr;}
+      .attention{padding-left:58px;padding-right:58px;}
+    }
+
+    @media (max-width:650px){
+      header{padding:9px 12px;}
+      .info-row{padding:8px 12px;}
+      main{padding:6px 8px 10px;}
+      .controls{grid-template-columns:1fr 1fr;}
+      .attention h1{font-size:22px;}
+      .attention p{font-size:12px;}
+      .attention-arrow{font-size:34px;}
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="brand">
+      <div class="cart" aria-hidden="true">🛒</div>
+      <div>
+        <h2 class="brand-title">BC Basket</h2>
+        <p class="brand-sub">Brooklyn College Grocery Price Tracker</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="mode-btn active" id="currentModeBtn">Current Data</button>
+      <button class="mode-btn" id="historicalModeBtn">Historical Data</button>
+      <a class="small-link" href="index.html">Original Design</a>
+    </div>
+  </header>
+
+  <section class="info-row">
+    <article class="info-card goal">
+      <div class="info-icon">🎯</div>
+      <div>
+        <h3>Main Goal</h3>
+        <p>Make grocery prices easy to see, compare, and understand.</p>
+      </div>
+    </article>
+
+    <article class="info-card flow">
+      <div class="info-icon">⚙️</div>
+      <div>
+        <h3>Core Workflow</h3>
+        <p>Choose a store → set a date range → search an item → compare monthly prices.</p>
+      </div>
+    </article>
+
+    <article class="info-card live">
+      <div class="info-icon">📊</div>
+      <div>
+        <h3>Live Interaction</h3>
+        <p>Filter, search, sort, compare prices across months, and export the table as CSV.</p>
+      </div>
+    </article>
+  </section>
+
+  <main>
+    <section class="attention">
+      <div class="attention-arrow left" aria-hidden="true">➜</div>
+      <h1 id="tableTitle">START HERE: CURRENT GROCERY PRICE TABLE</h1>
+      <p id="tableSubtitle">See what groceries cost now and how prices changed from month to month.</p>
+      <div class="attention-arrow right" aria-hidden="true">⬅</div>
+    </section>
+
+    <section class="table-shell">
+      <div class="controls">
+        <div class="control">
+          <label for="storeFilter">Filter by store</label>
+          <select id="storeFilter">
+            <option value="">All Stores (average)</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label for="itemSearch">Search item</label>
+          <input id="itemSearch" type="text" placeholder="e.g. eggs, milk, bread..." />
+        </div>
+
+        <div class="control">
+          <label for="fromMonth">From</label>
+          <select id="fromMonth"><option value="">Newest</option></select>
+        </div>
+
+        <div class="control">
+          <label for="toMonth">To</label>
+          <select id="toMonth"><option value="">Oldest</option></select>
+        </div>
+
+        <div class="control">
+          <label for="sortOrder">Sort</label>
+          <select id="sortOrder">
+            <option value="newest">Newest to oldest</option>
+            <option value="oldest">Oldest to newest</option>
+          </select>
+        </div>
+
+        <button class="action-btn reset" id="resetBtn">Reset</button>
+        <button class="action-btn export" id="exportBtn">Export CSV</button>
+
+        <div class="sort-note">
+          <strong>Tip:</strong> The table opens with the newest available month first. Red ▲ means price increased; green ▼ means price decreased.
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead id="tableHead">
+            <tr><th>Item</th><th>Loading...</th></tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td class="state" colspan="12">Loading live price data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="statusbar">
+        <div class="tip"><strong>Why this matters:</strong> Compare the same grocery item across months and stores at a glance.</div>
+        <div id="apiStatus">Connecting to API...</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  const API_BASE = "https://inflation-tracker-heg5.onrender.com";
+  const CURRENT_DATA_START = "2026-09-01";
+
+  const tableHead = document.getElementById("tableHead");
+  const tableBody = document.getElementById("tableBody");
+  const storeFilter = document.getElementById("storeFilter");
+  const itemSearch = document.getElementById("itemSearch");
+  const fromMonth = document.getElementById("fromMonth");
+  const toMonth = document.getElementById("toMonth");
+  const sortOrder = document.getElementById("sortOrder");
+  const resetBtn = document.getElementById("resetBtn");
+  const exportBtn = document.getElementById("exportBtn");
+  const apiStatus = document.getElementById("apiStatus");
+  const currentModeBtn = document.getElementById("currentModeBtn");
+  const historicalModeBtn = document.getElementById("historicalModeBtn");
+  const tableTitle = document.getElementById("tableTitle");
+  const tableSubtitle = document.getElementById("tableSubtitle");
+
+  let raw = [];
+  let mode = "current";
+  let months = [];
+
+  function monthLabel(value) {
+    const [year, month] = value.split("-").map(Number);
+    return new Date(year, month - 1, 1).toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric"
+    });
+  }
+
+  function modeRows() {
+    return raw.filter(r => {
+      if (!r.month) return false;
+      return mode === "current"
+        ? r.month >= CURRENT_DATA_START
+        : r.month < CURRENT_DATA_START;
+    });
+  }
+
+  function rebuildMonthsAndFilters() {
+    const rows = modeRows();
+    months = [...new Set(rows.map(r => r.month))]
+      .sort((a, b) => new Date(b) - new Date(a));
+
+    fromMonth.innerHTML = '<option value="">Newest</option>';
+    toMonth.innerHTML = '<option value="">Oldest</option>';
+
+    months.forEach(m => {
+      [fromMonth, toMonth].forEach(sel => {
+        const opt = document.createElement("option");
+        opt.value = m;
+        opt.textContent = monthLabel(m);
+        sel.appendChild(opt);
+      });
+    });
+
+    fromMonth.value = "";
+    toMonth.value = "";
+  }
+
+  function monthsInRange() {
+    let list = [...months];
+
+    if (sortOrder.value === "oldest") {
+      list.reverse();
+    }
+
+    const newestSorted = [...months];
+
+    if (fromMonth.value) {
+      const fromIndex = newestSorted.indexOf(fromMonth.value);
+      if (fromIndex > -1) {
+        list = list.filter(m => newestSorted.indexOf(m) >= fromIndex);
+      }
+    }
+
+    if (toMonth.value) {
+      const toIndex = newestSorted.indexOf(toMonth.value);
+      if (toIndex > -1) {
+        list = list.filter(m => newestSorted.indexOf(m) <= toIndex);
+      }
+    }
+
+    return list;
+  }
+
+  function buildLookup(store, search) {
+    const rows = modeRows().filter(r => {
+      if (store && r.store_name !== store) return false;
+      if (search && !r.item_name.toLowerCase().includes(search.toLowerCase())) return false;
+      return true;
+    });
+
+    const lookup = {};
+
+    rows.forEach(r => {
+      if (!lookup[r.item_name]) lookup[r.item_name] = {};
+      if (!lookup[r.item_name][r.month]) lookup[r.item_name][r.month] = [];
+
+      [r.week1, r.week2, r.week3, r.week4, r.week5].forEach(w => {
+        const value = parseFloat(w);
+        if (!Number.isNaN(value) && value > 0) {
+          lookup[r.item_name][r.month].push(value);
+        }
+      });
+    });
+
+    return lookup;
+  }
+
+  function monthAvg(lookup, item, month) {
+    const values = lookup[item]?.[month] || [];
+    return values.length
+      ? values.reduce((sum, value) => sum + value, 0) / values.length
+      : null;
+  }
+
+  function deltaMarkup(current, previous) {
+    if (current === null || previous === null || previous <= 0) {
+      return '<span class="delta flat">—</span>';
+    }
+
+    const pct = ((current - previous) / previous) * 100;
+    if (Math.abs(pct) < 0.05) {
+      return '<span class="delta flat">0.0%</span>';
+    }
+
+    if (pct > 0) {
+      return `<span class="delta up">▲ +${pct.toFixed(1)}%</span>`;
+    }
+
+    return `<span class="delta down">▼ ${pct.toFixed(1)}%</span>`;
+  }
+
+  function render() {
+    const rows = modeRows();
+
+    if (!rows.length) {
+      tableHead.innerHTML = "<tr><th>Item</th><th>No months available</th></tr>";
+      tableBody.innerHTML = `<tr><td class="state" colspan="12">${
+        mode === "current"
+          ? "No current-group data is available yet."
+          : "No historical data is available."
+      }</td></tr>`;
+      return;
+    }
+
+    const lookup = buildLookup(storeFilter.value, itemSearch.value.trim());
+    const items = Object.keys(lookup).sort();
+    const range = monthsInRange();
+
+    if (!items.length) {
+      tableBody.innerHTML = '<tr><td class="state" colspan="12">No items match the current filters.</td></tr>';
+      return;
+    }
+
+    const chronological = [...months].sort((a, b) => new Date(a) - new Date(b));
+
+    tableHead.innerHTML =
+      "<tr><th>Item</th>" +
+      range.map(m => `<th>${monthLabel(m)}</th>`).join("") +
+      "</tr>";
+
+    tableBody.innerHTML = "";
+
+    items.forEach(item => {
+      const tr = document.createElement("tr");
+      let html = `<td class="item-name">${item}</td>`;
+
+      range.forEach(m => {
+        const avg = monthAvg(lookup, item, m);
+        const chronIndex = chronological.indexOf(m);
+        const previousMonth = chronIndex > 0 ? chronological[chronIndex - 1] : null;
+        const previousAvg = previousMonth ? monthAvg(lookup, item, previousMonth) : null;
+
+        if (avg === null) {
+          html += "<td>—</td>";
+        } else {
+          html += `<td><span class="price">$${avg.toFixed(2)}</span>${deltaMarkup(avg, previousAvg)}</td>`;
+        }
+      });
+
+      tr.innerHTML = html;
+      tableBody.appendChild(tr);
+    });
+  }
+
+  function setMode(nextMode) {
+    mode = nextMode;
+
+    currentModeBtn.classList.toggle("active", mode === "current");
+    historicalModeBtn.classList.toggle("active", mode === "historical");
+
+    if (mode === "current") {
+      tableTitle.textContent = "START HERE: CURRENT GROCERY PRICE TABLE";
+      tableSubtitle.textContent = "See what groceries cost now and how prices changed from month to month.";
+    } else {
+      tableTitle.textContent = "HISTORICAL PRICE DATA";
+      tableSubtitle.textContent = "Previous-group data is kept separate so the current semester stays easy to understand.";
+    }
+
+    rebuildMonthsAndFilters();
+    render();
+  }
+
+  function exportCSV() {
+    const lookup = buildLookup(storeFilter.value, itemSearch.value.trim());
+    const items = Object.keys(lookup).sort();
+    const range = monthsInRange();
+
+    const lines = [
+      ["Item", ...range.map(monthLabel)].map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")
+    ];
+
+    items.forEach(item => {
+      const row = [item, ...range.map(m => {
+        const avg = monthAvg(lookup, item, m);
+        return avg === null ? "" : avg.toFixed(2);
+      })];
+
+      lines.push(row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(","));
+    });
+
+    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = mode === "current"
+      ? "bc-basket-current-data.csv"
+      : "bc-basket-historical-data.csv";
+
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function init() {
+    try {
+      const response = await fetch(`${API_BASE}/api/prices`);
+      if (!response.ok) throw new Error(`API responded with ${response.status}`);
+
+      raw = await response.json();
+
+      const stores = [...new Set(raw.map(r => r.store_name).filter(Boolean))].sort();
+      stores.forEach(store => {
+        const opt = document.createElement("option");
+        opt.value = store;
+        opt.textContent = store;
+        storeFilter.appendChild(opt);
+      });
+
+      apiStatus.textContent = `Live API connected • ${raw.length} linked records`;
+      setMode("current");
+    } catch (error) {
+      tableBody.innerHTML = `<tr><td class="state" colspan="12">Could not load live data: ${error.message}</td></tr>`;
+      apiStatus.textContent = "API not reachable";
+      console.error(error);
+    }
+  }
+
+  let searchTimer;
+
+  itemSearch.addEventListener("input", () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(render, 180);
+  });
+
+  storeFilter.addEventListener("change", render);
+  fromMonth.addEventListener("change", render);
+  toMonth.addEventListener("change", render);
+  sortOrder.addEventListener("change", render);
+
+  resetBtn.addEventListener("click", () => {
+    storeFilter.value = "";
+    itemSearch.value = "";
+    fromMonth.value = "";
+    toMonth.value = "";
+    sortOrder.value = "newest";
+    render();
+  });
+
+  exportBtn.addEventListener("click", exportCSV);
+  currentModeBtn.addEventListener("click", () => setMode("current"));
+  historicalModeBtn.addEventListener("click", () => setMode("historical"));
+
+  init();
+</script>
+</body>
+</html>
