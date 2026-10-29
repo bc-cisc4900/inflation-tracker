@@ -278,6 +278,16 @@
     }
 
     .sort-note strong{color:var(--green);}
+    
+    .tip-up{
+      color:var(--red);
+      font-weight:900;
+    }
+    
+    .tip-down{
+      color:var(--down);
+      font-weight:900;
+    }
 
     .table-wrap{
       overflow:auto;
@@ -437,10 +447,10 @@
 
   <main>
     <section class="attention">
-      <div class="attention-arrow left" aria-hidden="true">➜</div>
+      <div class="attention-arrow left" aria-hidden="true">↘</div>
       <h1 id="tableTitle">LOOK HERE: CURRENT GROCERY PRICE TABLE</h1>
       <p id="tableSubtitle">See what groceries cost now and how prices changed from month to month.</p>
-      <div class="attention-arrow right" aria-hidden="true">⬅</div>
+      <div class="attention-arrow right" aria-hidden="true">↙</div>
     </section>
 
     <section class="table-shell">
@@ -479,7 +489,9 @@
         <button class="action-btn export" id="exportBtn">Export CSV</button>
 
         <div class="sort-note">
-          <strong>Tip:</strong> The table opens with the newest available month first. Red ▲ means price increased; green ▼ means price decreased.
+          <strong>Tip:</strong> The table opens with the newest available month first.
+          <span class="tip-up">Red ▲</span> means price increased;
+          <span class="tip-down">Green ▼</span> means price decreased.
         </div>
       </div>
 
