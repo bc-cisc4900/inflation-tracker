@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BC Basket — UI Mockup</title>
+<style>
+  :root{
+    --ink:#1E2A1E;
+    --ink-soft:#4B564A;
+    --paper:#F3F5EE;
+    --paper-raised:#FFFFFF;
+    --line:#D9DFD0;
+    --forest:#2F4A32;
+    --forest-deep:#1E3220;
+    --stamp:#9C3B27;
+    --fell:#3F7D45;
+    --mono: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    --sans: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  /* NAV */
+  header{
+    border-bottom:1px solid var(--line);
+    background:var(--paper);
+    position:sticky;top:0;z-index:20;
+  }
+  nav{
+    display:flex;align-items:baseline;justify-content:space-between;
+    padding:20px 0;
+  }
+  .wordmark{
+    font-family:var(--serif);
+    font-size:22px;font-weight:700;letter-spacing:-0.01em;
+  }
+  .wordmark span{color:var(--forest);}
+  .navlinks{display:flex;gap:28px;font-size:14px;}
+  .navlinks a{
+    text-decoration:none;color:var(--ink-soft);
+    padding-bottom:4px;border-bottom:1px solid transparent;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .navlinks a:hover{color:var(--ink);border-color:var(--forest);}
+  .navlinks a.current{color:var(--ink);border-color:var(--forest);}
+
+  /* HERO */
+  .hero{
+    padding:76px 0 64px;
+    display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;
+  }
+  .kicker{
+    font-family:var(--mono);font-size:12px;color:var(--forest);
+    margin:0 0 18px;letter-spacing:0.02em;
+  }
+  h1{
+    font-family:var(--serif);
+    font-size:52px;line-height:1.08;font-weight:700;
+    margin:0 0 22px;letter-spacing:-0.01em;
+    max-width:620px;
+  }
+  .lede{
+    font-size:16.5px;color:var(--ink-soft);max-width:520px;margin:0 0 30px;
+  }
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px;}
+  .btn{
+    font-size:14px;font-weight:600;padding:12px 20px;border-radius:3px;
+    text-decoration:none;display:inline-block;cursor:pointer;border:1px solid transparent;
+  }
+  .btn-primary{background:var(--forest);color:#fff;}
+  .btn-primary:hover{background:var(--forest-deep);}
+  .btn-secondary{background:transparent;border-color:var(--ink);color:var(--ink);}
+  .btn-secondary:hover{background:var(--ink);color:var(--paper);}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;}
+  .tag{
+    font-family:var(--mono);font-size:11px;color:var(--ink-soft);
+    border:1px solid var(--line);padding:4px 9px;border-radius:2px;
+  }
+
+  /* RECEIPT CARD */
+  .receipt-holder{
+    display:flex;justify-content:center;
+    animation:drop 700ms cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes drop{
+    from{opacity:0;transform:translateY(-24px) rotate(0deg);}
+    to{opacity:1;transform:translateY(0) rotate(-2.2deg);}
+  }
+  .receipt{
+    width:300px;background:var(--paper-raised);
+    padding:26px 22px 22px;
+    font-family:var(--mono);font-size:12.5px;color:var(--ink);
+    box-shadow:0 18px 34px rgba(30,42,30,0.16);
+    transform:rotate(-2.2deg);
+    clip-path: polygon(
+      0% 1%, 4% 0%, 8% 1%, 12% 0%, 16% 1%, 20% 0%, 24% 1%, 28% 0%, 32% 1%, 36% 0%,
+      40% 1%, 44% 0%, 48% 1%, 52% 0%, 56% 1%, 60% 0%, 64% 1%, 68% 0%, 72% 1%, 76% 0%,
+      80% 1%, 84% 0%, 88% 1%, 92% 0%, 96% 1%, 100% 0%,
+      100% 100%, 96% 99%, 92% 100%, 88% 99%, 84% 100%, 80% 99%, 76% 100%, 72% 99%,
+      68% 100%, 64% 99%, 60% 100%, 56% 99%, 52% 100%, 48% 99%, 44% 100%, 40% 99%,
+      36% 100%, 32% 99%, 28% 100%, 24% 99%, 20% 100%, 16% 99%, 12% 100%, 8% 99%, 4% 100%, 0% 99%
+    );
+  }
+  .receipt .title{font-family:var(--serif);font-weight:700;font-size:15px;text-align:center;margin-bottom:2px;}
+  .receipt .sub{text-align:center;color:var(--ink-soft);font-size:10.5px;margin-bottom:14px;}
+  .receipt hr{border:none;border-top:1px dashed var(--line);margin:12px 0;}
+  .rline{display:flex;justify-content:space-between;padding:4px 0;}
+  .rline .name{color:var(--ink);}
+  .rline .chg{font-weight:700;}
+  .up{color:var(--stamp);}
+  .down{color:var(--fell);}
+  .receipt .total{display:flex;justify-content:space-between;font-weight:700;font-size:13px;margin-top:10px;}
+  .receipt .barcode{
+    margin-top:16px;height:28px;
+    background:repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 5px);
+    opacity:.85;
+  }
+
+  /* FIELD NOTES */
+  .notes{
+    border-top:1px solid var(--line);
+    padding:56px 0;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+  }
+  .note{
+    padding:0 30px;
+  }
+  .note + .note{border-left:1px solid var(--line);}
+  .note .label{
+    font-family:var(--mono);font-size:11px;color:var(--forest);margin-bottom:10px;
+  }
+  .note p{
+    font-family:var(--serif);font-size:18px;line-height:1.4;margin:0;color:var(--ink);
+  }
+
+  /* SUMMARY SECTION */
+  .summary{
+    padding:64px 0 90px;
+    border-top:1px solid var(--line);
+  }
+  .summary h2{
+    font-family:var(--serif);font-size:28px;margin:0 0 8px;
+  }
+  .summary .desc{color:var(--ink-soft);font-size:14.5px;margin:0 0 26px;max-width:640px;}
+
+  .filters{
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+    padding-bottom:14px;margin-bottom:0;border-bottom:1px solid var(--line);
+  }
+  .filters select, .filters input{
+    font-family:var(--sans);font-size:13px;
+    border:1px solid var(--line);background:var(--paper-raised);
+    padding:9px 12px;border-radius:3px;color:var(--ink);
+  }
+  .filters .spacer{flex:1;}
+  .filters .export{
+    font-family:var(--sans);font-size:13px;font-weight:600;
+    background:var(--forest);color:#fff;border:none;padding:10px 16px;
+    border-radius:3px;cursor:pointer;
+  }
+  .filters .export:hover{background:var(--forest-deep);}
+
+  table{width:100%;border-collapse:collapse;margin-top:0;font-size:13.5px;}
+  thead th{
+    text-align:left;font-family:var(--mono);font-weight:400;font-size:11px;
+    color:var(--ink-soft);padding:12px 10px;border-bottom:1px solid var(--line);
+  }
+  tbody td{
+    padding:13px 10px;border-bottom:1px solid var(--line);font-family:var(--mono);
+  }
+  tbody td.item{font-family:var(--sans);}
+  tbody tr:hover{background:var(--paper-raised);}
+  .delta{font-weight:700;display:block;font-size:10.5px;margin-top:2px;}
+  .delta.flat{color:var(--ink-soft);opacity:.7;font-weight:600;}
+  .legend{display:flex;gap:18px;margin-top:16px;font-size:12px;color:var(--ink-soft);}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
+  .state-row td{
+    font-family:var(--sans);color:var(--ink-soft);text-align:center;padding:26px 10px;
+  }
+  .state-row.error td{color:var(--stamp);}
+  .zero{opacity:.4;font-family:var(--mono);}
+  .price-cell{display:block;}
+
+  footer{
+    border-top:1px solid var(--line);padding:26px 0;
+    display:flex;justify-content:space-between;font-size:12px;color:var(--ink-soft);
+  }
+
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr;}
+    .notes{grid-template-columns:1fr;}
+    .note + .note{border-left:none;border-top:1px solid var(--line);padding-top:26px;margin-top:26px;}
+    h1{font-size:38px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="wordmark">BC <span>Basket</span></div>
+      <div class="navlinks">
+        <a href="#" class="current">Home</a>
+        <a href="#">Price Summary</a>
+        <a href="#">Compare</a>
+        <a href="#">Spreadsheet</a>
+        <a href="#">Method</a>
+        <a href="#">Credits</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <p class="kicker">BROOKLYN COLLEGE &nbsp;·&nbsp; CISC 4900 STUDENT RESEARCH</p>
+      <h1>Grocery inflation, tracked one receipt at a time.</h1>
+      <p class="lede">BC Basket follows real prices across 5 local stores every week, turning ordinary receipts into a running record of what groceries actually cost — and how fast that's changing.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#">Open Price Summary</a>
+        <a class="btn btn-secondary" href="#">View Full Spreadsheet</a>
+      </div>
+      <div class="tags">
+        <span class="tag">weekly collection</span>
+        <span class="tag">monthly averages</span>
+        <span class="tag">anonymized stores</span>
+      </div>
+    </div>
+
+    <div class="receipt-holder">
+      <div class="receipt">
+        <div class="title">BC BASKET</div>
+        <div class="sub">WEEK OF SEP 08 &nbsp;·&nbsp; 5 STORES AVG</div>
+        <hr>
+        <div class="rline"><span class="name">Milk, 1 gal</span><span class="chg up">+4.2%</span></div>
+        <div class="rline"><span class="name">Eggs, dozen</span><span class="chg up">+9.8%</span></div>
+        <div class="rline"><span class="name">Bread, loaf</span><span class="chg down">−1.1%</span></div>
+        <div class="rline"><span class="name">Coffee, 12oz</span><span class="chg up">+2.6%</span></div>
+        <div class="rline"><span class="name">Bananas, lb</span><span class="chg down">−0.4%</span></div>
+        <hr>
+        <div class="total"><span>BASKET INDEX</span><span class="up">+3.0%</span></div>
+        <div class="barcode"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="notes">
+    <div class="note">
+      <div class="label">MAIN GOAL</div>
+      <p>Measure how grocery prices move over time — not just what a single item costs today.</p>
+    </div>
+    <div class="note">
+      <div class="label">CORE WORKFLOW</div>
+      <p>Collect prices, organize the data, store the records, then present the trends.</p>
+    </div>
+    <div class="note">
+      <div class="label">LIVE INTERACTION</div>
+      <p>Explore results by store and item, then export exactly the view you need.</p>
+    </div>
+  </section>
+
+  <section class="summary" id="summary">
+    <h2>Weekly Price Summary</h2>
+    <p class="desc">Average price per item across all stores, shown by week, newest first. Narrow by store or item, then export the view as a CSV.</p>
+
+    <div class="filters">
+      <select id="storeFilter" aria-label="Filter by store"><option value="">All stores (average)</option></select>
+      <input type="text" id="itemSearch" placeholder="e.g. eggs, bread, coffee…" aria-label="Search items">
+      <select id="fromMonth" aria-label="From month"><option value="">Newest</option></select>
+      <select id="toMonth" aria-label="To month"><option value="">Oldest</option></select>
+      <div class="spacer"></div>
+      <button class="export" id="resetBtn" style="background:transparent;color:var(--ink);border:1px solid var(--ink);">Reset</button>
+      <button class="export" id="exportBtn">Export CSV</button>
+    </div>
+
+    <table>
+      <thead id="tableHead">
+        <tr><th>Item</th><th>Annual Avg</th></tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr class="state-row"><td colspan="10">Loading data from API…</td></tr>
+      </tbody>
+    </table>
+
+    <div class="legend">
+      <span><span class="dot" style="background:var(--stamp)"></span>Price rose vs. previous month</span>
+      <span><span class="dot" style="background:var(--fell)"></span>Price fell vs. previous month</span>
+      <span><span class="dot" style="background:var(--line)"></span>No change / no prior data</span>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;width:100%;">
+    <span>BC Basket — CISC 4900, Brooklyn College</span>
+    <span id="apiStatus">Connecting to API…</span>
+  </div>
+</footer>
+
+<script>
+  // ─────────────────────────────────────────────────────────
+  // Live data wiring for BC Basket — mirrors the API contract
+  // used by the original site's index.html:
+  //   GET  /api/prices   -> [{ store_name, item_name, month, week1..week5 }]
+  //   GET  /api/items    -> [{ item_id, item_name }]   (not used on this page)
+  // Change API_BASE if the backend isn't running on localhost:3000.
+  // ─────────────────────────────────────────────────────────
+  const API_BASE = "https://inflation-tracker-heg5.onrender.com";
+
+  const tableHead   = document.getElementById("tableHead");
+  const tableBody   = document.getElementById("tableBody");
+  const storeFilter = document.getElementById("storeFilter");
+  const itemSearch  = document.getElementById("itemSearch");
+  const fromMonth   = document.getElementById("fromMonth");
+  const toMonth     = document.getElementById("toMonth");
+  const resetBtn    = document.getElementById("resetBtn");
+  const exportBtn   = document.getElementById("exportBtn");
+  const apiStatus   = document.getElementById("apiStatus");
+
+  let raw = [];
+  let months = []; // newest first
+
+  function setState(msg, isError) {
+    tableHead.innerHTML = "<tr><th>Item</th><th>Annual Avg</th></tr>";
+    tableBody.innerHTML = `<tr class="state-row${isError ? " error" : ""}"><td colspan="10">${msg}</td></tr>`;
+  }
+
+  function monthLabel(m) {
+  const [year, month] = m.split("-").map(Number);
+
+  return new Date(year, month - 1, 1).toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric"
+  });
+}
+  
+  function monthsInRange() {
+    let list = [...months];
+    if (fromMonth.value) {
+      const i = months.indexOf(fromMonth.value);
+      if (i > -1) list = list.filter(m => months.indexOf(m) >= i);
+    }
+    if (toMonth.value) {
+      const i = months.indexOf(toMonth.value);
+      if (i > -1) list = list.filter(m => months.indexOf(m) <= i);
+    }
+    return list;
+  }
+
+  function buildLookup(store, search) {
+    const rows = raw.filter(r => {
+      if (store && r.store_name !== store) return false;
+      if (search && !r.item_name.toLowerCase().includes(search.toLowerCase())) return false;
+      return true;
+    });
+    const lookup = {};
+    rows.forEach(r => {
+      lookup[r.item_name] = lookup[r.item_name] || {};
+      lookup[r.item_name][r.month] = lookup[r.item_name][r.month] || [];
+      [r.week1, r.week2, r.week3, r.week4, r.week5].forEach(w => {
+        const v = parseFloat(w);
+        if (!isNaN(v) && v > 0) lookup[r.item_name][r.month].push(v);
+      });
+    });
+    return lookup;
+  }
+
+  function monthAvg(lookup, item, m) {
+    const p = (lookup[item] && lookup[item][m]) || [];
+    return p.length ? p.reduce((a, b) => a + b, 0) / p.length : null;
+  }
+
+  function annualAvg(lookup, item) {
+    const vals = months.map(m => monthAvg(lookup, item, m)).filter(v => v !== null);
+    return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+  }
+
+  function render() {
+    const store = storeFilter.value;
+    const search = itemSearch.value.trim();
+    const lookup = buildLookup(store, search);
+    const items = Object.keys(lookup).sort();
+    const range = monthsInRange();
+
+    if (items.length === 0) return setState("No items match the current filters.");
+    if (range.length === 0) return setState("No weeks fall in the selected range.");
+
+    const headRow = document.createElement("tr");
+    headRow.innerHTML = "<th>Item</th>" + range.map(m => `<th>${monthLabel(m)}</th>`).join("") + "<th>Annual Avg</th>";
+    tableHead.innerHTML = "";
+    tableHead.appendChild(headRow);
+
+    tableBody.innerHTML = "";
+    items.forEach(name => {
+      const tr = document.createElement("tr");
+      let cells = `<td class="item">${name}</td>`;
+      range.forEach((m, i) => {
+        const avg = monthAvg(lookup, name, m);
+        if (avg === null) {
+          cells += `<td><span class="zero">0</span></td>`;
+        } else {
+          const prev = range[i + 1];
+          const prevAvg = prev ? monthAvg(lookup, name, prev) : null;
+          let delta = `<span class="delta flat">—</span>`;
+          if (prevAvg !== null && prevAvg > 0) {
+            const pct = ((avg - prevAvg) / prevAvg) * 100;
+            const cls = pct > 0.05 ? "up" : pct < -0.05 ? "down" : "flat";
+            const sign = pct > 0 ? "+" : "";
+            delta = `<span class="delta ${cls}">${sign}${pct.toFixed(1)}%</span>`;
+          }
+          cells += `<td><span class="price-cell">$${avg.toFixed(2)}</span>${delta}</td>`;
+        }
+      });
+      const yr = annualAvg(lookup, name);
+      cells += `<td>${yr === null ? "—" : "$" + yr.toFixed(2)}</td>`;
+      tr.innerHTML = cells;
+      tableBody.appendChild(tr);
+    });
+  }
+
+  function exportCSV() {
+    const store = storeFilter.value;
+    const search = itemSearch.value.trim();
+    const lookup = buildLookup(store, search);
+    const items = Object.keys(lookup).sort();
+    const range = monthsInRange();
+    const header = ["Item", ...range.map(monthLabel), "Annual Avg"];
+    const lines = [header.join(",")];
+    items.forEach(name => {
+      const cells = range.map(m => {
+        const avg = monthAvg(lookup, name, m);
+        return avg === null ? "0" : avg.toFixed(2);
+      });
+      const yr = annualAvg(lookup, name);
+      cells.push(yr === null ? "" : yr.toFixed(2));
+      lines.push([`"${name.replace(/"/g, '""')}"`, ...cells].join(","));
+    });
+    const blob = new Blob([lines.join("\n")], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = store ? `bc-basket-${store.replace(/\s+/g, "-").toLowerCase()}.csv` : "bc-basket-all-stores.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  let searchTimer;
+  itemSearch.addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(render, 200); });
+  storeFilter.addEventListener("change", render);
+  fromMonth.addEventListener("change", render);
+  toMonth.addEventListener("change", render);
+  resetBtn.addEventListener("click", () => {
+    storeFilter.value = ""; itemSearch.value = ""; fromMonth.value = ""; toMonth.value = "";
+    render();
+  });
+  exportBtn.addEventListener("click", exportCSV);
+
+  async function init() {
+    try {
+      const res = await fetch(`${API_BASE}/api/prices`);
+      if (!res.ok) throw new Error(`API responded with ${res.status}`);
+      raw = await res.json();
+      if (!raw || raw.length === 0) { setState("No data available yet."); apiStatus.textContent = "Connected — no data yet"; return; }
+
+      months = [...new Set(raw.map(r => r.month))].sort((a, b) => new Date(b) - new Date(a));
+
+      [...new Set(raw.map(r => r.store_name))].sort().forEach(st => {
+        const opt = document.createElement("option");
+        opt.value = st; opt.textContent = st;
+        storeFilter.appendChild(opt);
+      });
+      months.forEach(m => {
+        [fromMonth, toMonth].forEach(sel => {
+          const opt = document.createElement("option");
+          opt.value = m; opt.textContent = monthLabel(m);
+          sel.appendChild(opt);
+        });
+      });
+
+      render();
+      apiStatus.textContent = "Live data connected";
+    } catch (err) {
+      setState(`Could not load data: ${err.message}. Make sure the API server is running (node server.js).`, true);
+      apiStatus.textContent = "API not reachable";
+      console.error("BC Basket fetch error:", err);
+    }
+  }
+  init();
+</script>
+</body>
+</html>
