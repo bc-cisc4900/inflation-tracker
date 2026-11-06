@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BC Basket — UI Mockup</title>
 <style>
   :root{
@@ -19,6 +20,8 @@
     --sans: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   }
   *{box-sizing:border-box;}
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
   body{
     margin:0;
     background:var(--paper);
@@ -90,17 +93,20 @@
   /* RECEIPT CARD */
   .receipt-holder{
     display:flex;justify-content:center;
+    align-self:end; /* sits level with the buttons instead of centered on the whole hero */
+    /* drop-shadow on the holder, because clip-path on .receipt would clip a box-shadow */
+    filter:drop-shadow(0 18px 24px rgba(30,42,30,0.16));
     animation:drop 700ms cubic-bezier(.2,.8,.2,1) both;
   }
+  /* the rotation lives on .receipt only, so the card isn't rotated twice */
   @keyframes drop{
-    from{opacity:0;transform:translateY(-24px) rotate(0deg);}
-    to{opacity:1;transform:translateY(0) rotate(-2.2deg);}
+    from{opacity:0;transform:translateY(-24px);}
+    to{opacity:1;transform:translateY(0);}
   }
   .receipt{
     width:300px;background:var(--paper-raised);
     padding:26px 22px 22px;
     font-family:var(--mono);font-size:12.5px;color:var(--ink);
-    box-shadow:0 18px 34px rgba(30,42,30,0.16);
     transform:rotate(-2.2deg);
     clip-path: polygon(
       0% 1%, 4% 0%, 8% 1%, 12% 0%, 16% 1%, 20% 0%, 24% 1%, 28% 0%, 32% 1%, 36% 0%,
@@ -147,6 +153,7 @@
   .summary{
     padding:64px 0 90px;
     border-top:1px solid var(--line);
+    scroll-margin-top:70px; /* keeps the sticky header from covering the title */
   }
   .summary h2{
     font-family:var(--serif);font-size:28px;margin:0 0 8px;
@@ -170,10 +177,12 @@
   }
   .filters .export:hover{background:var(--forest-deep);}
 
+  .table-scroll{overflow-x:auto;}
   table{width:100%;border-collapse:collapse;margin-top:0;font-size:13.5px;}
   thead th{
     text-align:left;font-family:var(--mono);font-weight:400;font-size:11px;
     color:var(--ink-soft);padding:12px 10px;border-bottom:1px solid var(--line);
+    white-space:nowrap;
   }
   tbody td{
     padding:13px 10px;border-bottom:1px solid var(--line);font-family:var(--mono);
@@ -182,7 +191,7 @@
   tbody tr:hover{background:var(--paper-raised);}
   .delta{font-weight:700;display:block;font-size:10.5px;margin-top:2px;}
   .delta.flat{color:var(--ink-soft);opacity:.7;font-weight:600;}
-  .legend{display:flex;gap:18px;margin-top:16px;font-size:12px;color:var(--ink-soft);}
+  .legend{display:flex;gap:18px;margin-top:16px;font-size:12px;color:var(--ink-soft);flex-wrap:wrap;}
   .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
   .state-row td{
     font-family:var(--sans);color:var(--ink-soft);text-align:center;padding:26px 10px;
@@ -190,6 +199,25 @@
   .state-row.error td{color:var(--stamp);}
   .zero{opacity:.4;font-family:var(--mono);}
   .price-cell{display:block;}
+
+  /* CREDITS */
+  .credits{
+    padding:64px 0 80px;
+    border-top:1px solid var(--line);
+    scroll-margin-top:70px;
+  }
+  .credits h2{font-family:var(--serif);font-size:28px;margin:0 0 8px;}
+  .credits .desc{color:var(--ink-soft);font-size:14.5px;margin:0 0 30px;max-width:640px;}
+  .credit-group{margin-bottom:34px;max-width:640px;}
+  .credit-group h3{
+    font-family:var(--mono);font-weight:400;font-size:11px;color:var(--forest);
+    margin:0 0 10px;letter-spacing:0.02em;
+  }
+  .credit-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);}
+  .credit-list li{
+    padding:12px 0;border-bottom:1px solid var(--line);
+    font-family:var(--serif);font-size:18px;
+  }
 
   footer{
     border-top:1px solid var(--line);padding:26px 0;
@@ -212,11 +240,10 @@
       <div class="wordmark">BC <span>Basket</span></div>
       <div class="navlinks">
         <a href="#" class="current">Home</a>
-        <a href="#">Price Summary</a>
-        <a href="#">Compare</a>
-        <a href="#">Spreadsheet</a>
+        <a href="#summary">Price Summary</a>
+        <a href="https://docs.google.com/spreadsheets/d/1br9FBX-B-Ebh7yxkTqOck3guEsI3zHw8vJ-ltU7RLDM/edit?gid=1691359563#gid=1691359563" target="_blank" rel="noopener">Spreadsheet</a>
         <a href="#">Method</a>
-        <a href="#">Credits</a>
+        <a href="#credits">Credits</a>
       </div>
     </nav>
   </div>
@@ -229,8 +256,8 @@
       <h1>Grocery inflation, tracked one receipt at a time.</h1>
       <p class="lede">BC Basket follows real prices across 5 local stores every week, turning ordinary receipts into a running record of what groceries actually cost — and how fast that's changing.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="#">Open Price Summary</a>
-        <a class="btn btn-secondary" href="#">View Full Spreadsheet</a>
+        <a class="btn btn-primary" href="#summary">Open Price Summary</a>
+        <a class="btn btn-secondary" href="https://docs.google.com/spreadsheets/d/1br9FBX-B-Ebh7yxkTqOck3guEsI3zHw8vJ-ltU7RLDM/edit?gid=1691359563#gid=1691359563" target="_blank" rel="noopener">View Full Spreadsheet</a>
       </div>
       <div class="tags">
         <span class="tag">weekly collection</span>
@@ -253,7 +280,7 @@
         <div class="total"><span>BASKET INDEX</span><span class="up">+3.0%</span></div>
         <div class="barcode"></div>
       </div>
-    </div>
+    </div>a
   </section>
 
   <section class="notes">
@@ -272,32 +299,60 @@
   </section>
 
   <section class="summary" id="summary">
-    <h2>Weekly Price Summary</h2>
-    <p class="desc">Average price per item across all stores, shown by week, newest first. Narrow by store or item, then export the view as a CSV.</p>
+    <h2>Monthly Price Summary</h2>
+    <p class="desc">Average price per item across all stores, shown by month from oldest to newest. Narrow by store or item, then export the view as a CSV.</p>
 
     <div class="filters">
       <select id="storeFilter" aria-label="Filter by store"><option value="">All stores (average)</option></select>
       <input type="text" id="itemSearch" placeholder="e.g. eggs, bread, coffee…" aria-label="Search items">
-      <select id="fromMonth" aria-label="From month"><option value="">Newest</option></select>
-      <select id="toMonth" aria-label="To month"><option value="">Oldest</option></select>
+      <select id="fromMonth" aria-label="From month"><option value="">From: earliest</option></select>
+      <select id="toMonth" aria-label="To month"><option value="">To: latest</option></select>
       <div class="spacer"></div>
       <button class="export" id="resetBtn" style="background:transparent;color:var(--ink);border:1px solid var(--ink);">Reset</button>
       <button class="export" id="exportBtn">Export CSV</button>
     </div>
 
-    <table>
-      <thead id="tableHead">
-        <tr><th>Item</th><th>Annual Avg</th></tr>
-      </thead>
-      <tbody id="tableBody">
-        <tr class="state-row"><td colspan="10">Loading data from API…</td></tr>
-      </tbody>
-    </table>
+    <div class="table-scroll">
+      <table>
+        <thead id="tableHead">
+          <tr><th>Item</th><th>Annual Avg</th></tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr class="state-row"><td colspan="10">Loading data… (the server may take up to a minute to wake up)</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="legend">
       <span><span class="dot" style="background:var(--stamp)"></span>Price rose vs. previous month</span>
       <span><span class="dot" style="background:var(--fell)"></span>Price fell vs. previous month</span>
       <span><span class="dot" style="background:var(--line)"></span>No change / no prior data</span>
+    </div>
+  </section>
+
+  <section class="credits" id="credits">
+    <h2>Credits</h2>
+    <p class="desc">BC Basket began as a CISC 4900 student project at Brooklyn College and was later acquired and continued by a new team.</p>
+
+    <div class="credit-group">
+      <h3>CURRENT TEAM</h3>
+      <ul class="credit-list">
+        <li>Kenneth Ouy</li>
+        <li>Leijla </li>
+        <li>Seth Hernadez</li>
+        <li>Edmond</li>
+      </ul>
+    </div>
+
+    <div class="credit-group">
+      <h3>ORIGINAL TEAM</h3>
+      <ul class="credit-list">
+        <li>Gabriel Krishtul — Project Manager, Database Architect</li>
+        <li>Andrew Castillo-Fajardo — Fullstack Developer</li>
+        <li>Yuan Ruan — Frontend Developer</li>
+        <li>Mohamed Massoud — Database Architect, Web Developer</li>
+        <li>Nicholas Cai — Data Collection</li>
+      </ul>
     </div>
   </section>
 </div>
@@ -315,7 +370,8 @@
   // used by the original site's index.html:
   //   GET  /api/prices   -> [{ store_name, item_name, month, week1..week5 }]
   //   GET  /api/items    -> [{ item_id, item_name }]   (not used on this page)
-  // Change API_BASE if the backend isn't running on localhost:3000.
+  // API_BASE points at the hosted backend on Render. For local testing,
+  // change it to your local server (e.g. http://localhost:3000).
   // ─────────────────────────────────────────────────────────
   const API_BASE = "https://inflation-tracker-heg5.onrender.com";
 
@@ -330,7 +386,13 @@
   const apiStatus   = document.getElementById("apiStatus");
 
   let raw = [];
-  let months = []; // newest first
+  let months = []; // oldest first (left to right)
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => (
+      { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+    ));
+  }
 
   function setState(msg, isError) {
     tableHead.innerHTML = "<tr><th>Item</th><th>Annual Avg</th></tr>";
@@ -338,14 +400,14 @@
   }
 
   function monthLabel(m) {
-  const [year, month] = m.split("-").map(Number);
+    const [year, month] = m.split("-").map(Number);
+    return new Date(year, month - 1, 1).toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric"
+    });
+  }
 
-  return new Date(year, month - 1, 1).toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric"
-  });
-}
-  
+  // months is oldest -> newest, so "from" is the earlier month and "to" is the later one
   function monthsInRange() {
     let list = [...months];
     if (fromMonth.value) {
@@ -395,7 +457,7 @@
     const range = monthsInRange();
 
     if (items.length === 0) return setState("No items match the current filters.");
-    if (range.length === 0) return setState("No weeks fall in the selected range.");
+    if (range.length === 0) return setState("No months fall in the selected range.");
 
     const headRow = document.createElement("tr");
     headRow.innerHTML = "<th>Item</th>" + range.map(m => `<th>${monthLabel(m)}</th>`).join("") + "<th>Annual Avg</th>";
@@ -405,13 +467,16 @@
     tableBody.innerHTML = "";
     items.forEach(name => {
       const tr = document.createElement("tr");
-      let cells = `<td class="item">${name}</td>`;
-      range.forEach((m, i) => {
+      let cells = `<td class="item">${escapeHtml(name)}</td>`;
+      range.forEach(m => {
         const avg = monthAvg(lookup, name, m);
         if (avg === null) {
-          cells += `<td><span class="zero">0</span></td>`;
+          cells += `<td><span class="zero">—</span></td>`;
         } else {
-          const prev = range[i + 1];
+          // previous month = the one to the LEFT, looked up in the full list
+          // so the first visible column still compares against earlier data
+          const prevIdx = months.indexOf(m) - 1;
+          const prev = prevIdx >= 0 ? months[prevIdx] : null;
           const prevAvg = prev ? monthAvg(lookup, name, prev) : null;
           let delta = `<span class="delta flat">—</span>`;
           if (prevAvg !== null && prevAvg > 0) {
@@ -441,7 +506,7 @@
     items.forEach(name => {
       const cells = range.map(m => {
         const avg = monthAvg(lookup, name, m);
-        return avg === null ? "0" : avg.toFixed(2);
+        return avg === null ? "" : avg.toFixed(2);
       });
       const yr = annualAvg(lookup, name);
       cells.push(yr === null ? "" : yr.toFixed(2));
@@ -474,7 +539,8 @@
       raw = await res.json();
       if (!raw || raw.length === 0) { setState("No data available yet."); apiStatus.textContent = "Connected — no data yet"; return; }
 
-      months = [...new Set(raw.map(r => r.month))].sort((a, b) => new Date(b) - new Date(a));
+      // oldest -> newest
+      months = [...new Set(raw.map(r => r.month))].sort((a, b) => new Date(a) - new Date(b));
 
       [...new Set(raw.map(r => r.store_name))].sort().forEach(st => {
         const opt = document.createElement("option");
@@ -492,7 +558,7 @@
       render();
       apiStatus.textContent = "Live data connected";
     } catch (err) {
-      setState(`Could not load data: ${err.message}. Make sure the API server is running (node server.js).`, true);
+      setState(`Could not load data: ${escapeHtml(err.message)}. The server may still be waking up, so try refreshing in a minute.`, true);
       apiStatus.textContent = "API not reachable";
       console.error("BC Basket fetch error:", err);
     }
