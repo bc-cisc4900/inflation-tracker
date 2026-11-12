@@ -47,7 +47,9 @@ const PUBLIC_STORE_NAMES = {
   'Key Food': 'Store 3',
   'Stop & Shop': 'Store 4',
   "Trader Joe's": 'Store 5',
-  'Target': 'Store 6'
+  'Target': 'Store 6',
+  'Lidl': 'Store 7',
+  'Whole Foods': 'Store 8'
 };
 
 function anonymizeStoreData(value) {
