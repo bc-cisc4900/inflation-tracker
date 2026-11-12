@@ -367,7 +367,7 @@ app.post('/api/import/:month/:week', blockPublicWrites, upload.single('file'), a
         priceMap[storeName] = 0;
       }
 
-      for (const storeName of ALL_STORES) {
+      for (const storeName of CSV_STORES) {
         const price = priceMap[storeName] ?? 0;
 
         let storeId;
