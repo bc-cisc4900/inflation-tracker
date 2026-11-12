@@ -265,7 +265,7 @@ async function main() {
       }
 
       // Loop through ALL stores and insert/update the price record
-      for (const storeName of ALL_STORES) {
+      for (const storeName of CSV_STORES) {
         const price = priceMap[storeName] ?? 0;
 
         let storeId;
